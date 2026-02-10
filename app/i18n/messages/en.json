@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "title": "NEWBODYLINE2 - Transform Your Body, Elevate Your Life",
+    "description": "Premium fitness center offering state-of-the-art equipment, expert trainers, and transformative workout experiences."
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "personalTraining": "Personal Training",
+    "location": "Location",
+    "joinNow": "Join Now",
+    "changingLanguage": "Changing language...",
+    "selectLanguage": "Select Language"
+  },
+  "hero": {
+    "tagline": "Welcome to NEWBODYLINE2",
+    "title": "Transform Your Body",
+    "titleAccent": "Elevate Your Life",
+    "description": "Experience premium fitness with state-of-the-art equipment, expert trainers, and a community that pushes you to be your best.",
+    "ctaPrimary": "Start Your Journey",
+    "ctaSecondary": "View Courses"
+  },
+  "features": {
+    "title": "Why Choose Us",
+    "subtitle": "Everything you need to achieve your fitness goals",
+    "equipment": {
+      "title": "Premium Equipment",
+      "description": "State-of-the-art machines and free weights from leading brands"
+    },
+    "trainers": {
+      "title": "Expert Trainers",
+      "description": "Certified professionals dedicated to your success"
+    },
+    "atmosphere": {
+      "title": "Energetic Atmosphere",
+      "description": "Motivating environment that pushes you to excel"
+    },
+    "hours": {
+      "title": "24/7 Access",
+      "description": "Train on your schedule with round-the-clock access"
+    }
+  },
+  "stats": {
+    "members": "Happy Members",
+    "classes": "Weekly Classes",
+    "trainers": "Expert Trainers",
+    "years": "Years Experience"
+  },
+  "courses": {
+    "title": "Our Courses",
+    "subtitle": "Find the perfect workout for your goals",
+    "strength": {
+      "title": "Strength Training",
+      "description": "Build muscle and increase power with our comprehensive strength programs",
+      "duration": "60 min",
+      "level": "All Levels"
+    },
+    "cardio": {
+      "title": "Cardio Blast",
+      "description": "High-energy cardio sessions to boost endurance and burn calories",
+      "duration": "45 min",
+      "level": "Intermediate"
+    },
+    "hiit": {
+      "title": "HIIT",
+      "description": "Intense interval training for maximum results in minimum time",
+      "duration": "30 min",
+      "level": "Advanced"
+    },
+    "yoga": {
+      "title": "Power Yoga",
+      "description": "Combine strength, flexibility, and mindfulness in one session",
+      "duration": "60 min",
+      "level": "All Levels"
+    },
+    "boxing": {
+      "title": "Boxing Fitness",
+      "description": "Learn boxing techniques while getting an incredible workout",
+      "duration": "50 min",
+      "level": "All Levels"
+    },
+    "pilates": {
+      "title": "Pilates Core",
+      "description": "Strengthen your core and improve posture with controlled movements",
+      "duration": "45 min",
+      "level": "Beginner"
+    },
+    "cta": "Join This Class"
+  },
+  "personalTraining": {
+    "title": "Personal Training",
+    "subtitle": "Work one-on-one with our elite trainers to achieve your fitness goals faster",
+    "heroTitle": "Your Personal Fitness Journey",
+    "heroDescription": "Get personalized attention, customized workout plans, and dedicated support from our certified personal trainers.",
+    "trainers": {
+      "title": "Meet Our Expert Trainers",
+      "subtitle": "Choose the perfect trainer for your goals"
+    },
+    "booking": {
+      "title": "Book Your Session",
+      "selectTrainer": "Select Your Trainer",
+      "selectDate": "Select Date",
+      "selectTime": "Select Time",
+      "availableSlots": "Available Slots",
+      "noSlots": "No available slots for this date",
+      "yourName": "Your Name",
+      "yourEmail": "Your Email",
+      "yourPhone": "Your Phone",
+      "bookSession": "Book Session",
+      "bookingSuccess": "Booking Successful!",
+      "bookingSuccessMessage": "Your personal training session has been booked. Check your email for confirmation.",
+      "sessionDetails": "Session Details",
+      "trainer": "Trainer",
+      "date": "Date",
+      "time": "Time",
+      "duration": "Duration",
+      "sessionDuration": "60 minutes"
+    },
+    "benefits": {
+      "title": "Why Personal Training?",
+      "customized": {
+        "title": "Customized Plans",
+        "description": "Workouts tailored specifically to your goals and fitness level"
+      },
+      "accountability": {
+        "title": "Accountability",
+        "description": "Stay motivated with a dedicated trainer pushing you to succeed"
+      },
+      "faster": {
+        "title": "Faster Results",
+        "description": "Achieve your goals more efficiently with expert guidance"
+      },
+      "technique": {
+        "title": "Proper Technique",
+        "description": "Learn correct form to maximize results and prevent injury"
+      }
+    }
+  },
+  "location": {
+    "title": "Find Us",
+    "subtitle": "Visit our state-of-the-art facility",
+    "address": "123 Fitness Avenue, Downtown District",
+    "city": "New York, NY 10001",
+    "phone": "+1 (555) 123-4567",
+    "email": "info@newbodyline2.com",
+    "hours": {
+      "title": "Opening Hours",
+      "weekdays": "Monday - Friday: 5:00 AM - 11:00 PM",
+      "weekend": "Saturday - Sunday: 6:00 AM - 10:00 PM",
+      "holiday": "Holidays: 7:00 AM - 9:00 PM"
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "subtitle": "Staff Access Only",
+      "username": "Username",
+      "password": "Password",
+      "loginButton": "Login",
+      "invalidCredentials": "Invalid username or password"
+    },
+    "dashboard": {
+      "title": "Booking Dashboard",
+      "subtitle": "Manage Personal Training Sessions",
+      "totalBookings": "Total Bookings",
+      "todayBookings": "Today's Bookings",
+      "upcoming": "Upcoming Sessions",
+      "noBookings": "No bookings found",
+      "client": "Client",
+      "trainer": "Trainer",
+      "date": "Date",
+      "time": "Time",
+      "contact": "Contact",
+      "bookedAt": "Booked",
+      "cancelBooking": "Cancel",
+      "confirmCancel": "Are you sure you want to cancel this booking?",
+      "refresh": "Refresh",
+      "logout": "Logout"
+    }
+  },
+  "footer": {
+    "tagline": "Transform your body, elevate your life.",
+    "rights": "All rights reserved."
+  }
+}

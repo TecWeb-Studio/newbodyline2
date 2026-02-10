@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "title": "NEWBODYLINE2 - Verwandle Deinen Körper, Erhebe Dein Leben",
+    "description": "Premium-Fitnesscenter mit hochmoderner Ausrüstung, erfahrenen Trainern und transformativen Workout-Erfahrungen."
+  },
+  "nav": {
+    "home": "Startseite",
+    "courses": "Kurse",
+    "personalTraining": "Personal Training",
+    "location": "Standort",
+    "joinNow": "Jetzt Beitreten",
+    "changingLanguage": "Sprache wird gewechselt...",
+    "selectLanguage": "Sprache Auswählen"
+  },
+  "hero": {
+    "tagline": "Willkommen bei NEWBODYLINE2",
+    "title": "Verwandle Deinen Körper",
+    "titleAccent": "Erhebe Dein Leben",
+    "description": "Erlebe Premium-Fitness mit hochmoderner Ausrüstung, erfahrenen Trainern und einer Community, die dich zu Höchstleistungen antreibt.",
+    "ctaPrimary": "Starte Deine Reise",
+    "ctaSecondary": "Kurse Ansehen"
+  },
+  "features": {
+    "title": "Warum Wir",
+    "subtitle": "Alles was du brauchst, um deine Fitness-Ziele zu erreichen",
+    "equipment": {
+      "title": "Premium-Ausrüstung",
+      "description": "Hochmoderne Geräte und Freihanteln von führenden Marken"
+    },
+    "trainers": {
+      "title": "Expertentrainer",
+      "description": "Zertifizierte Profis, die sich deinem Erfolg widmen"
+    },
+    "atmosphere": {
+      "title": "Energetische Atmosphäre",
+      "description": "Motivierende Umgebung, die dich zu Höchstleistungen antreibt"
+    },
+    "hours": {
+      "title": "24/7 Zugang",
+      "description": "Trainiere nach deinem Zeitplan mit rund um die Uhr Zugang"
+    }
+  },
+  "stats": {
+    "members": "Zufriedene Mitglieder",
+    "classes": "Wöchentliche Kurse",
+    "trainers": "Expertentrainer",
+    "years": "Jahre Erfahrung"
+  },
+  "courses": {
+    "title": "Unsere Kurse",
+    "subtitle": "Finde das perfekte Workout für deine Ziele",
+    "strength": {
+      "title": "Krafttraining",
+      "description": "Baue Muskeln auf und steigere deine Kraft mit unseren umfassenden Kraftprogrammen",
+      "duration": "60 min",
+      "level": "Alle Level"
+    },
+    "cardio": {
+      "title": "Cardio Blast",
+      "description": "Hochenergetische Cardio-Sessions zur Steigerung der Ausdauer und zum Kalorienverbrennen",
+      "duration": "45 min",
+      "level": "Mittel"
+    },
+    "hiit": {
+      "title": "HIIT",
+      "description": "Intensives Intervalltraining für maximale Ergebnisse in kürzester Zeit",
+      "duration": "30 min",
+      "level": "Fortgeschritten"
+    },
+    "yoga": {
+      "title": "Power Yoga",
+      "description": "Kombiniere Kraft, Flexibilität und Achtsamkeit in einer Session",
+      "duration": "60 min",
+      "level": "Alle Level"
+    },
+    "boxing": {
+      "title": "Box-Fitness",
+      "description": "Lerne Boxtechniken und absolviere dabei ein unglaubliches Workout",
+      "duration": "50 min",
+      "level": "Alle Level"
+    },
+    "pilates": {
+      "title": "Pilates Core",
+      "description": "Stärke deinen Core und verbessere deine Haltung mit kontrollierten Bewegungen",
+      "duration": "45 min",
+      "level": "Anfänger"
+    },
+    "cta": "Diesem Kurs Beitreten"
+  },
+  "personalTraining": {
+    "title": "Personal Training",
+    "subtitle": "Arbeite Eins-zu-Eins mit unseren Elite-Trainern, um deine Fitness-Ziele schneller zu erreichen",
+    "heroTitle": "Deine Persönliche Fitness-Reise",
+    "heroDescription": "Erhalte personalisierte Aufmerksamkeit, maßgeschneiderte Trainingspläne und engagierte Unterstützung von unseren zertifizierten Personal Trainern.",
+    "trainers": {
+      "title": "Lerne Unsere Expertentrainer Kennen",
+      "subtitle": "Wähle den perfekten Trainer für deine Ziele"
+    },
+    "booking": {
+      "title": "Buche Deine Session",
+      "selectTrainer": "Wähle Deinen Trainer",
+      "selectDate": "Datum Auswählen",
+      "selectTime": "Uhrzeit Auswählen",
+      "availableSlots": "Verfügbare Slots",
+      "noSlots": "Keine verfügbaren Slots für dieses Datum",
+      "yourName": "Dein Name",
+      "yourEmail": "Deine E-Mail",
+      "yourPhone": "Deine Telefonnummer",
+      "bookSession": "Session Buchen",
+      "bookingSuccess": "Buchung Erfolgreich!",
+      "bookingSuccessMessage": "Deine Personal Training Session wurde gebucht. Überprüfe deine E-Mail für die Bestätigung.",
+      "sessionDetails": "Session Details",
+      "trainer": "Trainer",
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "duration": "Dauer",
+      "sessionDuration": "60 Minuten"
+    },
+    "benefits": {
+      "title": "Warum Personal Training?",
+      "customized": {
+        "title": "Maßgeschneiderte Pläne",
+        "description": "Workouts, die speziell auf deine Ziele und Fitness-Level zugeschnitten sind"
+      },
+      "accountability": {
+        "title": "Verantwortung",
+        "description": "Bleibe motiviert mit einem engagierten Trainer, der dich zum Erfolg führt"
+      },
+      "faster": {
+        "title": "Schnellere Ergebnisse",
+        "description": "Erreiche deine Ziele effizienter mit fachkundiger Anleitung"
+      },
+      "technique": {
+        "title": "Korrekte Technik",
+        "description": "Lerne die richtige Form, um Ergebnisse zu maximieren und Verletzungen zu vermeiden"
+      }
+    }
+  },
+  "location": {
+    "title": "Finde Uns",
+    "subtitle": "Besuche unsere hochmoderne Einrichtung",
+    "address": "Fitnessstraße 123, Stadtzentrum",
+    "city": "München, 80331",
+    "phone": "+49 89 12345678",
+    "email": "info@newbodyline2.de",
+    "hours": {
+      "title": "Öffnungszeiten",
+      "weekdays": "Montag - Freitag: 5:00 - 23:00",
+      "weekend": "Samstag - Sonntag: 6:00 - 22:00",
+      "holiday": "Feiertage: 7:00 - 21:00"
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "subtitle": "Nur für Mitarbeiter",
+      "username": "Benutzername",
+      "password": "Passwort",
+      "loginButton": "Anmelden",
+      "invalidCredentials": "Ungültiger Benutzername oder Passwort"
+    },
+    "dashboard": {
+      "title": "Buchungs-Dashboard",
+      "subtitle": "Personal Training Sessions Verwalten",
+      "totalBookings": "Gesamtbuchungen",
+      "todayBookings": "Heutige Buchungen",
+      "upcoming": "Kommende Sessions",
+      "noBookings": "Keine Buchungen gefunden",
+      "client": "Kunde",
+      "trainer": "Trainer",
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "contact": "Kontakt",
+      "bookedAt": "Gebucht",
+      "cancelBooking": "Stornieren",
+      "confirmCancel": "Bist du sicher, dass du diese Buchung stornieren möchtest?",
+      "refresh": "Aktualisieren",
+      "logout": "Abmelden"
+    }
+  },
+  "footer": {
+    "tagline": "Verwandle deinen Körper, erhebe dein Leben.",
+    "rights": "Alle Rechte vorbehalten."
+  }
+}

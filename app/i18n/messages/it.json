@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "title": "NEWBODYLINE2 - Trasforma il Tuo Corpo, Eleva la Tua Vita",
+    "description": "Centro fitness premium con attrezzature all'avanguardia, trainer esperti ed esperienze di allenamento trasformative."
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Corsi",
+    "personalTraining": "Personal Training",
+    "location": "Dove Siamo",
+    "joinNow": "Unisciti Ora",
+    "changingLanguage": "Cambio lingua in corso...",
+    "selectLanguage": "Seleziona Lingua"
+  },
+  "hero": {
+    "tagline": "Benvenuto in NEWBODYLINE2",
+    "title": "Trasforma il Tuo Corpo",
+    "titleAccent": "Eleva la Tua Vita",
+    "description": "Scopri il fitness premium con attrezzature all'avanguardia, trainer esperti e una community che ti spinge a dare il massimo.",
+    "ctaPrimary": "Inizia il Tuo Percorso",
+    "ctaSecondary": "Vedi i Corsi"
+  },
+  "features": {
+    "title": "Perché Sceglierci",
+    "subtitle": "Tutto ciò di cui hai bisogno per raggiungere i tuoi obiettivi fitness",
+    "equipment": {
+      "title": "Attrezzature Premium",
+      "description": "Macchinari all'avanguardia e pesi liberi delle migliori marche"
+    },
+    "trainers": {
+      "title": "Trainer Esperti",
+      "description": "Professionisti certificati dedicati al tuo successo"
+    },
+    "atmosphere": {
+      "title": "Atmosfera Energica",
+      "description": "Ambiente motivante che ti spinge a eccellere"
+    },
+    "hours": {
+      "title": "Accesso 24/7",
+      "description": "Allenati secondo i tuoi orari con accesso continuo"
+    }
+  },
+  "stats": {
+    "members": "Membri Soddisfatti",
+    "classes": "Corsi Settimanali",
+    "trainers": "Trainer Esperti",
+    "years": "Anni di Esperienza"
+  },
+  "courses": {
+    "title": "I Nostri Corsi",
+    "subtitle": "Trova l'allenamento perfetto per i tuoi obiettivi",
+    "strength": {
+      "title": "Allenamento Forza",
+      "description": "Sviluppa muscoli e aumenta la potenza con i nostri programmi completi",
+      "duration": "60 min",
+      "level": "Tutti i Livelli"
+    },
+    "cardio": {
+      "title": "Cardio Intenso",
+      "description": "Sessioni cardio ad alta energia per migliorare resistenza e bruciare calorie",
+      "duration": "45 min",
+      "level": "Intermedio"
+    },
+    "hiit": {
+      "title": "HIIT",
+      "description": "Allenamento a intervalli ad alta intensità per risultati massimi in tempo minimo",
+      "duration": "30 min",
+      "level": "Avanzato"
+    },
+    "yoga": {
+      "title": "Power Yoga",
+      "description": "Combina forza, flessibilità e consapevolezza in una sola sessione",
+      "duration": "60 min",
+      "level": "Tutti i Livelli"
+    },
+    "boxing": {
+      "title": "Fitness Boxe",
+      "description": "Impara le tecniche di boxe mentre fai un allenamento incredibile",
+      "duration": "50 min",
+      "level": "Tutti i Livelli"
+    },
+    "pilates": {
+      "title": "Pilates Core",
+      "description": "Rafforza il core e migliora la postura con movimenti controllati",
+      "duration": "45 min",
+      "level": "Principiante"
+    },
+    "cta": "Unisciti a Questo Corso"
+  },
+  "personalTraining": {
+    "title": "Personal Training",
+    "subtitle": "Lavora uno a uno con i nostri trainer d'élite per raggiungere i tuoi obiettivi fitness più velocemente",
+    "heroTitle": "Il Tuo Percorso Fitness Personale",
+    "heroDescription": "Ottieni attenzione personalizzata, piani di allenamento su misura e supporto dedicato dai nostri personal trainer certificati.",
+    "trainers": {
+      "title": "Incontra i Nostri Trainer Esperti",
+      "subtitle": "Scegli il trainer perfetto per i tuoi obiettivi"
+    },
+    "booking": {
+      "title": "Prenota la Tua Sessione",
+      "selectTrainer": "Seleziona il Tuo Trainer",
+      "selectDate": "Seleziona la Data",
+      "selectTime": "Seleziona l'Orario",
+      "availableSlots": "Slot Disponibili",
+      "noSlots": "Nessuno slot disponibile per questa data",
+      "yourName": "Il Tuo Nome",
+      "yourEmail": "La Tua Email",
+      "yourPhone": "Il Tuo Telefono",
+      "bookSession": "Prenota Sessione",
+      "bookingSuccess": "Prenotazione Riuscita!",
+      "bookingSuccessMessage": "La tua sessione di personal training è stata prenotata. Controlla la tua email per la conferma.",
+      "sessionDetails": "Dettagli della Sessione",
+      "trainer": "Trainer",
+      "date": "Data",
+      "time": "Orario",
+      "duration": "Durata",
+      "sessionDuration": "60 minuti"
+    },
+    "benefits": {
+      "title": "Perché il Personal Training?",
+      "customized": {
+        "title": "Piani Personalizzati",
+        "description": "Allenamenti adattati specificamente ai tuoi obiettivi e livello di forma"
+      },
+      "accountability": {
+        "title": "Responsabilità",
+        "description": "Rimani motivato con un trainer dedicato che ti spinge a riuscire"
+      },
+      "faster": {
+        "title": "Risultati Più Rapidi",
+        "description": "Raggiungi i tuoi obiettivi più efficientemente con una guida esperta"
+      },
+      "technique": {
+        "title": "Tecnica Corretta",
+        "description": "Impara la forma corretta per massimizzare i risultati e prevenire infortuni"
+      }
+    }
+  },
+  "location": {
+    "title": "Dove Siamo",
+    "subtitle": "Visita la nostra struttura all'avanguardia",
+    "address": "Via Fitness 123, Centro Città",
+    "city": "Milano, 20100",
+    "phone": "+39 02 1234 5678",
+    "email": "info@newbodyline2.it",
+    "hours": {
+      "title": "Orari di Apertura",
+      "weekdays": "Lunedì - Venerdì: 5:00 - 23:00",
+      "weekend": "Sabato - Domenica: 6:00 - 22:00",
+      "holiday": "Festivi: 7:00 - 21:00"
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "Accesso Admin",
+      "subtitle": "Accesso Riservato al Personale",
+      "username": "Nome Utente",
+      "password": "Password",
+      "loginButton": "Accedi",
+      "invalidCredentials": "Nome utente o password non validi"
+    },
+    "dashboard": {
+      "title": "Dashboard Prenotazioni",
+      "subtitle": "Gestisci le Sessioni di Personal Training",
+      "totalBookings": "Totale Prenotazioni",
+      "todayBookings": "Prenotazioni Oggi",
+      "upcoming": "Sessioni in Arrivo",
+      "noBookings": "Nessuna prenotazione trovata",
+      "client": "Cliente",
+      "trainer": "Trainer",
+      "date": "Data",
+      "time": "Orario",
+      "contact": "Contatto",
+      "bookedAt": "Prenotato",
+      "cancelBooking": "Annulla",
+      "confirmCancel": "Sei sicuro di voler annullare questa prenotazione?",
+      "refresh": "Aggiorna",
+      "logout": "Esci"
+    }
+  },
+  "footer": {
+    "tagline": "Trasforma il tuo corpo, eleva la tua vita.",
+    "rights": "Tutti i diritti riservati."
+  }
+}
