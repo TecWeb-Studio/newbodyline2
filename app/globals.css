@@ -76,6 +76,16 @@ body {
   background: var(--accent);
 }
 
+/* Hide native browser scrollbar but preserve scrolling */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
 /* Gradient text utility */
 .gradient-text {
   background: linear-gradient(135deg, var(--foreground) 0%, var(--accent-light) 100%);
@@ -171,4 +181,63 @@ body {
 
 .animated-underline:hover::after {
   width: 100%;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .animate-spin {
+    animation: none !important;
+  }
+
+  .animate-pulse {
+    animation: none !important;
+    opacity: 1;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  /* Reduce transition durations on mobile */
+  * {
+    transition-duration: 0.15s !important;
+  }
+
+  /* Disable hover effects on touch devices */
+  @supports (hover: none) {
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      transform: none;
+    }
+
+    .card:hover {
+      transform: none;
+    }
+  }
+
+  /* Optimize scrollbar for mobile */
+  html {
+    scroll-behavior: auto;
+  }
 }

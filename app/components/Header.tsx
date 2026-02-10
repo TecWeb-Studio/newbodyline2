@@ -1,63 +1,52 @@
-'use client'
+ 'use client'
 
-import { useState, useEffect } from 'react'
-import { useTranslations, useLocale } from 'next-intl'
+import { useState, useEffect, useCallback } from 'react'
 import { Link, usePathname, useRouter } from '@/app/i18n/navigation'
-import { routing, localeNames } from '@/app/i18n/routing'
-import { Menu, X, Globe, Check } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useI18n } from '@/app/contexts/I18nContext'
+
+// Throttle function for scroll events
+const throttle = (func: Function, delay: number) => {
+  let lastCall = 0
+  return (...args: any[]) => {
+    const now = Date.now()
+    if (now - lastCall >= delay) {
+      lastCall = now
+      func(...args)
+    }
+  }
+}
 
 export default function Header() {
-  const t = useTranslations('nav')
-  const locale = useLocale()
+  const { t, locale } = useI18n()
   const pathname = usePathname()
   const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false)
   const [isChanging, setIsChanging] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    setReducedMotion(prefersReducedMotion)
+
+    const handleScroll = throttle(() => {
       setIsScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    }, 150)
+    
+    window.addEventListener('scroll', handleScroll as EventListener)
+    return () => window.removeEventListener('scroll', handleScroll as EventListener)
   }, [])
 
-  // Close language menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      if (!target.closest('.language-switcher')) {
-        setIsLangMenuOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  const handleLocaleChange = (newLocale: string) => {
-    if (newLocale === locale) {
-      setIsLangMenuOpen(false)
-      return
-    }
-    
-    setIsChanging(true)
-    setIsLangMenuOpen(false)
-    
-    // Add a small delay for smooth transition
-    setTimeout(() => {
-      router.push(pathname, { locale: newLocale })
-      setIsChanging(false)
-    }, 300)
-  }
+  // language switching handled by floating LanguageSwitcher
 
   const navLinks = [
-    { href: '/', label: t('home') },
-    { href: '/courses', label: t('courses') },
-    { href: '/personal-training', label: t('personalTraining') },
-    { href: '/location', label: t('location') },
+    { href: '/', label: t('nav.home') },
+    { href: '/courses', label: t('nav.courses') },
+    { href: '/personal-training', label: t('nav.personalTraining') },
+    { href: '/location', label: t('nav.location') },
   ]
 
   return (
@@ -69,12 +58,14 @@ export default function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.2 }}
             className="fixed inset-0 bg-[#0a0a0a] z-[100] flex items-center justify-center"
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={reducedMotion ? {} : { scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              exit={reducedMotion ? {} : { scale: 0.9, opacity: 0 }}
+              transition={reducedMotion ? { duration: 0 } : { duration: 0.2 }}
               className="text-center"
             >
               <div className="w-16 h-16 border-4 border-[#27272a] border-t-[#dc2626] rounded-full animate-spin mx-auto mb-4" />
@@ -125,71 +116,10 @@ export default function Header() {
 
             {/* Right side: Language + CTA */}
             <div className="hidden md:flex items-center gap-4">
-              {/* Language Switcher - Improved */}
-              <div className="relative language-switcher">
-                <button
-                  onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                  className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-all duration-300 rounded-lg border ${
-                    isLangMenuOpen 
-                      ? 'bg-[#dc2626]/10 border-[#dc2626] text-[#dc2626]' 
-                      : 'text-[#a1a1aa] hover:text-[#fafafa] border-[#27272a] hover:border-[#3f3f46]'
-                  }`}
-                >
-                  <Globe className="w-4 h-4" />
-                  <span className="uppercase font-semibold tracking-wider">{locale}</span>
-                  <motion.svg 
-                    animate={{ rotate: isLangMenuOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="w-3 h-3" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </motion.svg>
-                </button>
-
-                <AnimatePresence>
-                  {isLangMenuOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-48 bg-[#111111] border border-[#27272a] rounded-xl shadow-2xl overflow-hidden"
-                    >
-                      <div className="p-2">
-                        {routing.locales.map((loc) => (
-                          <button
-                            key={loc}
-                            onClick={() => handleLocaleChange(loc)}
-                            className={`w-full px-4 py-3 text-left text-sm rounded-lg transition-all duration-200 flex items-center justify-between group ${
-                              locale === loc
-                                ? 'text-[#dc2626] bg-[#dc2626]/10'
-                                : 'text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#27272a]'
-                            }`}
-                          >
-                            <span className="flex items-center gap-3">
-                              <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${
-                                locale === loc ? 'bg-[#dc2626] text-white' : 'bg-[#27272a] text-[#71717a]'
-                              }`}>
-                                {loc.toUpperCase()}
-                              </span>
-                              <span className="font-medium">{localeNames[loc]}</span>
-                            </span>
-                            {locale === loc && (
-                              <Check className="w-4 h-4 text-[#dc2626]" />
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              {/* Language switcher moved to floating LanguageSwitcher component */}
 
               <button className="btn-primary">
-                {t('joinNow')}
+                {t('nav.joinNow')}
               </button>
             </div>
 
@@ -200,7 +130,7 @@ export default function Header() {
             >
               <motion.div
                 animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
-                transition={{ duration: 0.2 }}
+                transition={reducedMotion ? { duration: 0 } : { duration: 0.2 }}
               >
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </motion.div>
@@ -214,16 +144,16 @@ export default function Header() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={reducedMotion ? { duration: 0 } : { duration: 0.3 }}
                 className="md:hidden border-t border-[#27272a] overflow-hidden"
               >
                 <nav className="flex flex-col py-4 gap-1">
                   {navLinks.map((link, index) => (
                     <motion.div
                       key={link.href}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={reducedMotion ? {} : { opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={reducedMotion ? { duration: 0 } : { delay: index * 0.1 }}
                     >
                       <Link
                         href={link.href}
@@ -240,32 +170,7 @@ export default function Header() {
                     </motion.div>
                   ))}
                   
-                  {/* Mobile Language Switcher - Improved */}
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="px-4 py-4 border-t border-[#27272a] mt-2"
-                  >
-                    <p className="text-xs text-[#71717a] mb-3 uppercase tracking-wider font-semibold">{t('selectLanguage')}</p>
-                    <div className="flex gap-2">
-                      {routing.locales.map((loc) => (
-                        <button
-                          key={loc}
-                          onClick={() => handleLocaleChange(loc)}
-                          className={`flex-1 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 ${
-                            locale === loc
-                              ? 'bg-[#dc2626] text-white shadow-lg shadow-[#dc2626]/25'
-                              : 'bg-[#27272a] text-[#a1a1aa] hover:bg-[#3f3f46]'
-                          }`}
-                        >
-                          <span className="uppercase font-bold">{loc}</span>
-                          <span className="text-xs opacity-70">{localeNames[loc]}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-
+                  
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

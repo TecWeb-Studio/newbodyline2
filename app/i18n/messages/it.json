@@ -18,7 +18,8 @@
     "titleAccent": "Eleva la Tua Vita",
     "description": "Scopri il fitness premium con attrezzature all'avanguardia, trainer esperti e una community che ti spinge a dare il massimo.",
     "ctaPrimary": "Inizia il Tuo Percorso",
-    "ctaSecondary": "Vedi i Corsi"
+    "ctaSecondary": "Vedi i Corsi",
+    "scrollLabel": "Esplora"
   },
   "features": {
     "title": "Perché Sceglierci",
@@ -137,17 +138,18 @@
     }
   },
   "location": {
-    "title": "Dove Siamo",
-    "subtitle": "Visita la nostra struttura all'avanguardia",
-    "address": "Via Fitness 123, Centro Città",
-    "city": "Milano, 20100",
-    "phone": "+39 02 1234 5678",
+    "title": "La Nostra Sede",
+    "subtitle": "Scopri la nostra sede, gli orari di apertura e come raggiungerci per la tua visita",
+    "address": "Via Grisolera",
+    "city": "30013 Cavallino-Treporti VE, newbodyline2",
+    "phone": "+39 041 0000000",
     "email": "info@newbodyline2.it",
     "hours": {
       "title": "Orari di Apertura",
-      "weekdays": "Lunedì - Venerdì: 5:00 - 23:00",
-      "weekend": "Sabato - Domenica: 6:00 - 22:00",
-      "holiday": "Festivi: 7:00 - 21:00"
+      "monWedFri": "Lun, Mer, Ven: 6:00 - 22:00",
+      "tueThu": "Mar, Gio: 7:00 - 22:00",
+      "saturday": "Sabato: 7:00 - 12:00, 16:00 - 20:00",
+      "sunday": "Domenica: Chiuso"
     }
   },
   "admin": {

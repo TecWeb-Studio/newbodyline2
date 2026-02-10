@@ -1,13 +1,13 @@
-'use client'
+ 'use client'
 
-import { useTranslations } from 'next-intl'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
+import { useI18n } from '@/app/contexts/I18nContext'
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, Navigation, Car, Train } from 'lucide-react'
 
 export default function LocationPage() {
-  const t = useTranslations('location')
+  const { t } = useI18n()
 
   return (
     <>
@@ -32,10 +32,10 @@ export default function LocationPage() {
                 Location
               </span>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#fafafa] mb-6">
-                {t('title')}
+                {t('location.title')}
               </h1>
               <p className="text-lg sm:text-xl text-[#a1a1aa] max-w-2xl mx-auto">
-                {t('subtitle')}
+                {t('location.subtitle')}
               </p>
             </motion.div>
           </div>
@@ -60,9 +60,9 @@ export default function LocationPage() {
                       <MapPin className="w-6 h-6 text-[#dc2626]" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-[#fafafa] mb-2">Address</h3>
-                      <p className="text-[#a1a1aa]">{t('address')}</p>
-                      <p className="text-[#a1a1aa]">{t('city')}</p>
+                      <h3 className="text-xl font-semibold text-[#fafafa] mb-2">{t('location.title')}</h3>
+                      <p className="text-[#a1a1aa]">{t('location.address')}</p>
+                      <p className="text-[#a1a1aa]">{t('location.city')}</p>
                     </div>
                   </div>
                 </div>
@@ -93,19 +93,22 @@ export default function LocationPage() {
                       <Clock className="w-6 h-6 text-[#dc2626]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-[#fafafa] mb-4">{t('hours.title')}</h3>
+                      <h3 className="text-xl font-semibold text-[#fafafa] mb-4">{t('location.hours.title')}</h3>
                       <div className="space-y-3">
                         <div className="flex justify-between items-center py-2 border-b border-[#27272a]">
-                          <span className="text-[#a1a1aa]">Monday - Friday</span>
-                          <span className="text-[#fafafa] font-medium">5:00 AM - 11:00 PM</span>
+                          <span className="text-[#a1a1aa]">{t('location.hours.monWedFri').split(':')[0]}</span>
+                          <span className="text-[#fafafa] font-medium">{t('location.hours.monWedFri').split(':').slice(1).join(':').trim()}</span>
                         </div>
                         <div className="flex justify-between items-center py-2 border-b border-[#27272a]">
-                          <span className="text-[#a1a1aa]">Saturday - Sunday</span>
-                          <span className="text-[#fafafa] font-medium">6:00 AM - 10:00 PM</span>
+                          <span className="text-[#a1a1aa]">{t('location.hours.tueThu').split(':')[0]}</span>
+                          <span className="text-[#fafafa] font-medium">{t('location.hours.tueThu').split(':').slice(1).join(':').trim()}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-[#27272a]">
+                          <span className="text-[#a1a1aa]">{t('location.hours.saturday').split(':')[0]}</span>
+                          <span className="text-[#fafafa] font-medium">{t('location.hours.saturday').split(':').slice(1).join(':').trim()}</span>
                         </div>
                         <div className="flex justify-between items-center py-2">
-                          <span className="text-[#a1a1aa]">Holidays</span>
-                          <span className="text-[#fafafa] font-medium">7:00 AM - 9:00 PM</span>
+                          <span className="text-[#a1a1aa]">{t('location.hours.sunday')}</span>
                         </div>
                       </div>
                     </div>
@@ -175,7 +178,7 @@ export default function LocationPage() {
                       </div>
                       <div className="mt-4 bg-[#0a0a0a] border border-[#27272a] rounded-xl px-6 py-4 shadow-xl">
                         <p className="text-[#fafafa] font-semibold">NEWBODYLINE2</p>
-                        <p className="text-[#a1a1aa] text-sm">123 Fitness Avenue</p>
+                        <p className="text-[#a1a1aa] text-sm">{t('location.address')}</p>
                       </div>
                     </div>
 
@@ -193,7 +196,7 @@ export default function LocationPage() {
                   {/* Directions Button */}
                   <div className="p-4 border-t border-[#27272a]">
                     <a 
-                      href="https://maps.google.com/?q=40.7128,-74.0060" 
+                      href="https://maps.google.com/?q=Via+Grisolera,+30013+Cavallino-Treporti+VE,+newbodyline2" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 w-full py-3 bg-[#dc2626] hover:bg-[#b91c1c] text-white font-medium rounded-xl transition-colors"

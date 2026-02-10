@@ -18,7 +18,8 @@
     "titleAccent": "Erhebe Dein Leben",
     "description": "Erlebe Premium-Fitness mit hochmoderner Ausrüstung, erfahrenen Trainern und einer Community, die dich zu Höchstleistungen antreibt.",
     "ctaPrimary": "Starte Deine Reise",
-    "ctaSecondary": "Kurse Ansehen"
+    "ctaSecondary": "Kurse Ansehen",
+    "scrollLabel": "Entdecken"
   },
   "features": {
     "title": "Warum Wir",
@@ -137,17 +138,18 @@
     }
   },
   "location": {
-    "title": "Finde Uns",
-    "subtitle": "Besuche unsere hochmoderne Einrichtung",
-    "address": "Fitnessstraße 123, Stadtzentrum",
-    "city": "München, 80331",
-    "phone": "+49 89 12345678",
+    "title": "Unser Standort",
+    "subtitle": "Finde unsere Adresse, Öffnungszeiten und Anfahrtsbeschreibungen für deinen Besuch",
+    "address": "Via Grisolera",
+    "city": "30013 Cavallino-Treporti VE, newbodyline2",
+    "phone": "+39 041 0000000",
     "email": "info@newbodyline2.de",
     "hours": {
       "title": "Öffnungszeiten",
-      "weekdays": "Montag - Freitag: 5:00 - 23:00",
-      "weekend": "Samstag - Sonntag: 6:00 - 22:00",
-      "holiday": "Feiertage: 7:00 - 21:00"
+      "monWedFri": "Mo, Mi, Fr: 6:00 - 22:00",
+      "tueThu": "Di, Do: 7:00 - 22:00",
+      "saturday": "Samstag: 7:00 - 12:00, 16:00 - 20:00",
+      "sunday": "Sonntag: Geschlossen"
     }
   },
   "admin": {

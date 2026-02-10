@@ -5,6 +5,8 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '../i18n/routing';
 import { BookingProvider } from '../contexts/BookingContext';
+import { I18nProvider } from '../contexts/I18nContext';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 import "../globals.css";
 
 const geistSans = Geist({
@@ -50,7 +52,10 @@ export default async function LocaleLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <BookingProvider>
-            {children}
+            <I18nProvider>
+              {children}
+              <LanguageSwitcher />
+            </I18nProvider>
           </BookingProvider>
         </NextIntlClientProvider>
       </body>

@@ -1,11 +1,11 @@
-'use client'
+ 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useI18n } from '@/app/contexts/I18nContext'
 import { Link } from '@/app/i18n/navigation'
 import { Instagram, Twitter, Facebook, Youtube, MapPin, Phone, Mail, Lock } from 'lucide-react'
 
 export default function Footer() {
-  const t = useTranslations('footer')
+  const { t } = useI18n()
   const currentYear = new Date().getFullYear()
 
   const footerLinks = {
@@ -46,7 +46,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-[#a1a1aa] mb-6 leading-relaxed">
-              {t('tagline')}
+              {t('footer.tagline')}
             </p>
             {/* Social Links */}
             <div className="flex gap-3">
@@ -106,21 +106,18 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-[#dc2626] mt-0.5 shrink-0" />
-                <span className="text-[#a1a1aa]">
-                  123 Fitness Avenue<br />
-                  Downtown District, NY 10001
-                </span>
+                <span className="text-[#a1a1aa]">{t('location.address')}<br />{t('location.city')}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-[#dc2626] shrink-0" />
-                <a href="tel:+15551234567" className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors">
-                  +1 (555) 123-4567
+                <a href={`tel:${t('location.phone')}`} className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors">
+                  {t('location.phone')}
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-[#dc2626] shrink-0" />
-                <a href="mailto:info@newbodyline2.com" className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors">
-                  info@newbodyline2.com
+                <a href={`mailto:${t('location.email')}`} className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors">
+                  {t('location.email')}
                 </a>
               </li>
             </ul>
@@ -132,8 +129,8 @@ export default function Footer() {
       <div className="border-t border-[#27272a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-[#71717a] text-sm">
-              © {currentYear} NEWBODYLINE2. {t('rights')}
+              <p className="text-[#71717a] text-sm">
+              © {currentYear} NEWBODYLINE2. {t('footer.rights')}
             </p>
             <div className="flex items-center gap-6">
               <Link href="/courses" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
