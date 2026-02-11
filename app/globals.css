@@ -96,7 +96,8 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 
 /* Glow effect */
 .glow-accent {
-  box-shadow: 0 0 30px var(--accent-glow);
+  box-shadow: 0 0 12px var(--accent-glow);
+  will-change: box-shadow;
 }
 
 /* Button styles */
@@ -106,17 +107,18 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   padding: 0.875rem 2rem;
   border-radius: 0.5rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  will-change: transform, box-shadow, color;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px var(--accent-glow);
+  box-shadow: 0 8px 18px var(--accent-glow);
 }
 
 .btn-secondary {
@@ -125,12 +127,13 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   padding: 0.875rem 2rem;
   border-radius: 0.5rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: color 0.25s ease, border-color 0.25s ease;
   border: 1px solid var(--border);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  will-change: color, border-color;
 }
 
 .btn-secondary:hover {
@@ -155,7 +158,8 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   border: 1px solid var(--border);
   border-radius: 1rem;
   padding: 2rem;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+  will-change: transform, border-color;
 }
 
 .card:hover {
@@ -176,7 +180,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   width: 0;
   height: 2px;
   background: var(--accent);
-  transition: width 0.3s ease;
+  transition: width 0.25s ease;
 }
 
 .animated-underline:hover::after {
@@ -240,4 +244,30 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   html {
     scroll-behavior: auto;
   }
+
+  /* Reduce shadows and disable heavy compositing on mobile */
+  .glow-accent {
+    box-shadow: none !important;
+  }
+
+  .card, .btn-primary, .btn-secondary {
+    transition: none !important;
+  }
+}
+
+/* Lower-cost pulse animation (opacity-only) to avoid heavy compositing */
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Override Tailwind's animate-pulse with an opacity-only animation and hint for compositor */
+.animate-pulse {
+  animation: subtle-pulse 2.5s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* Prefer transforms/opacity over filter/backdrop-blur which is expensive */
+.prefer-transform {
+  will-change: transform, opacity;
 }

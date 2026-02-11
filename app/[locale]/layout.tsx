@@ -12,11 +12,13 @@ import "../globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -55,6 +57,23 @@ export default async function LocaleLayout({
             <I18nProvider>
               {children}
               <LanguageSwitcher />
+              {/* Client helper to set native lazy-loading on images without explicit loading attribute */}
+              {/* Keeps initial LCP candidates untouched if they have `data-priority` attribute */}
+              <script type="module" dangerouslySetInnerHTML={{__html: `
+                (function(){
+                  try{
+                    if(typeof window==='undefined') return;
+                    requestAnimationFrame(()=>{
+                      const imgs = Array.from(document.querySelectorAll('img'));
+                      imgs.forEach(img=>{
+                        if(!img.hasAttribute('loading') && !img.hasAttribute('data-priority')){
+                          img.setAttribute('loading','lazy');
+                        }
+                      });
+                    });
+                  }catch(e){}
+                })();
+              `}} />
             </I18nProvider>
           </BookingProvider>
         </NextIntlClientProvider>

@@ -27,7 +27,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   const t = (key: string) => {
     const parts = key.split('.')
-    let obj: any = messages[locale]
+    let obj: Record<string, any> | undefined = messages[locale]
     for (const p of parts) {
       if (!obj) return key
       obj = obj[p]
