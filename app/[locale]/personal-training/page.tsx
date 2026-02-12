@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
-import { useBooking } from '@/app/contexts/BookingContext'
+import { useBooking, TimeSlot } from '@/app/contexts/BookingContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Star, Calendar, Clock, User, Mail, Phone, Check, ChevronLeft, Award, Users, Target, Shield } from 'lucide-react'
 
@@ -15,6 +15,8 @@ export default function PersonalTrainingPage() {
   const [selectedTrainer, setSelectedTrainer] = useState<string | null>(null)
   const [selectedDate, setSelectedDate] = useState<string>('')
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
+  const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([])
+  const [loadingSlots, setLoadingSlots] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,27 +35,46 @@ export default function PersonalTrainingPage() {
     }
   })
 
-  const availableSlots = selectedTrainer && selectedDate 
-    ? getAvailableSlotsForTrainer(selectedTrainer, selectedDate)
-    : []
+  // Carica gli slot quando cambiano trainer o data
+  useEffect(() => {
+    if (selectedTrainer && selectedDate) {
+      setLoadingSlots(true)
+      getAvailableSlotsForTrainer(selectedTrainer, selectedDate)
+        .then(slots => {
+          setAvailableSlots(slots)
+          setLoadingSlots(false)
+        })
+        .catch(error => {
+          console.error('Error loading slots:', error)
+          setLoadingSlots(false)
+        })
+    } else {
+      setAvailableSlots([])
+    }
+  }, [selectedTrainer, selectedDate, getAvailableSlotsForTrainer])
 
   const selectedTrainerData = trainers.find(t => t.id === selectedTrainer)
 
-  const handleBook = () => {
+  const handleBook = async () => {
     if (selectedTrainerData && selectedSlot) {
       const slot = availableSlots.find(s => s.id === selectedSlot)
       if (slot) {
-        addBooking({
-          trainerId: selectedTrainerData.id,
-          trainerName: selectedTrainerData.name,
-          slotId: slot.id,
-          date: slot.date,
-          time: slot.time,
-          clientName: formData.name,
-          clientEmail: formData.email,
-          clientPhone: formData.phone
-        })
-        setBookingSuccess(true)
+        try {
+          await addBooking({
+            trainerId: selectedTrainerData.id,
+            trainerName: selectedTrainerData.name,
+            slotId: slot.id,
+            date: slot.date,
+            time: slot.time,
+            clientName: formData.name,
+            clientEmail: formData.email,
+            clientPhone: formData.phone
+          })
+          setBookingSuccess(true)
+        } catch (error) {
+          console.error('Booking failed:', error)
+          alert('Failed to create booking. Please try again.')
+        }
       }
     }
   }
