@@ -3,7 +3,6 @@
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
 import { useI18n } from '@/app/contexts/I18nContext'
-import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, Navigation, Car, Train } from 'lucide-react'
 
 export default function LocationPage() {
@@ -17,16 +16,13 @@ export default function LocationPage() {
         <section className="relative py-24 sm:py-32 overflow-hidden">
           {/* Background */}
           <div className="absolute inset-0 bg-[#0a0a0a]">
-            <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#dc2626]/10 rounded-full blur-[150px]" />
-            <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-[#dc2626]/5 rounded-full blur-[120px]" />
+            <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#dc2626]/10 rounded-full mobile-blur-light" />
+            <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-[#dc2626]/5 rounded-full mobile-blur-light" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
+            <div
+              className="text-center css-fade-in-up"
             >
               <span className="text-[#dc2626] text-sm font-semibold uppercase tracking-wider mb-4 block">
                 Location
@@ -37,7 +33,7 @@ export default function LocationPage() {
               <p className="text-lg sm:text-xl text-[#a1a1aa] max-w-2xl mx-auto">
                 {t('location.subtitle')}
               </p>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -46,12 +42,8 @@ export default function LocationPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
               {/* Contact Info */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="space-y-8"
+              <div
+                className="space-y-8 css-fade-in-up"
               >
                 {/* Address Card */}
                 <div className="bg-[#0a0a0a] border border-[#27272a] rounded-2xl p-8">
@@ -139,15 +131,11 @@ export default function LocationPage() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Map */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="relative"
+              <div
+                className="relative css-fade-in-up css-delay-200"
               >
                 <div className="sticky top-24 bg-[#0a0a0a] border border-[#27272a] rounded-2xl overflow-hidden">
                   {/* Map Placeholder - In production, use Google Maps or similar */}
@@ -206,7 +194,7 @@ export default function LocationPage() {
                     </a>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
@@ -215,15 +203,12 @@ export default function LocationPage() {
         <section className="py-24 sm:py-32 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/20 to-[#0a0a0a]" />
           <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#dc2626]/10 rounded-full blur-[150px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#dc2626]/10 rounded-full mobile-blur-light" />
           </div>
 
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+            <div
+              className="css-fade-in-up"
             >
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#fafafa] mb-6">
                 Visit Us Today
@@ -234,7 +219,7 @@ export default function LocationPage() {
               <button className="btn-primary text-lg px-8 py-4">
                 Book a Free Trial
               </button>
-            </motion.div>
+            </div>
           </div>
         </section>
       </main>

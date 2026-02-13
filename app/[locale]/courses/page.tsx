@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
-import { motion } from 'framer-motion'
 import { Clock, BarChart3, Dumbbell, Zap, Heart, Flame } from 'lucide-react'
 
 const coursesList = [
@@ -26,16 +25,13 @@ export default function CoursesPage() {
         <section className="relative py-24 sm:py-32 overflow-hidden">
           {/* Background */}
           <div className="absolute inset-0 bg-[#0a0a0a]">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#dc2626]/10 rounded-full blur-[150px]" />
-            <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#dc2626]/5 rounded-full blur-[120px]" />
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#dc2626]/10 rounded-full mobile-blur-light" />
+            <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#dc2626]/5 rounded-full mobile-blur-light" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
+            <div
+              className="text-center css-fade-in-up"
             >
               <span className="text-[#dc2626] text-sm font-semibold uppercase tracking-wider mb-4 block">
                 Courses
@@ -46,7 +42,7 @@ export default function CoursesPage() {
               <p className="text-lg sm:text-xl text-[#a1a1aa] max-w-2xl mx-auto">
                 {t('subtitle')}
               </p>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -57,13 +53,9 @@ export default function CoursesPage() {
               {coursesList.map((course, index) => {
                 const Icon = course.icon
                 return (
-                  <motion.div
+                  <div
                     key={course.key}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="group relative bg-[#0a0a0a] border border-[#27272a] rounded-2xl p-8 hover:border-[#dc2626]/30 transition-all duration-300 hover:transform hover:-translate-y-1"
+                    className={`group relative bg-[#0a0a0a] border border-[#27272a] rounded-2xl p-8 hover:border-[#dc2626]/30 transition-all duration-300 hover:transform hover:-translate-y-1 css-fade-in-up css-delay-${(index + 1) * 100}`}
                   >
                     {/* Course Icon */}
                     <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#dc2626]/20 to-[#991b1b]/20 border border-[#dc2626]/20 flex items-center justify-center mb-6 group-hover:from-[#dc2626]/30 group-hover:to-[#991b1b]/30 transition-all">
@@ -97,7 +89,7 @@ export default function CoursesPage() {
 
                     {/* Hover Accent */}
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-[#dc2626]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                  </motion.div>
+                  </div>
                 )
               })}
             </div>
@@ -108,15 +100,12 @@ export default function CoursesPage() {
         <section className="py-24 sm:py-32 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/20 to-[#0a0a0a]" />
           <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#dc2626]/10 rounded-full blur-[150px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#dc2626]/10 rounded-full mobile-blur-light" />
           </div>
 
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+            <div
+              className="css-fade-in-up"
             >
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#fafafa] mb-6">
                 Ready to Start Your Journey?
@@ -132,7 +121,7 @@ export default function CoursesPage() {
                   Contact Us
                 </button>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
       </main>

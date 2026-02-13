@@ -271,3 +271,73 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 .prefer-transform {
   will-change: transform, opacity;
 }
+
+/* ===== CSS-only animations (no JS library needed) ===== */
+@keyframes css-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes css-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.css-fade-in {
+  animation: css-fade-in 0.4s ease-out both;
+}
+
+.css-fade-in-up {
+  animation: css-fade-in-up 0.5s ease-out both;
+}
+
+.css-delay-100 { animation-delay: 0.1s; }
+.css-delay-200 { animation-delay: 0.2s; }
+.css-delay-300 { animation-delay: 0.3s; }
+.css-delay-400 { animation-delay: 0.4s; }
+.css-delay-500 { animation-delay: 0.5s; }
+
+/* ===== Mobile blur optimization ===== */
+/* Replace heavy CSS blur with a simple radial gradient on mobile */
+.mobile-blur-light {
+  filter: blur(80px);
+}
+
+@media (max-width: 768px) {
+  .mobile-blur-light {
+    filter: blur(40px);
+    opacity: 0.5;
+  }
+
+  /* Kill ALL heavy blur-[>60px] on mobile via specificity */
+  [class*="blur-[1"],
+  [class*="blur-[2"] {
+    filter: blur(30px) !important;
+    opacity: 0.4 !important;
+  }
+
+  /* Disable backdrop-blur on mobile */
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Disable bounce animation on mobile (GPU expensive) */
+  .animate-bounce {
+    animation: none !important;
+  }
+
+  /* Reduce animation durations */
+  .css-fade-in-up {
+    animation-duration: 0.3s;
+  }
+  .css-fade-in {
+    animation-duration: 0.2s;
+  }
+}

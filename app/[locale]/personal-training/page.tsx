@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
 import { useBooking } from '@/app/contexts/BookingContext'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Star, Calendar, Clock, User, Mail, Phone, Check, ChevronLeft, Award, Users, Target, Shield } from 'lucide-react'
 
 export default function PersonalTrainingPage() {
@@ -86,16 +85,13 @@ export default function PersonalTrainingPage() {
         {/* Hero Section */}
         <section className="relative py-24 sm:py-32 overflow-hidden">
           <div className="absolute inset-0 bg-[#0a0a0a]">
-            <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#dc2626]/10 rounded-full blur-[150px]" />
-            <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-[#dc2626]/5 rounded-full blur-[120px]" />
+            <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#dc2626]/10 rounded-full mobile-blur-light" />
+            <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-[#dc2626]/5 rounded-full mobile-blur-light" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center max-w-3xl mx-auto"
+            <div
+              className="text-center max-w-3xl mx-auto css-fade-in-up"
             >
               <span className="text-[#dc2626] text-sm font-semibold uppercase tracking-wider mb-4 block">
                 {t('title')}
@@ -106,38 +102,31 @@ export default function PersonalTrainingPage() {
               <p className="text-lg sm:text-xl text-[#a1a1aa]">
                 {t('heroDescription')}
               </p>
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* Trainers Section */}
         <section className="py-16 sm:py-24 bg-[#111111]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
+            <div
+              className="text-center mb-16 css-fade-in-up"
             >
               <h2 className="text-3xl sm:text-4xl font-bold text-[#fafafa] mb-4">
                 {t('trainers.title')}
               </h2>
               <p className="text-[#a1a1aa] text-lg">{t('trainers.subtitle')}</p>
-            </motion.div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {trainers.map((trainer, index) => (
-                <motion.div
+                <div
                   key={trainer.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   onClick={() => {
                     setSelectedTrainer(trainer.id)
                     setShowBookingForm(true)
                   }}
-                  className={`group relative bg-[#0a0a0a] border rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
+                  className={`group relative bg-[#0a0a0a] border rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 css-fade-in-up ${
                     selectedTrainer === trainer.id 
                       ? 'border-[#dc2626] shadow-lg shadow-[#dc2626]/20' 
                       : 'border-[#27272a] hover:border-[#dc2626]/50'
@@ -167,28 +156,22 @@ export default function PersonalTrainingPage() {
                       {t('booking.bookSession')}
                     </button>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
         {/* Booking Section */}
-        <AnimatePresence>
-          {showBookingForm && (
+        {showBookingForm && (
             <section className="py-16 sm:py-24 bg-[#0a0a0a] relative">
               <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 30 }}
-                  className="bg-[#111111] border border-[#27272a] rounded-3xl p-8 sm:p-12"
+                <div
+                  className="bg-[#111111] border border-[#27272a] rounded-3xl p-8 sm:p-12 css-fade-in-up"
                 >
                   {bookingSuccess ? (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="text-center py-12"
+                    <div
+                      className="text-center py-12 css-fade-in"
                     >
                       <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Check className="w-10 h-10 text-green-500" />
@@ -223,7 +206,7 @@ export default function PersonalTrainingPage() {
                       <button onClick={resetBooking} className="btn-primary">
                         {t('booking.bookSession')}
                       </button>
-                    </motion.div>
+                    </div>
                   ) : (
                     <>
                       <div className="flex items-center gap-4 mb-8">
@@ -342,25 +325,21 @@ export default function PersonalTrainingPage() {
                       )}
                     </>
                   )}
-                </motion.div>
+                </div>
               </div>
             </section>
           )}
-        </AnimatePresence>
 
         {/* Benefits Section */}
         <section className="py-16 sm:py-24 bg-[#111111]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
+            <div
+              className="text-center mb-16 css-fade-in-up"
             >
               <h2 className="text-3xl sm:text-4xl font-bold text-[#fafafa] mb-4">
                 {t('benefits.title')}
               </h2>
-            </motion.div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
@@ -371,13 +350,9 @@ export default function PersonalTrainingPage() {
               ].map((benefit, index) => {
                 const Icon = benefit.icon
                 return (
-                  <motion.div
+                  <div
                     key={benefit.key}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-[#0a0a0a] border border-[#27272a] rounded-2xl p-6 hover:border-[#dc2626]/30 transition-all"
+                    className="bg-[#0a0a0a] border border-[#27272a] rounded-2xl p-6 hover:border-[#dc2626]/30 transition-all css-fade-in-up"
                   >
                     <div className="w-12 h-12 rounded-xl bg-[#dc2626]/10 flex items-center justify-center mb-4">
                       <Icon className="w-6 h-6 text-[#dc2626]" />
@@ -388,7 +363,7 @@ export default function PersonalTrainingPage() {
                     <p className="text-[#a1a1aa] text-sm">
                       {t(`benefits.${benefit.key}.description`)}
                     </p>
-                  </motion.div>
+                  </div>
                 )
               })}
             </div>
