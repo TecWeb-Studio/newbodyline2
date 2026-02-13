@@ -58,6 +58,32 @@ body {
   min-height: 100vh;
 }
 
+/* iPhone Safari: fix 100vh issues on the admin page only */
+@supports (-webkit-touch-callout: none) {
+  .admin-page {
+    min-height: 100svh;
+  }
+
+  .admin-page * {
+    transition-duration: 0.28s !important;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  .admin-page .btn-primary,
+  .admin-page .btn-secondary,
+  .admin-page input,
+  .admin-page a {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+@supports (height: 100dvh) {
+  .admin-page {
+    min-height: 100dvh;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -225,7 +251,8 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 @media (max-width: 768px) {
   /* Reduce transition durations on mobile */
   * {
-    transition-duration: 0.15s !important;
+    transition-duration: 0.2s !important;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
   }
 
   /* Disable hover effects on touch devices */
@@ -245,13 +272,13 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     scroll-behavior: auto;
   }
 
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+
   /* Reduce shadows and disable heavy compositing on mobile */
   .glow-accent {
     box-shadow: none !important;
-  }
-
-  .card, .btn-primary, .btn-secondary {
-    transition: none !important;
   }
 }
 

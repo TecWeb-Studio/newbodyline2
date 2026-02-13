@@ -97,7 +97,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-[#27272a] animate-in fade-in duration-200">
+          <div className="md:hidden border-t border-[#27272a]/80 bg-[#0a0a0a]/80 backdrop-blur-lg shadow-xl shadow-black/30 animate-in fade-in duration-200">
             <nav className="flex flex-col py-4 gap-1">
               {navLinks.map((link) => (
                 <Link
