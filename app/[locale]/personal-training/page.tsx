@@ -125,7 +125,7 @@ export default function PersonalTrainingPage() {
               <p className="text-[#a1a1aa] text-lg">{t('trainers.subtitle')}</p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               {trainers.map((trainer, index) => (
                 <motion.div
                   key={trainer.id}

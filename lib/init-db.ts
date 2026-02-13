@@ -4,34 +4,42 @@ import { db } from './db'
 const trainersData = [
   {
     id: 'trainer-1',
-    name: 'Marcus Johnson',
+    name: 'Giorgio',
     specialty: 'Strength & Conditioning',
-    image: '/trainers/marcus.jpg',
+    image: '/trainers/giorgio.jpg',
     description: 'Former professional athlete with 10+ years of experience in strength training and athletic performance.',
     rating: 4.9
   },
   {
     id: 'trainer-2',
-    name: 'Sarah Chen',
+    name: 'Teresa',
     specialty: 'HIIT & Cardio',
-    image: '/trainers/sarah.jpg',
+    image: '/trainers/teresa.jpg',
     description: 'Certified HIIT specialist known for high-energy sessions that maximize calorie burn and endurance.',
     rating: 4.8
   },
   {
     id: 'trainer-3',
-    name: 'Elena Rodriguez',
+    name: 'Diego',
     specialty: 'Yoga & Flexibility',
-    image: '/trainers/elena.jpg',
+    image: '/trainers/diego.jpg',
     description: 'Yoga master with expertise in power yoga, vinyasa flow, and mobility training for all levels.',
     rating: 5.0
   },
   {
     id: 'trainer-4',
-    name: 'David Kim',
+    name: 'Cleo',
     specialty: 'Boxing & Combat',
-    image: '/trainers/david.jpg',
+    image: '/trainers/cleo.jpg',
     description: 'Professional boxing coach focusing on technique, conditioning, and confidence building.',
+    rating: 4.9
+  },
+  {
+    id: 'trainer-5',
+    name: 'Filippo',
+    specialty: 'Pilates & Core',
+    image: '/trainers/filippo.jpg',
+    description: 'Expert in pilates and core strengthening with a focus on posture correction and injury prevention.',
     rating: 4.9
   }
 ]
