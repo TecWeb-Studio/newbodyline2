@@ -6,7 +6,7 @@ const trainersData = [
     id: 'trainer-1',
     name: 'Giorgio',
     specialty: 'Strength & Conditioning',
-    image: '/trainers/giorgio.jpg',
+    image: '/images/trainers/giorgio.jpg',
     description: 'Former professional athlete with 10+ years of experience in strength training and athletic performance.',
     rating: 4.9
   },
@@ -14,7 +14,7 @@ const trainersData = [
     id: 'trainer-2',
     name: 'Teresa',
     specialty: 'HIIT & Cardio',
-    image: '/trainers/teresa.jpg',
+    image: '/images/trainers/teresa.jpg',
     description: 'Certified HIIT specialist known for high-energy sessions that maximize calorie burn and endurance.',
     rating: 4.8
   },
@@ -22,7 +22,7 @@ const trainersData = [
     id: 'trainer-3',
     name: 'Diego',
     specialty: 'Yoga & Flexibility',
-    image: '/trainers/diego.jpg',
+    image: '/images/trainers/diego.jpg',
     description: 'Yoga master with expertise in power yoga, vinyasa flow, and mobility training for all levels.',
     rating: 5.0
   },
@@ -30,7 +30,7 @@ const trainersData = [
     id: 'trainer-4',
     name: 'Cleo',
     specialty: 'Boxing & Combat',
-    image: '/trainers/cleo.jpg',
+    image: '/images/trainers/cleo.jpg',
     description: 'Professional boxing coach focusing on technique, conditioning, and confidence building.',
     rating: 4.9
   },
@@ -38,7 +38,7 @@ const trainersData = [
     id: 'trainer-5',
     name: 'Filippo',
     specialty: 'Pilates & Core',
-    image: '/trainers/filippo.jpg',
+    image: '/images/trainers/filippo.jpg',
     description: 'Expert in pilates and core strengthening with a focus on posture correction and injury prevention.',
     rating: 4.9
   }

@@ -143,13 +143,22 @@ export default function PersonalTrainingPage() {
                       : 'border-[#27272a] hover:border-[#dc2626]/50'
                   }`}
                 >
-                  {/* Trainer Image Placeholder */}
+                  {/* Trainer Image */}
                   <div className="aspect-[4/5] bg-gradient-to-b from-[#27272a] to-[#1a1a1a] flex items-center justify-center relative overflow-hidden">
+                    <img 
+                      src={trainer.image} 
+                      alt={trainer.name}
+                      className="absolute inset-0 w-full h-full object-cover object-center"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                        e.currentTarget.nextElementSibling?.classList.remove('hidden')
+                      }}
+                    />
+                    <User className="w-24 h-24 text-[#3f3f46] hidden" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-                    <User className="w-24 h-24 text-[#3f3f46]" />
                     
                     {/* Rating Badge */}
-                    <div className="absolute top-4 right-4 flex items-center gap-1 bg-[#0a0a0a]/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-[#27272a]">
+                    <div className="absolute top-4 right-4 flex items-center gap-1 bg-[#0a0a0a]/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-[#27272a] z-10">
                       <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                       <span className="text-[#fafafa] font-semibold text-sm">{trainer.rating}</span>
                     </div>
