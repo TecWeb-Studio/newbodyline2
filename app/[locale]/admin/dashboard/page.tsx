@@ -20,7 +20,7 @@ import { useBooking } from '@/app/contexts/BookingContext'
 
 export default function AdminDashboardPage() {
   const router = useRouter()
-  const { bookings, cancelBooking, trainers } = useBooking()
+  const { bookings, cancelBooking, trainers, refreshBookings } = useBooking()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -40,14 +40,20 @@ export default function AdminDashboardPage() {
     router.push('/admin')
   }
 
-  const handleCancelBooking = (bookingId: string) => {
+  const handleCancelBooking = async (bookingId: string) => {
     if (confirm('Are you sure you want to cancel this booking?')) {
-      cancelBooking(bookingId)
-      setRefreshKey(prev => prev + 1)
+      try {
+        await cancelBooking(bookingId)
+        setRefreshKey(prev => prev + 1)
+      } catch (error) {
+        console.error('Error cancelling booking:', error)
+        alert('Failed to cancel booking')
+      }
     }
   }
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
+    await refreshBookings()
     setRefreshKey(prev => prev + 1)
   }
 

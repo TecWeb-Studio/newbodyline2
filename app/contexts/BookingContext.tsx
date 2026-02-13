@@ -36,160 +36,152 @@ interface BookingContextType {
   bookings: Booking[]
   availableSlots: TimeSlot[]
   trainers: Trainer[]
-  addBooking: (booking: Omit<Booking, 'id' | 'bookedAt'>) => void
-  cancelBooking: (bookingId: string) => void
-  getAvailableSlotsForTrainer: (trainerId: string, date: string) => TimeSlot[]
+  addBooking: (booking: Omit<Booking, 'id' | 'bookedAt'>) => Promise<void>
+  cancelBooking: (bookingId: string) => Promise<void>
+  getAvailableSlotsForTrainer: (trainerId: string, date: string) => Promise<TimeSlot[]>
+  refreshBookings: () => Promise<void>
   isLoading: boolean
 }
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined)
 
-const trainersData: Trainer[] = [
-  {
-    id: 'trainer-1',
-    name: 'Marcus Johnson',
-    specialty: 'Strength & Conditioning',
-    image: '/trainers/marcus.jpg',
-    description: 'Former professional athlete with 10+ years of experience in strength training and athletic performance.',
-    rating: 4.9
-  },
-  {
-    id: 'trainer-2',
-    name: 'Sarah Chen',
-    specialty: 'HIIT & Cardio',
-    image: '/trainers/sarah.jpg',
-    description: 'Certified HIIT specialist known for high-energy sessions that maximize calorie burn and endurance.',
-    rating: 4.8
-  },
-  {
-    id: 'trainer-3',
-    name: 'Elena Rodriguez',
-    specialty: 'Yoga & Flexibility',
-    image: '/trainers/elena.jpg',
-    description: 'Yoga master with expertise in power yoga, vinyasa flow, and mobility training for all levels.',
-    rating: 5.0
-  },
-  {
-    id: 'trainer-4',
-    name: 'David Kim',
-    specialty: 'Boxing & Combat',
-    image: '/trainers/david.jpg',
-    description: 'Professional boxing coach focusing on technique, conditioning, and confidence building.',
-    rating: 4.9
-  }
-]
-
-const generateTimeSlots = (): TimeSlot[] => {
-  const slots: TimeSlot[] = []
-  const trainers = trainersData
-  const dates = [
-    new Date().toISOString().split('T')[0],
-    new Date(Date.now() + 86400000).toISOString().split('T')[0],
-    new Date(Date.now() + 172800000).toISOString().split('T')[0],
-    new Date(Date.now() + 259200000).toISOString().split('T')[0],
-    new Date(Date.now() + 345600000).toISOString().split('T')[0],
-  ]
-  
-  const times = ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00', '18:30', '20:00']
-  
-  trainers.forEach(trainer => {
-    dates.forEach(date => {
-      times.forEach(time => {
-        slots.push({
-          id: `${trainer.id}-${date}-${time}`,
-          time,
-          date,
-          trainerId: trainer.id,
-          isBooked: false
-        })
-      })
-    })
-  })
-  
-  return slots
-}
-
 export function BookingProvider({ children }: { children: ReactNode }) {
   const [bookings, setBookings] = useState<Booking[]>([])
-  const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([])
+  const [trainers, setTrainers] = useState<Trainer[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
+  // Funzione per caricare le prenotazioni dal database
+  const fetchBookings = async () => {
+    try {
+      const response = await fetch('/api/bookings')
+      const data = await response.json()
+      // Mappa i dati dal database al formato del frontend
+      const mappedBookings = data.bookings.map((booking: {
+        id: string
+        trainer_id: string
+        trainer_name: string
+        slot_id: string
+        date: string
+        time: string
+        client_name: string
+        client_email: string
+        client_phone: string
+        booked_at: string
+      }) => ({
+        id: booking.id,
+        trainerId: booking.trainer_id,
+        trainerName: booking.trainer_name,
+        slotId: booking.slot_id,
+        date: booking.date,
+        time: booking.time,
+        clientName: booking.client_name,
+        clientEmail: booking.client_email,
+        clientPhone: booking.client_phone,
+        bookedAt: booking.booked_at
+      }))
+      setBookings(mappedBookings)
+    } catch (error) {
+      console.error('Error fetching bookings:', error)
+    }
+  }
+
+  // Carica i trainers e le prenotazioni all'avvio
   useEffect(() => {
-    // Load from localStorage on mount
-    const savedBookings = localStorage.getItem('gym-bookings')
-    const savedSlots = localStorage.getItem('gym-slots')
-    
-    if (savedBookings) {
-      setBookings(JSON.parse(savedBookings))
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/trainers')
+        const data = await response.json()
+        setTrainers(data.trainers)
+        
+        // Carica anche le prenotazioni
+        await fetchBookings()
+      } catch (error) {
+        console.error('Error fetching trainers:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
-    
-    if (savedSlots) {
-      setAvailableSlots(JSON.parse(savedSlots))
-    } else {
-      const initialSlots = generateTimeSlots()
-      setAvailableSlots(initialSlots)
-      localStorage.setItem('gym-slots', JSON.stringify(initialSlots))
-    }
-    
-    setIsLoading(false)
+
+    fetchData()
   }, [])
 
-  useEffect(() => {
-    if (!isLoading) {
-      localStorage.setItem('gym-bookings', JSON.stringify(bookings))
-      localStorage.setItem('gym-slots', JSON.stringify(availableSlots))
-    }
-  }, [bookings, availableSlots, isLoading])
+  const addBooking = async (bookingData: Omit<Booking, 'id' | 'bookedAt'>) => {
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          trainerId: bookingData.trainerId,
+          trainerName: bookingData.trainerName,
+          slotId: bookingData.slotId,
+          date: bookingData.date,
+          time: bookingData.time,
+          clientName: bookingData.clientName,
+          clientEmail: bookingData.clientEmail,
+          clientPhone: bookingData.clientPhone,
+        }),
+      })
 
-  const addBooking = (bookingData: Omit<Booking, 'id' | 'bookedAt'>) => {
-    const newBooking: Booking = {
-      ...bookingData,
-      id: `booking-${Date.now()}`,
-      bookedAt: new Date().toISOString()
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to create booking')
+      }
+
+      const data = await response.json()
+      setBookings(prev => [...prev, data.booking])
+    } catch (error) {
+      console.error('Error adding booking:', error)
+      throw error
     }
-    
-    setBookings(prev => [...prev, newBooking])
-    
-    // Mark slot as booked
-    setAvailableSlots(prev => 
-      prev.map(slot => 
-        slot.id === bookingData.slotId 
-          ? { ...slot, isBooked: true }
-          : slot
-      )
-    )
   }
 
-  const cancelBooking = (bookingId: string) => {
-    const booking = bookings.find(b => b.id === bookingId)
-    if (booking) {
+  const cancelBooking = async (bookingId: string) => {
+    try {
+      const response = await fetch(`/api/bookings?id=${bookingId}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to cancel booking')
+      }
+
       setBookings(prev => prev.filter(b => b.id !== bookingId))
-      
-      // Free up the slot
-      setAvailableSlots(prev => 
-        prev.map(slot => 
-          slot.id === booking.slotId 
-            ? { ...slot, isBooked: false }
-            : slot
-        )
-      )
+    } catch (error) {
+      console.error('Error cancelling booking:', error)
+      throw error
     }
   }
 
-  const getAvailableSlotsForTrainer = (trainerId: string, date: string) => {
-    return availableSlots.filter(
-      slot => slot.trainerId === trainerId && slot.date === date && !slot.isBooked
-    )
+  const getAvailableSlotsForTrainer = async (trainerId: string, date: string): Promise<TimeSlot[]> => {
+    try {
+      const response = await fetch(`/api/slots/${trainerId}?date=${date}`)
+      const data = await response.json()
+      
+      // Mappa i dati dal database al formato del frontend
+      return data.slots.map((slot: { id: string; time: string; date: string; trainer_id: string; is_booked: number }) => ({
+        id: slot.id,
+        time: slot.time,
+        date: slot.date,
+        trainerId: slot.trainer_id,
+        isBooked: slot.is_booked === 1
+      }))
+    } catch (error) {
+      console.error('Error fetching slots:', error)
+      return []
+    }
   }
 
   return (
     <BookingContext.Provider value={{
       bookings,
-      availableSlots,
-      trainers: trainersData,
+      availableSlots: [], // Non più necessario mantenerlo in stato
+      trainers,
       addBooking,
       cancelBooking,
       getAvailableSlotsForTrainer,
+      refreshBookings: fetchBookings,
       isLoading
     }}>
       {children}
