@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
@@ -11,6 +11,7 @@ import { Star, Calendar, Clock, User, Mail, Phone, Check, ChevronLeft, Award, Us
 export default function PersonalTrainingPage() {
   const t = useTranslations('personalTraining')
   const { trainers, getAvailableSlotsForTrainer, addBooking, isLoading } = useBooking()
+  const bookingSectionRef = useRef<HTMLElement>(null)
   
   const [selectedTrainer, setSelectedTrainer] = useState<string | null>(null)
   const [selectedDate, setSelectedDate] = useState<string>('')
@@ -22,6 +23,15 @@ export default function PersonalTrainingPage() {
   })
   const [showBookingForm, setShowBookingForm] = useState(false)
   const [bookingSuccess, setBookingSuccess] = useState(false)
+
+  // Scroll to booking section when a trainer is selected
+  useEffect(() => {
+    if (showBookingForm && bookingSectionRef.current) {
+      setTimeout(() => {
+        bookingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    }
+  }, [showBookingForm])
 
   // Generate dates for next 5 days
   const dates = Array.from({ length: 5 }, (_, i) => {
@@ -185,7 +195,7 @@ export default function PersonalTrainingPage() {
         {/* Booking Section */}
         <AnimatePresence>
           {showBookingForm && (
-            <section className="py-16 sm:py-24 bg-[#0a0a0a] relative">
+            <section ref={bookingSectionRef} className="py-16 sm:py-24 bg-[#0a0a0a] relative">
               <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
