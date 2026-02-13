@@ -12,8 +12,8 @@ export default function Hero() {
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[#0a0a0a]">
         {/* Gradient Orbs */}
-        <div className="hidden md:block absolute top-1/4 left-1/4 w-72 h-72 bg-[#dc2626]/20 rounded-full mobile-blur-light animate-pulse" />
-        <div className="hidden md:block absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#dc2626]/10 rounded-full mobile-blur-light animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="hidden md:block absolute top-1/4 left-1/4 w-72 h-72 bg-[#dc2626]/20 rounded-full blur-[60px] animate-pulse" />
+        <div className="hidden md:block absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#dc2626]/10 rounded-full blur-[50px] animate-pulse" style={{ animationDelay: '1s' }} />
         
         {/* Grid Pattern */}
         <div 

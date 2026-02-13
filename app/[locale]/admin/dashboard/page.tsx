@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 import { 
   Calendar, 
   Clock, 
@@ -20,7 +21,7 @@ import { useBooking } from '@/app/contexts/BookingContext'
 
 export default function AdminDashboardPage() {
   const router = useRouter()
-  const { bookings, cancelBooking, trainers, refreshBookings } = useBooking()
+  const { bookings, cancelBooking, trainers } = useBooking()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -40,20 +41,14 @@ export default function AdminDashboardPage() {
     router.push('/admin')
   }
 
-  const handleCancelBooking = async (bookingId: string) => {
+  const handleCancelBooking = (bookingId: string) => {
     if (confirm('Are you sure you want to cancel this booking?')) {
-      try {
-        await cancelBooking(bookingId)
-        setRefreshKey(prev => prev + 1)
-      } catch (error) {
-        console.error('Error cancelling booking:', error)
-        alert('Failed to cancel booking')
-      }
+      cancelBooking(bookingId)
+      setRefreshKey(prev => prev + 1)
     }
   }
 
-  const handleRefresh = async () => {
-    await refreshBookings()
+  const handleRefresh = () => {
     setRefreshKey(prev => prev + 1)
   }
 
@@ -113,8 +108,10 @@ export default function AdminDashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div
-            className="bg-[#111111] border border-[#27272a] rounded-2xl p-6 css-fade-in-up"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-[#111111] border border-[#27272a] rounded-2xl p-6"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -125,10 +122,13 @@ export default function AdminDashboardPage() {
                 <TrendingUp className="w-6 h-6 text-[#dc2626]" />
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div
-            className="bg-[#111111] border border-[#27272a] rounded-2xl p-6 css-fade-in-up css-delay-100"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-[#111111] border border-[#27272a] rounded-2xl p-6"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -139,10 +139,13 @@ export default function AdminDashboardPage() {
                 <CalendarDays className="w-6 h-6 text-green-500" />
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div
-            className="bg-[#111111] border border-[#27272a] rounded-2xl p-6 css-fade-in-up css-delay-200"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-[#111111] border border-[#27272a] rounded-2xl p-6"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -153,12 +156,15 @@ export default function AdminDashboardPage() {
                 <Users className="w-6 h-6 text-blue-500" />
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Bookings Table */}
-        <div
-          className="bg-[#111111] border border-[#27272a] rounded-2xl overflow-hidden css-fade-in-up css-delay-300"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-[#111111] border border-[#27272a] rounded-2xl overflow-hidden"
         >
           <div className="p-6 border-b border-[#27272a]">
             <h2 className="text-xl font-bold text-[#fafafa]">All Bookings</h2>
@@ -185,9 +191,11 @@ export default function AdminDashboardPage() {
                 </thead>
                 <tbody className="divide-y divide-[#27272a]">
                   {bookings.map((booking) => (
-                    <tr
+                    <motion.tr
                       key={booking.id}
-                      className="hover:bg-[#0a0a0a]/50 transition-colors css-fade-in"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="hover:bg-[#0a0a0a]/50 transition-colors"
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
@@ -241,17 +249,20 @@ export default function AdminDashboardPage() {
                           <Trash2 className="w-5 h-5 text-[#71717a] group-hover:text-red-500" />
                         </button>
                       </td>
-                    </tr>
+                    </motion.tr>
                   ))}
                 </tbody>
               </table>
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Trainers Summary */}
-        <div
-          className="mt-8 bg-[#111111] border border-[#27272a] rounded-2xl p-6 css-fade-in-up css-delay-400"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mt-8 bg-[#111111] border border-[#27272a] rounded-2xl p-6"
         >
           <h3 className="text-lg font-bold text-[#fafafa] mb-4">Trainer Bookings Summary</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -266,7 +277,7 @@ export default function AdminDashboardPage() {
               )
             })}
           </div>
-        </div>
+        </motion.div>
       </main>
     </div>
   )

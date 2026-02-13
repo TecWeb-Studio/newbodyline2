@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 import { Lock, User, ArrowRight, Shield } from 'lucide-react'
 
 export default function AdminLoginPage() {
@@ -31,14 +32,17 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
-      {/* Background Effects - lightweight radial gradient instead of blur */}
+      {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#dc2626]/10 rounded-full mobile-blur-light" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#dc2626]/5 rounded-full mobile-blur-light" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#dc2626]/10 rounded-full blur-[150px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#dc2626]/5 rounded-full blur-[120px]" />
       </div>
 
-      <div
-        className="relative z-10 w-full max-w-md css-fade-in-up"
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 w-full max-w-md"
       >
         {/* Logo */}
         <div className="text-center mb-8">
@@ -83,11 +87,13 @@ export default function AdminLoginPage() {
             </div>
 
             {error && (
-              <div
-                className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm text-center css-fade-in"
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm text-center"
               >
                 {error}
-              </div>
+              </motion.div>
             )}
 
             <button
@@ -119,7 +125,7 @@ export default function AdminLoginPage() {
             ← Back to website
           </a>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
