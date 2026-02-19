@@ -1,5 +1,16 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import {
+  notifyCustomerBookingConfirmed,
+  notifyTrainerNewBooking,
+  notifyCustomerBookingCancelled,
+  notifyTrainerBookingCancelled,
+} from '@/lib/whatsapp'
+
+function buildManageUrl(bookingId: string, clientEmail: string): string {
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+  return `${base}/personal-training/manage?id=${bookingId}&email=${encodeURIComponent(clientEmail)}`
+}
 
 // GET - Ottieni tutte le prenotazioni
 export async function GET() {
@@ -94,6 +105,46 @@ export async function POST(request: Request) {
       args: [bookingId, trainerId, trainerName, slotId, date, time, clientName, clientEmail, clientPhone, bookedAt]
     })
 
+    // ── WhatsApp notifications (isolated – must never break the booking response) ──
+    try {
+      let trainerPhone: string | undefined
+      try {
+        const trainerResult = await db.execute({
+          sql: 'SELECT phone FROM trainers WHERE id = ?',
+          args: [trainerId]
+        })
+        trainerPhone = trainerResult.rows[0]?.phone as string | undefined
+      } catch {
+        // phone column may not exist yet – skip
+      }
+
+      const manageUrl = buildManageUrl(bookingId, clientEmail)
+
+      await Promise.allSettled([
+        notifyCustomerBookingConfirmed({
+          bookingId,
+          clientName,
+          clientPhone,
+          trainerName,
+          date,
+          time,
+          manageUrl,
+        }),
+        notifyTrainerNewBooking({
+          bookingId,
+          clientName,
+          clientPhone,
+          trainerName,
+          trainerPhone,
+          date,
+          time,
+          manageUrl,
+        }),
+      ])
+    } catch (waErr) {
+      console.error('[WhatsApp] notification error (booking was still created):', waErr)
+    }
+
     return NextResponse.json({
       success: true,
       booking: {
@@ -134,7 +185,7 @@ export async function DELETE(request: Request) {
 
     // Ottieni il slot_id della prenotazione prima di cancellarla
     const bookingResult = await db.execute({
-      sql: 'SELECT slot_id FROM bookings WHERE id = ?',
+      sql: 'SELECT slot_id, client_name, client_phone, trainer_id, date, time FROM bookings WHERE id = ?',
       args: [bookingId]
     })
 
@@ -146,6 +197,19 @@ export async function DELETE(request: Request) {
     }
 
     const slotId = bookingResult.rows[0].slot_id
+    const { client_name, client_phone, trainer_id, date, time } = bookingResult.rows[0] as {
+      slot_id: string; client_name: string; client_phone: string; trainer_id: string; date: string; time: string
+    }
+
+    // Fetch trainer phone (may not exist)
+    let trainerPhone: string | undefined
+    try {
+      const trainerRes = await db.execute({
+        sql: 'SELECT phone FROM trainers WHERE id = ?',
+        args: [trainer_id]
+      })
+      trainerPhone = trainerRes.rows[0]?.phone as string | undefined
+    } catch { /* phone column may not exist */ }
 
     // 1. Cancella la prenotazione
     await db.execute({
@@ -158,6 +222,18 @@ export async function DELETE(request: Request) {
       sql: 'UPDATE time_slots SET is_booked = 0 WHERE id = ?',
       args: [slotId]
     })
+
+    // 3. Send WhatsApp notifications (isolated – must never break the response)
+    try {
+      await Promise.allSettled([
+        notifyCustomerBookingCancelled(client_name, client_phone, bookingId, date, time),
+        trainerPhone
+          ? notifyTrainerBookingCancelled(trainerPhone, client_name, bookingId, date, time)
+          : Promise.resolve({ success: false }),
+      ])
+    } catch (waErr) {
+      console.error('[WhatsApp] cancel notification error:', waErr)
+    }
 
     return NextResponse.json({
       success: true,

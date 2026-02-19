@@ -5,10 +5,10 @@ import { useTranslations } from "next-intl";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import { useBooking } from "@/app/contexts/BookingContext";
+import BookingCalendar from "@/app/components/BookingCalendar";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Star,
-  Calendar,
   Clock,
   User,
   Mail,
@@ -19,6 +19,7 @@ import {
   Users,
   Target,
   Shield,
+  Palmtree,
 } from "lucide-react";
 
 export default function PersonalTrainingPage() {
@@ -37,7 +38,10 @@ export default function PersonalTrainingPage() {
   });
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [availableSlots, setAvailableSlots] = useState<any[]>([]);
+  const [trainerOnVacation, setTrainerOnVacation] = useState(false);
 
   // Scroll to booking section when a trainer is selected
   useEffect(() => {
@@ -55,47 +59,44 @@ export default function PersonalTrainingPage() {
   useEffect(() => {
     if (selectedTrainer && selectedDate) {
       getAvailableSlotsForTrainer(selectedTrainer, selectedDate).then(
-        (slots) => {
-          setAvailableSlots(slots);
+        (result) => {
+          setAvailableSlots(result.slots);
+          setTrainerOnVacation(result.onVacation);
         },
       );
     } else {
       setAvailableSlots([]);
+      setTrainerOnVacation(false);
     }
   }, [selectedTrainer, selectedDate, getAvailableSlotsForTrainer]);
 
-  // Generate dates for next 5 days
-  const dates = Array.from({ length: 5 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() + i);
-    return {
-      value: date.toISOString().split("T")[0],
-      label: date.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      }),
-    };
-  });
+  // Date range handled inside BookingCalendar component
 
   const selectedTrainerData = trainers.find((t) => t.id === selectedTrainer);
 
-  const handleBook = () => {
-    if (selectedTrainerData && selectedSlot) {
-      const slot = availableSlots.find((s) => s.id === selectedSlot);
-      if (slot) {
-        addBooking({
-          trainerId: selectedTrainerData.id,
-          trainerName: selectedTrainerData.name,
-          slotId: slot.id,
-          date: slot.date,
-          time: slot.time,
-          clientName: formData.name,
-          clientEmail: formData.email,
-          clientPhone: formData.phone,
-        });
-        setBookingSuccess(true);
-      }
+  const handleBook = async () => {
+    if (!selectedTrainerData || !selectedSlot) return;
+    const slot = availableSlots.find((s) => s.id === selectedSlot);
+    if (!slot) return;
+
+    setIsSubmitting(true);
+    setBookingError(null);
+    try {
+      await addBooking({
+        trainerId: selectedTrainerData.id,
+        trainerName: selectedTrainerData.name,
+        slotId: slot.id,
+        date: slot.date,
+        time: slot.time,
+        clientName: formData.name,
+        clientEmail: formData.email,
+        clientPhone: formData.phone,
+      });
+      setBookingSuccess(true);
+    } catch (err: unknown) {
+      setBookingError(err instanceof Error ? err.message : 'Booking failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -106,6 +107,9 @@ export default function PersonalTrainingPage() {
     setFormData({ name: "", email: "", phone: "" });
     setShowBookingForm(false);
     setBookingSuccess(false);
+    setBookingError(null);
+    setAvailableSlots([]);
+    setTrainerOnVacation(false);
   };
 
   if (isLoading) {
@@ -176,6 +180,12 @@ export default function PersonalTrainingPage() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   onClick={() => {
                     setSelectedTrainer(trainer.id);
+                    setSelectedDate("");
+                    setSelectedSlot(null);
+                    setAvailableSlots([]);
+                    setTrainerOnVacation(false);
+                    setBookingSuccess(false);
+                    setBookingError(null);
                     setShowBookingForm(true);
                   }}
                   className={`group relative bg-[#0a0a0a] border rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
@@ -185,7 +195,7 @@ export default function PersonalTrainingPage() {
                   }`}
                 >
                   {/* Trainer Image */}
-                  <div className="aspect-[4/5] bg-gradient-to-b from-[#27272a] to-[#1a1a1a] flex items-center justify-center relative overflow-hidden">
+                  <div className="aspect-4/5 bg-linear-to-b from-[#27272a] to-[#1a1a1a] flex items-center justify-center relative overflow-hidden">
                     <img
                       src={trainer.image}
                       alt={trainer.name}
@@ -198,7 +208,7 @@ export default function PersonalTrainingPage() {
                       }}
                     />
                     <User className="w-24 h-24 text-[#3f3f46] hidden" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-transparent to-transparent" />
 
                     {/* Rating Badge */}
                     <div className="absolute top-4 right-4 flex items-center gap-1 bg-[#0a0a0a]/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-[#27272a] z-10">
@@ -327,9 +337,16 @@ export default function PersonalTrainingPage() {
                         >
                           <ChevronLeft className="w-5 h-5 text-[#a1a1aa]" />
                         </button>
-                        <h2 className="text-2xl sm:text-3xl font-bold text-[#fafafa]">
-                          {t("booking.title")}
-                        </h2>
+                        <div>
+                          <h2 className="text-2xl sm:text-3xl font-bold text-[#fafafa]">
+                            {t("booking.title")}
+                          </h2>
+                          {selectedTrainerData && (
+                            <p className="text-[#dc2626] text-sm font-medium mt-1">
+                              {selectedTrainerData.name} — {selectedTrainerData.specialty}
+                            </p>
+                          )}
+                        </div>
                       </div>
 
                       {!selectedTrainer ? (
@@ -359,20 +376,11 @@ export default function PersonalTrainingPage() {
                           <p className="text-[#a1a1aa] mb-6">
                             {t("booking.selectDate")}
                           </p>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                            {dates.map((date) => (
-                              <button
-                                key={date.value}
-                                onClick={() => setSelectedDate(date.value)}
-                                className="p-4 bg-[#0a0a0a] border border-[#27272a] rounded-xl hover:border-[#dc2626] transition-all text-center"
-                              >
-                                <Calendar className="w-5 h-5 text-[#dc2626] mx-auto mb-2" />
-                                <p className="text-[#fafafa] text-sm font-medium">
-                                  {date.label}
-                                </p>
-                              </button>
-                            ))}
-                          </div>
+                          <BookingCalendar
+                            value={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                            accent="red"
+                          />
                         </div>
                       ) : !selectedSlot ? (
                         <div>
@@ -393,6 +401,12 @@ export default function PersonalTrainingPage() {
                                   </p>
                                 </button>
                               ))}
+                            </div>
+                          ) : trainerOnVacation ? (
+                            <div className="text-center py-8">
+                              <Palmtree className="w-10 h-10 text-orange-500 mx-auto mb-3" />
+                              <p className="text-[#fafafa] font-medium mb-1">Trainer on vacation</p>
+                              <p className="text-[#71717a] text-sm">This trainer is not available on the selected date. Please choose another date.</p>
                             </div>
                           ) : (
                             <p className="text-[#a1a1aa] text-center py-8">
@@ -453,16 +467,29 @@ export default function PersonalTrainingPage() {
                               placeholder="+1 (555) 123-4567"
                             />
                           </div>
+                          {bookingError && (
+                            <p className="text-red-500 text-sm text-center">
+                              {bookingError}
+                            </p>
+                          )}
                           <button
                             onClick={handleBook}
                             disabled={
                               !formData.name ||
                               !formData.email ||
-                              !formData.phone
+                              !formData.phone ||
+                              isSubmitting
                             }
-                            className="w-full btn-primary py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full py-4 bg-[#dc2626] hover:bg-[#b91c1c] text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {t("booking.bookSession")}
+                            {isSubmitting ? (
+                              <span className="flex items-center justify-center gap-2">
+                                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                {t("booking.bookSession")}…
+                              </span>
+                            ) : (
+                              t("booking.bookSession")
+                            )}
                           </button>
                         </div>
                       )}

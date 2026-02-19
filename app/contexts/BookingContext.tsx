@@ -38,7 +38,8 @@ interface BookingContextType {
   trainers: Trainer[]
   addBooking: (booking: Omit<Booking, 'id' | 'bookedAt'>) => Promise<void>
   cancelBooking: (bookingId: string) => Promise<void>
-  getAvailableSlotsForTrainer: (trainerId: string, date: string) => Promise<TimeSlot[]>
+  editBooking: (bookingId: string, clientEmail: string, newSlotId: string, newTrainerId?: string) => Promise<Booking>
+  getAvailableSlotsForTrainer: (trainerId: string, date: string) => Promise<{ slots: TimeSlot[]; onVacation: boolean }>
   refreshBookings: () => Promise<void>
   isLoading: boolean
 }
@@ -154,22 +155,57 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const getAvailableSlotsForTrainer = async (trainerId: string, date: string): Promise<TimeSlot[]> => {
+  const editBooking = async (
+    bookingId: string,
+    clientEmail: string,
+    newSlotId: string,
+    newTrainerId?: string
+  ): Promise<Booking> => {
+    const response = await fetch(`/api/bookings/${encodeURIComponent(bookingId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientEmail, newSlotId, newTrainerId }),
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw new Error(data.error ?? 'Failed to update booking')
+    }
+
+    const updated: Booking = {
+      id: data.booking.id,
+      trainerId: data.booking.trainer_id ?? data.booking.trainerId,
+      trainerName: data.booking.trainer_name ?? data.booking.trainerName,
+      slotId: data.booking.slot_id ?? data.booking.slotId,
+      date: data.booking.date,
+      time: data.booking.time,
+      clientName: data.booking.client_name ?? data.booking.clientName,
+      clientEmail: data.booking.client_email ?? data.booking.clientEmail,
+      clientPhone: data.booking.client_phone ?? data.booking.clientPhone,
+      bookedAt: data.booking.booked_at ?? data.booking.bookedAt,
+    }
+
+    setBookings(prev => prev.map(b => b.id === bookingId ? updated : b))
+    return updated
+  }
+
+  const getAvailableSlotsForTrainer = async (trainerId: string, date: string): Promise<{ slots: TimeSlot[]; onVacation: boolean }> => {
     try {
       const response = await fetch(`/api/slots/${trainerId}?date=${date}`)
       const data = await response.json()
       
       // Mappa i dati dal database al formato del frontend
-      return data.slots.map((slot: { id: string; time: string; date: string; trainer_id: string; is_booked: number }) => ({
+      const slots = data.slots.map((slot: { id: string; time: string; date: string; trainer_id: string; is_booked: number }) => ({
         id: slot.id,
         time: slot.time,
         date: slot.date,
         trainerId: slot.trainer_id,
         isBooked: slot.is_booked === 1
       }))
+      return { slots, onVacation: !!data.onVacation }
     } catch (error) {
       console.error('Error fetching slots:', error)
-      return []
+      return { slots: [], onVacation: false }
     }
   }
 
@@ -180,6 +216,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       trainers,
       addBooking,
       cancelBooking,
+      editBooking,
       getAvailableSlotsForTrainer,
       refreshBookings: fetchBookings,
       isLoading

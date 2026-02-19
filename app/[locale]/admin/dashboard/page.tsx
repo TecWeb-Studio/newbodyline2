@@ -15,7 +15,8 @@ import {
   Users,
   CalendarDays,
   TrendingUp,
-  AlertCircle
+  AlertCircle,
+  Settings
 } from 'lucide-react'
 import { useBooking } from '@/app/contexts/BookingContext'
 
@@ -76,7 +77,7 @@ export default function AdminDashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center">
                 <span className="text-white font-bold">N</span>
               </div>
               <div>
@@ -86,6 +87,13 @@ export default function AdminDashboardPage() {
             </div>
             
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.push('/admin/dashboard/trainers')}
+                className="flex items-center gap-2 px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] rounded-lg transition-colors text-[#fafafa] text-sm font-medium"
+              >
+                <Settings className="w-4 h-4" />
+                Manage Trainers
+              </button>
               <button
                 onClick={handleRefresh}
                 className="p-2 hover:bg-[#27272a] rounded-lg transition-colors"

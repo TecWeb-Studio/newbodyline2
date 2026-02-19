@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:init": "tsx lib/init-db.ts"
+    "db:init": "tsx lib/init-db.ts",
+    "db:migrate": "tsx lib/migrate-add-trainer-phone.ts",
+    "db:migrate-schedules": "tsx lib/migrate-schedules.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.17.0",
@@ -17,7 +19,8 @@
     "next": "16.1.6",
     "next-intl": "^4.8.2",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "twilio": "^5.12.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
