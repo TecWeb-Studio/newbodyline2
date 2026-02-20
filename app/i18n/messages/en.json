@@ -183,5 +183,31 @@
   "footer": {
     "tagline": "Transform your body, elevate your life.",
     "rights": "All rights reserved."
+  },
+  "manage": {
+    "title": "Manage Booking",
+    "subtitle": "Look up your booking by ID and email to view or modify it.",
+    "bookingId": "Booking ID",
+    "email": "Email address",
+    "findBooking": "Find My Booking",
+    "lookingUp": "Looking up…",
+    "yourBooking": "Your Booking",
+    "changeDateTime": "Change Date / Time / Trainer",
+    "cancelBooking": "Cancel Booking",
+    "cancelConfirm": "Are you sure you want to cancel this booking? This action cannot be undone.",
+    "cancelled": "Your booking has been cancelled successfully.",
+    "updated": "Booking updated successfully!",
+    "modifyBooking": "Modify Booking",
+    "trainer": "Trainer",
+    "availableTimes": "Available Times",
+    "noSlots": "No available slots for this date.",
+    "cancel": "Cancel",
+    "confirmChange": "Confirm Change",
+    "saving": "Saving…",
+    "changesLocked": "Changes are locked. The appointment is less than 12 hours away.",
+    "changesAllowed": "Changes allowed",
+    "hoursRemaining": "h remaining before lock",
+    "lookupDifferent": "Look up a different booking",
+    "enterIdAndEmail": "Please enter your booking ID and email."
   }
 }

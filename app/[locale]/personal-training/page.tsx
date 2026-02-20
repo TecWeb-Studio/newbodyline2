@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import { useBooking } from "@/app/contexts/BookingContext";
+import { useToast } from "@/app/components/Toast";
+import { validateBookingForm } from "@/lib/types";
 import BookingCalendar from "@/app/components/BookingCalendar";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -20,6 +22,7 @@ import {
   Target,
   Shield,
   Palmtree,
+  AlertCircle,
 } from "lucide-react";
 
 export default function PersonalTrainingPage() {
@@ -42,6 +45,8 @@ export default function PersonalTrainingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [availableSlots, setAvailableSlots] = useState<any[]>([]);
   const [trainerOnVacation, setTrainerOnVacation] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const { toast } = useToast();
 
   // Scroll to booking section when a trainer is selected
   useEffect(() => {
@@ -79,6 +84,11 @@ export default function PersonalTrainingPage() {
     const slot = availableSlots.find((s) => s.id === selectedSlot);
     if (!slot) return;
 
+    // Validate form
+    const validation = validateBookingForm(formData);
+    setFieldErrors(validation.errors);
+    if (!validation.valid) return;
+
     setIsSubmitting(true);
     setBookingError(null);
     try {
@@ -88,13 +98,16 @@ export default function PersonalTrainingPage() {
         slotId: slot.id,
         date: slot.date,
         time: slot.time,
-        clientName: formData.name,
-        clientEmail: formData.email,
-        clientPhone: formData.phone,
+        clientName: formData.name.trim(),
+        clientEmail: formData.email.trim(),
+        clientPhone: formData.phone.trim(),
       });
       setBookingSuccess(true);
+      toast('Your session has been booked successfully!');
     } catch (err: unknown) {
-      setBookingError(err instanceof Error ? err.message : 'Booking failed. Please try again.');
+      const msg = err instanceof Error ? err.message : 'Booking failed. Please try again.';
+      setBookingError(msg);
+      toast(msg, 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -423,15 +436,17 @@ export default function PersonalTrainingPage() {
                             <input
                               type="text"
                               value={formData.name}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  name: e.target.value,
-                                })
-                              }
-                              className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#27272a] rounded-xl text-[#fafafa] focus:border-[#dc2626] focus:outline-none transition-colors"
+                              onChange={(e) => {
+                                setFormData({ ...formData, name: e.target.value });
+                                if (fieldErrors.name) setFieldErrors(prev => { const n = {...prev}; delete n.name; return n; });
+                              }}
+                              className={`w-full px-4 py-3 bg-[#0a0a0a] border rounded-xl text-[#fafafa] focus:outline-none transition-colors ${fieldErrors.name ? 'border-red-500 focus:border-red-500' : 'border-[#27272a] focus:border-[#dc2626]'}`}
                               placeholder="John Doe"
+                              maxLength={100}
                             />
+                            {fieldErrors.name && (
+                              <p className="flex items-center gap-1 text-red-400 text-xs mt-1"><AlertCircle className="w-3 h-3" />{fieldErrors.name}</p>
+                            )}
                           </div>
                           <div>
                             <label className="block text-[#a1a1aa] text-sm mb-2">
@@ -440,15 +455,16 @@ export default function PersonalTrainingPage() {
                             <input
                               type="email"
                               value={formData.email}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  email: e.target.value,
-                                })
-                              }
-                              className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#27272a] rounded-xl text-[#fafafa] focus:border-[#dc2626] focus:outline-none transition-colors"
+                              onChange={(e) => {
+                                setFormData({ ...formData, email: e.target.value });
+                                if (fieldErrors.email) setFieldErrors(prev => { const n = {...prev}; delete n.email; return n; });
+                              }}
+                              className={`w-full px-4 py-3 bg-[#0a0a0a] border rounded-xl text-[#fafafa] focus:outline-none transition-colors ${fieldErrors.email ? 'border-red-500 focus:border-red-500' : 'border-[#27272a] focus:border-[#dc2626]'}`}
                               placeholder="john@example.com"
                             />
+                            {fieldErrors.email && (
+                              <p className="flex items-center gap-1 text-red-400 text-xs mt-1"><AlertCircle className="w-3 h-3" />{fieldErrors.email}</p>
+                            )}
                           </div>
                           <div>
                             <label className="block text-[#a1a1aa] text-sm mb-2">
@@ -457,15 +473,16 @@ export default function PersonalTrainingPage() {
                             <input
                               type="tel"
                               value={formData.phone}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  phone: e.target.value,
-                                })
-                              }
-                              className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#27272a] rounded-xl text-[#fafafa] focus:border-[#dc2626] focus:outline-none transition-colors"
-                              placeholder="+1 (555) 123-4567"
+                              onChange={(e) => {
+                                setFormData({ ...formData, phone: e.target.value });
+                                if (fieldErrors.phone) setFieldErrors(prev => { const n = {...prev}; delete n.phone; return n; });
+                              }}
+                              className={`w-full px-4 py-3 bg-[#0a0a0a] border rounded-xl text-[#fafafa] focus:outline-none transition-colors ${fieldErrors.phone ? 'border-red-500 focus:border-red-500' : 'border-[#27272a] focus:border-[#dc2626]'}`}
+                              placeholder="+39 041 0000000"
                             />
+                            {fieldErrors.phone && (
+                              <p className="flex items-center gap-1 text-red-400 text-xs mt-1"><AlertCircle className="w-3 h-3" />{fieldErrors.phone}</p>
+                            )}
                           </div>
                           {bookingError && (
                             <p className="text-red-500 text-sm text-center">

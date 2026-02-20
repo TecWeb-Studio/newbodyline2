@@ -142,13 +142,13 @@ export default function Footer() {
               <Link href="/location" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
                 Location
               </Link>
-              <a 
+              <Link 
                 href="/admin" 
                 className="flex items-center gap-1.5 text-[#71717a] hover:text-[#dc2626] text-sm transition-colors"
               >
                 <Lock className="w-3 h-3" />
                 Staff
-              </a>
+              </Link>
             </div>
           </div>
         </div>

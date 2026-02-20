@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limit'
+import { validateEmail, validatePhone, validateName } from '@/lib/types'
 import {
   notifyCustomerBookingConfirmed,
   notifyTrainerNewBooking,
@@ -29,9 +31,19 @@ export async function GET() {
   }
 }
 
-// POST - Crea una nuova prenotazione
+// POST - Create a new booking
 export async function POST(request: Request) {
   try {
+    // Rate limit: max 5 bookings per minute per IP
+    const rlKey = getRateLimitKey(request, 'booking')
+    const rl = checkRateLimit(rlKey, 5, 60_000)
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: 'Too many booking attempts. Please wait a moment.' },
+        { status: 429, headers: { 'Retry-After': String(Math.ceil(rl.retryAfterMs / 1000)) } }
+      )
+    }
+
     const body = await request.json()
     const {
       trainerId,
@@ -44,12 +56,29 @@ export async function POST(request: Request) {
       clientPhone
     } = body
 
-    // Validazione input
+    // Input validation
     if (!trainerId || !trainerName || !slotId || !date || !time || !clientName || !clientEmail || !clientPhone) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
+    }
+
+    // Validate field formats
+    if (!validateName(clientName)) {
+      return NextResponse.json({ error: 'Invalid name (2-100 characters required)' }, { status: 400 })
+    }
+    if (!validateEmail(clientEmail)) {
+      return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })
+    }
+    if (!validatePhone(clientPhone)) {
+      return NextResponse.json({ error: 'Invalid phone number' }, { status: 400 })
+    }
+
+    // Validate date is not in the past
+    const today = new Date().toISOString().split('T')[0]
+    if (date < today) {
+      return NextResponse.json({ error: 'Cannot book a date in the past' }, { status: 400 })
     }
 
     // Verifica che lo slot esiste e non è già prenotato (controllo concorrenza)
@@ -73,37 +102,30 @@ export async function POST(request: Request) {
     }
 
     // Genera ID per la prenotazione
-    const bookingId = `booking-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    const bookingId = `booking-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
     const bookedAt = new Date().toISOString()
 
-    // Usa una transazione per garantire atomicità
-    // 1. Marca lo slot come prenotato
-    await db.execute({
-      sql: 'UPDATE time_slots SET is_booked = 1 WHERE id = ? AND is_booked = 0',
-      args: [slotId]
-    })
+    // Use batch for atomicity
+    const batchResult = await db.batch([
+      {
+        sql: 'UPDATE time_slots SET is_booked = 1 WHERE id = ? AND is_booked = 0',
+        args: [slotId]
+      },
+      {
+        sql: `INSERT INTO bookings 
+            (id, trainer_id, trainer_name, slot_id, date, time, client_name, client_email, client_phone, booked_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        args: [bookingId, trainerId, trainerName, slotId, date, time, clientName, clientEmail, clientPhone, bookedAt]
+      }
+    ], 'write')
 
-    // Verifica che l'update abbia effettivamente modificato una riga
-    // (protezione da race condition)
-    const verifyUpdate = await db.execute({
-      sql: 'SELECT is_booked FROM time_slots WHERE id = ?',
-      args: [slotId]
-    })
-
-    if (verifyUpdate.rows[0].is_booked !== 1) {
+    // Verify the UPDATE actually modified a row (race condition protection)
+    if (batchResult[0].rowsAffected === 0) {
       return NextResponse.json(
-        { error: 'Failed to book slot - concurrent booking detected' },
+        { error: 'This slot has already been booked by someone else' },
         { status: 409 }
       )
     }
-
-    // 2. Crea la prenotazione
-    await db.execute({
-      sql: `INSERT INTO bookings 
-            (id, trainer_id, trainer_name, slot_id, date, time, client_name, client_email, client_phone, booked_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      args: [bookingId, trainerId, trainerName, slotId, date, time, clientName, clientEmail, clientPhone, bookedAt]
-    })
 
     // ── WhatsApp notifications (isolated – must never break the booking response) ──
     try {
@@ -196,8 +218,8 @@ export async function DELETE(request: Request) {
       )
     }
 
-    const slotId = bookingResult.rows[0].slot_id
-    const { client_name, client_phone, trainer_id, date, time } = bookingResult.rows[0] as {
+    const slotId = bookingResult.rows[0].slot_id as string
+    const { client_name, client_phone, trainer_id, date, time } = bookingResult.rows[0] as unknown as {
       slot_id: string; client_name: string; client_phone: string; trainer_id: string; date: string; time: string
     }
 

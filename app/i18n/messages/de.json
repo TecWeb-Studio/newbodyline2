@@ -183,5 +183,31 @@
   "footer": {
     "tagline": "Verwandle deinen Körper, erhebe dein Leben.",
     "rights": "Alle Rechte vorbehalten."
+  },
+  "manage": {
+    "title": "Buchung Verwalten",
+    "subtitle": "Suche deine Buchung per ID und E-Mail, um sie anzuzeigen oder zu ändern.",
+    "bookingId": "Buchungs-ID",
+    "email": "E-Mail-Adresse",
+    "findBooking": "Meine Buchung Finden",
+    "lookingUp": "Suche läuft…",
+    "yourBooking": "Deine Buchung",
+    "changeDateTime": "Datum / Uhrzeit / Trainer Ändern",
+    "cancelBooking": "Buchung Stornieren",
+    "cancelConfirm": "Bist du sicher, dass du diese Buchung stornieren möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "cancelled": "Deine Buchung wurde erfolgreich storniert.",
+    "updated": "Buchung erfolgreich aktualisiert!",
+    "modifyBooking": "Buchung Ändern",
+    "trainer": "Trainer",
+    "availableTimes": "Verfügbare Zeiten",
+    "noSlots": "Keine verfügbaren Slots für dieses Datum.",
+    "cancel": "Abbrechen",
+    "confirmChange": "Änderung Bestätigen",
+    "saving": "Speichern…",
+    "changesLocked": "Änderungen sind gesperrt. Der Termin ist in weniger als 12 Stunden.",
+    "changesAllowed": "Änderungen erlaubt",
+    "hoursRemaining": "h verbleibend vor Sperrung",
+    "lookupDifferent": "Eine andere Buchung suchen",
+    "enterIdAndEmail": "Bitte gib deine Buchungs-ID und E-Mail ein."
   }
 }

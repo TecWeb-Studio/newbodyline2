@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/app/i18n/navigation'
 import { motion } from 'framer-motion'
 import {
   ChevronLeft,
@@ -74,7 +74,7 @@ export default function AdminTrainersPage() {
   useEffect(() => {
     const auth = localStorage.getItem('admin-auth')
     if (auth !== 'true') {
-      router.push('/admin')
+      router.push('/admin' as any)
       return
     }
     setIsAuthenticated(true)
@@ -229,7 +229,7 @@ export default function AdminTrainersPage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => router.push('/admin/dashboard')}
+                onClick={() => router.push('/admin/dashboard' as any)}
                 className="p-2 hover:bg-[#27272a] rounded-lg transition-colors"
               >
                 <ChevronLeft className="w-5 h-5 text-[#a1a1aa]" />

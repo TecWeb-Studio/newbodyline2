@@ -6,6 +6,8 @@ import { notFound } from 'next/navigation';
 import { routing } from '../i18n/routing';
 import { BookingProvider } from '../contexts/BookingContext';
 import { I18nProvider } from '../contexts/I18nContext';
+import { ToastProvider } from '../components/Toast';
+import ErrorBoundary from '../components/ErrorBoundary';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import "../globals.css";
 
@@ -55,25 +57,12 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <BookingProvider>
             <I18nProvider>
-              {children}
-              <LanguageSwitcher />
-              {/* Client helper to set native lazy-loading on images without explicit loading attribute */}
-              {/* Keeps initial LCP candidates untouched if they have `data-priority` attribute */}
-              <script type="module" dangerouslySetInnerHTML={{__html: `
-                (function(){
-                  try{
-                    if(typeof window==='undefined') return;
-                    requestAnimationFrame(()=>{
-                      const imgs = Array.from(document.querySelectorAll('img'));
-                      imgs.forEach(img=>{
-                        if(!img.hasAttribute('loading') && !img.hasAttribute('data-priority')){
-                          img.setAttribute('loading','lazy');
-                        }
-                      });
-                    });
-                  }catch(e){}
-                })();
-              `}} />
+              <ToastProvider>
+                <ErrorBoundary>
+                  {children}
+                </ErrorBoundary>
+                <LanguageSwitcher />
+              </ToastProvider>
             </I18nProvider>
           </BookingProvider>
         </NextIntlClientProvider>

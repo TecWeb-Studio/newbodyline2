@@ -1,5 +1,6 @@
  'use client'
 
+import { Link } from '@/app/i18n/navigation'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
 import { useI18n } from '@/app/contexts/I18nContext'
@@ -75,12 +76,12 @@ export default function LocationPage() {
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold text-[#fafafa] mb-2">Contact</h3>
-                      <a href={`tel:${t('phone').replace(/\s/g, '')}`} className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors block mb-1">
-                        {t('phone')}
+                      <a href={`tel:${t('location.phone').replace(/\s/g, '')}`} className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors block mb-1">
+                        {t('location.phone')}
                       </a>
-                      <a href={`mailto:${t('email')}`} className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors flex items-center gap-2">
+                      <a href={`mailto:${t('location.email')}`} className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors flex items-center gap-2">
                         <Mail className="w-4 h-4" />
-                        {t('email')}
+                        {t('location.email')}
                       </a>
                     </div>
                   </div>
@@ -231,9 +232,9 @@ export default function LocationPage() {
               <p className="text-lg text-[#a1a1aa] mb-8 max-w-2xl mx-auto">
                 Come experience our state-of-the-art facility and meet our team. Your first session is on us!
               </p>
-              <button className="btn-primary text-lg px-8 py-4">
+              <Link href="/personal-training" className="btn-primary text-lg px-8 py-4">
                 Book a Free Trial
-              </button>
+              </Link>
             </motion.div>
           </div>
         </section>

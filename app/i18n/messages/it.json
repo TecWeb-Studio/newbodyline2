@@ -183,5 +183,31 @@
   "footer": {
     "tagline": "Trasforma il tuo corpo, eleva la tua vita.",
     "rights": "Tutti i diritti riservati."
+  },
+  "manage": {
+    "title": "Gestisci Prenotazione",
+    "subtitle": "Cerca la tua prenotazione per ID e email per visualizzarla o modificarla.",
+    "bookingId": "ID Prenotazione",
+    "email": "Indirizzo email",
+    "findBooking": "Trova la Mia Prenotazione",
+    "lookingUp": "Ricerca in corso…",
+    "yourBooking": "La Tua Prenotazione",
+    "changeDateTime": "Cambia Data / Orario / Trainer",
+    "cancelBooking": "Annulla Prenotazione",
+    "cancelConfirm": "Sei sicuro di voler annullare questa prenotazione? Questa azione non può essere annullata.",
+    "cancelled": "La tua prenotazione è stata annullata con successo.",
+    "updated": "Prenotazione aggiornata con successo!",
+    "modifyBooking": "Modifica Prenotazione",
+    "trainer": "Trainer",
+    "availableTimes": "Orari Disponibili",
+    "noSlots": "Nessuno slot disponibile per questa data.",
+    "cancel": "Annulla",
+    "confirmChange": "Conferma Modifica",
+    "saving": "Salvataggio…",
+    "changesLocked": "Modifiche bloccate. L'appuntamento è tra meno di 12 ore.",
+    "changesAllowed": "Modifiche consentite",
+    "hoursRemaining": "h rimanenti prima del blocco",
+    "lookupDifferent": "Cerca una prenotazione diversa",
+    "enterIdAndEmail": "Inserisci il tuo ID prenotazione e l'email."
   }
 }

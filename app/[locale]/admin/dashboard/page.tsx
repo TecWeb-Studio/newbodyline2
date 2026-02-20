@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from '@/app/i18n/navigation'
 import { motion } from 'framer-motion'
 import { 
   Calendar, 
@@ -22,7 +22,7 @@ import { useBooking } from '@/app/contexts/BookingContext'
 
 export default function AdminDashboardPage() {
   const router = useRouter()
-  const { bookings, cancelBooking, trainers } = useBooking()
+  const { bookings, cancelBooking, trainers, refreshBookings } = useBooking()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -31,7 +31,7 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     const auth = localStorage.getItem('admin-auth')
     if (auth !== 'true') {
-      router.push('/admin')
+      router.push('/admin' as any)
     } else {
       setIsAuthenticated(true)
       setIsLoading(false)
@@ -40,19 +40,20 @@ export default function AdminDashboardPage() {
 
   const handleLogout = () => {
     localStorage.removeItem('admin-auth')
-    router.push('/admin')
+    router.push('/admin' as any)
   }
 
-  const handleCancelBooking = (bookingId: string) => {
+  const handleCancelBooking = async (bookingId: string) => {
     if (confirm('Are you sure you want to cancel this booking?')) {
-      cancelBooking(bookingId)
-      setRefreshKey(prev => prev + 1)
+      await cancelBooking(bookingId)
+      await refreshBookings()
     }
   }
 
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(async () => {
+    await refreshBookings()
     setRefreshKey(prev => prev + 1)
-  }
+  }, [refreshBookings])
 
   // Calculate stats
   const today = new Date().toISOString().split('T')[0]
@@ -97,7 +98,7 @@ export default function AdminDashboardPage() {
             
             <div className="flex items-center gap-3">
               <button
-                onClick={() => router.push('/admin/dashboard/trainers')}
+                onClick={() => router.push('/admin/dashboard/trainers' as any)}
                 className="flex items-center gap-2 px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] rounded-lg transition-colors text-[#fafafa] text-sm font-medium"
               >
                 <Settings className="w-4 h-4" />

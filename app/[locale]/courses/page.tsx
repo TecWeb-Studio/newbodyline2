@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { Link } from '@/app/i18n/navigation'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
 import { motion } from 'framer-motion'
@@ -91,9 +92,9 @@ export default function CoursesPage() {
                     </div>
 
                     {/* CTA Button */}
-                    <button className="w-full py-3 rounded-lg border border-[#27272a] text-[#fafafa] font-medium hover:bg-[#dc2626] hover:border-[#dc2626] transition-all">
+                    <Link href="/personal-training" className="block w-full py-3 rounded-lg border border-[#27272a] text-[#fafafa] font-medium hover:bg-[#dc2626] hover:border-[#dc2626] transition-all text-center">
                       {t('cta')}
-                    </button>
+                    </Link>
 
                     {/* Hover Accent */}
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-[#dc2626]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -125,12 +126,12 @@ export default function CoursesPage() {
                 Join NEWBODYLINE2 today and get access to all our premium courses, state-of-the-art equipment, and expert trainers.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button className="btn-primary text-lg px-8 py-4">
+                <Link href="/personal-training" className="btn-primary text-lg px-8 py-4">
                   Get Started Today
-                </button>
-                <button className="btn-secondary text-lg px-8 py-4">
+                </Link>
+                <Link href="/location" className="btn-secondary text-lg px-8 py-4">
                   Contact Us
-                </button>
+                </Link>
               </div>
             </motion.div>
           </div>

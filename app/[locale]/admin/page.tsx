@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/app/i18n/navigation'
 import { motion } from 'framer-motion'
 import { Lock, User, ArrowRight, Shield } from 'lucide-react'
 
@@ -22,7 +22,7 @@ export default function AdminLoginPage() {
       if (username === 'admin' && password === 'newbodyline2024') {
         // Store auth token
         localStorage.setItem('admin-auth', 'true')
-        router.push('/admin/dashboard')
+        router.push('/admin/dashboard' as any)
       } else {
         setError('Invalid username or password')
         setIsLoading(false)
@@ -114,16 +114,16 @@ export default function AdminLoginPage() {
 
           <div className="mt-6 pt-6 border-t border-[#27272a] text-center">
             <p className="text-[#71717a] text-sm">
-              Credentials: admin / newbodyline2024
+              Authorized staff only
             </p>
           </div>
         </div>
 
         {/* Back to Site */}
         <div className="text-center mt-8">
-          <a href="/" className="text-[#71717a] hover:text-[#dc2626] transition-colors text-sm">
+          <button onClick={() => router.push('/' as any)} className="text-[#71717a] hover:text-[#dc2626] transition-colors text-sm">
             ← Back to website
-          </a>
+          </button>
         </div>
       </motion.div>
     </div>

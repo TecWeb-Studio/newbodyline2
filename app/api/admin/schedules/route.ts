@@ -2,6 +2,25 @@ import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { ensureTables } from '@/lib/ensure-tables'
 
+// ── Opening hours validation ─────────────────────────────────────────────────
+// Gym hours: Mon/Wed/Fri 06:00-22:00, Tue/Thu 07:00-22:00, Sat 07:00-12:00 & 16:00-20:00, Sun closed
+interface HourRange { open: string; close: string }
+const GYM_HOURS: Record<number, HourRange[]> = {
+  0: [{ open: '06:00', close: '22:00' }], // Mon
+  1: [{ open: '07:00', close: '22:00' }], // Tue
+  2: [{ open: '06:00', close: '22:00' }], // Wed
+  3: [{ open: '07:00', close: '22:00' }], // Thu
+  4: [{ open: '06:00', close: '22:00' }], // Fri
+  5: [{ open: '07:00', close: '12:00' }, { open: '16:00', close: '20:00' }], // Sat
+  // 6 = Sun: closed
+}
+
+function isWithinGymHours(weekday: number, time: string): boolean {
+  const ranges = GYM_HOURS[weekday]
+  if (!ranges) return false // Sunday or invalid
+  return ranges.some(r => time >= r.open && time < r.close)
+}
+
 // ── GET /api/admin/schedules ─────────────────────────────────────────────────────
 // Returns all trainer schedules grouped by trainer
 export async function GET() {
@@ -47,6 +66,14 @@ export async function POST(request: Request) {
     const { trainerId, weekday, time } = await request.json()
     if (!trainerId || weekday === undefined || !time) {
       return NextResponse.json({ error: 'trainerId, weekday and time are required' }, { status: 400 })
+    }
+    // Validate time is within gym opening hours
+    if (!isWithinGymHours(weekday, time)) {
+      const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      return NextResponse.json(
+        { error: `Time ${time} is outside gym opening hours for ${dayNames[weekday]}` },
+        { status: 400 }
+      )
     }
     await db.execute({
       sql: 'INSERT OR IGNORE INTO trainer_schedules (trainer_id, weekday, time) VALUES (?, ?, ?)',

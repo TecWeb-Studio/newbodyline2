@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /*/admin/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://newbodyline2.com/sitemap.xml

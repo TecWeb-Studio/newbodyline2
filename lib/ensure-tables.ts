@@ -39,19 +39,30 @@ export async function ensureTables() {
 
   if (count === 0) {
     const trainers = await db.execute('SELECT id FROM trainers')
-    const defaultTimes = [
-      '09:00', '10:30', '12:00', '13:30',
-      '15:00', '16:30', '18:00', '19:30',
-    ]
+    // Default times aligned with actual gym opening hours
+    // Mon, Wed, Fri: 6:00-22:00 | Tue, Thu: 7:00-22:00 | Sat: 7:00-12:00, 16:00-20:00
+    const weekdayTimes: Record<number, string[]> = {
+      0: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00', '18:30', '20:00'], // Mon
+      1: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00', '18:30', '20:00'], // Tue
+      2: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00', '18:30', '20:00'], // Wed
+      3: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00', '18:30', '20:00'], // Thu
+      4: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00', '18:30', '20:00'], // Fri
+      5: ['08:00', '09:30', '11:00', '16:00', '17:30', '19:00'],                   // Sat (split hours)
+      // 6 = Sun: no schedule (gym closed)
+    }
+    const batch: { sql: string; args: (string | number)[] }[] = []
     for (const trainer of trainers.rows) {
-      for (let weekday = 0; weekday <= 5; weekday++) { // Mon(0)–Sat(5)
-        for (const time of defaultTimes) {
-          await db.execute({
+      for (const [weekday, times] of Object.entries(weekdayTimes)) {
+        for (const time of times) {
+          batch.push({
             sql: 'INSERT OR IGNORE INTO trainer_schedules (trainer_id, weekday, time) VALUES (?, ?, ?)',
-            args: [trainer.id as string, weekday, time],
+            args: [trainer.id as string, Number(weekday), time],
           })
         }
       }
+    }
+    if (batch.length > 0) {
+      await db.batch(batch, 'write')
     }
   }
 

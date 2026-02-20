@@ -1,17 +1,10 @@
 'use client'
 
-import React, { createContext, useContext, useState, useMemo } from 'react'
-import en from '@/app/i18n/messages/en.json'
-import it from '@/app/i18n/messages/it.json'
-import de from '@/app/i18n/messages/de.json'
+import React, { createContext, useContext, useMemo, useCallback } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
+import { useRouter, usePathname } from '@/app/i18n/navigation'
 
 export type Locale = 'it' | 'en' | 'de'
-
-const messages: Record<Locale, any> = {
-  en,
-  it,
-  de,
-}
 
 type I18nContextValue = {
   locale: Locale
@@ -22,20 +15,29 @@ type I18nContextValue = {
 const I18nContext = createContext<I18nContextValue | undefined>(undefined)
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const defaultLocale: Locale = 'it'
-  const [locale, setLocale] = useState<Locale>(defaultLocale)
+  const currentLocale = useLocale() as Locale
+  const router = useRouter()
+  const pathname = usePathname()
+  // Use root-level translations from next-intl (all keys in one flat namespace)
+  const tFn = useTranslations()
 
-  const t = (key: string) => {
-    const parts = key.split('.')
-    let obj: Record<string, any> | undefined = messages[locale]
-    for (const p of parts) {
-      if (!obj) return key
-      obj = obj[p]
+  const setLocale = useCallback((newLocale: Locale) => {
+    router.replace(pathname, { locale: newLocale })
+  }, [router, pathname])
+
+  const t = useCallback((key: string) => {
+    try {
+      return tFn(key as any)
+    } catch {
+      return key
     }
-    return typeof obj === 'string' ? obj : key
-  }
+  }, [tFn])
 
-  const value = useMemo(() => ({ locale, setLocale, t }), [locale])
+  const value = useMemo(() => ({
+    locale: currentLocale,
+    setLocale,
+    t,
+  }), [currentLocale, setLocale, t])
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
 }

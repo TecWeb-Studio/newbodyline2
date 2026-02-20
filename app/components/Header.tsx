@@ -81,9 +81,9 @@ export default function Header() {
 
           {/* Right side: CTA Button */}
           <div className="hidden md:flex items-center gap-4">
-            <button className="btn-primary">
+            <Link href="/personal-training" className="btn-primary">
               {t('nav.joinNow')}
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -115,7 +115,7 @@ export default function Header() {
                 </Link>
               ))}
               <div className="px-4 pt-2">
-                <button className="btn-primary w-full justify-center py-4">{t('nav.joinNow')}</button>
+                <Link href="/personal-training" className="btn-primary w-full justify-center py-4" onClick={() => setIsMobileMenuOpen(false)}>{t('nav.joinNow')}</Link>
               </div>
             </nav>
           </div>

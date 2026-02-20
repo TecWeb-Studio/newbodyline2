@@ -44,6 +44,7 @@ async function isOnVacation(trainerId: string, date: string): Promise<boolean> {
 
 // Syncs time_slots for a trainer+date with the current schedule.
 // Adds missing slots, removes unbooked slots whose time is no longer in the schedule.
+// Also cleans up past stale slots on access.
 async function syncSlotsForDate(trainerId: string, date: string) {
   // Verify the trainer exists
   const trainerCheck = await db.execute({
@@ -51,6 +52,14 @@ async function syncSlotsForDate(trainerId: string, date: string) {
     args: [trainerId],
   })
   if (trainerCheck.rows.length === 0) return
+
+  // Clean up past unbooked slots (older than 7 days) on access
+  try {
+    await db.execute({
+      sql: `DELETE FROM time_slots WHERE trainer_id = ? AND date < date('now', '-7 days') AND is_booked = 0`,
+      args: [trainerId],
+    })
+  } catch { /* ignore */ }
 
   // Get the weekday for the date (0=Mon … 6=Sun)
   const d = new Date(date + 'T00:00:00')
@@ -67,11 +76,14 @@ async function syncSlotsForDate(trainerId: string, date: string) {
 
   const existingTimes = new Set(existing.rows.map(r => r.time as string))
 
+  // Build batch operations for efficiency
+  const batch: { sql: string; args: (string | number)[] }[] = []
+
   // 1) Add missing slot rows
   for (const time of scheduledTimes) {
     if (!existingTimes.has(time)) {
       const id = `${trainerId}-${date}-${time}`
-      await db.execute({
+      batch.push({
         sql: 'INSERT OR IGNORE INTO time_slots (id, time, date, trainer_id, is_booked) VALUES (?, ?, ?, ?, 0)',
         args: [id, time, date, trainerId],
       })
@@ -82,11 +94,15 @@ async function syncSlotsForDate(trainerId: string, date: string) {
   const scheduledSet = new Set(scheduledTimes)
   for (const row of existing.rows) {
     if (!scheduledSet.has(row.time as string) && (row.is_booked as number) === 0) {
-      await db.execute({
+      batch.push({
         sql: 'DELETE FROM time_slots WHERE id = ?',
-        args: [row.id],
+        args: [row.id as string],
       })
     }
+  }
+
+  if (batch.length > 0) {
+    await db.batch(batch, 'write')
   }
 }
 
