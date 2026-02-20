@@ -12,6 +12,7 @@ import {
   CalendarDays,
   Save,
   User,
+  CheckCircle,
 } from 'lucide-react'
 import { useBooking } from '@/app/contexts/BookingContext'
 
@@ -52,7 +53,8 @@ export default function AdminTrainersPage() {
 
   // ── schedules ──────────────────────────────────────────────────────────────
   const [schedules, setSchedules] = useState<ScheduleRow[]>([])
-  const [addingSlot, setAddingSlot] = useState<{ weekday: number; time: string } | null>(null)
+  // addingSlots: Record<weekday, selectedTime>  – key presence means form is open
+  const [addingSlots, setAddingSlots] = useState<Record<number, string>>({})
 
   // ── vacations ──────────────────────────────────────────────────────────────
   const [vacations, setVacations] = useState<VacationRow[]>([])
@@ -60,6 +62,13 @@ export default function AdminTrainersPage() {
 
   // ── tab ────────────────────────────────────────────────────────────────────
   const [tab, setTab] = useState<'schedule' | 'vacation'>('schedule')
+
+  // ── toast ──────────────────────────────────────────────────────────────────
+  const [toast, setToast] = useState<string | null>(null)
+  const showToast = (msg: string) => {
+    setToast(msg)
+    setTimeout(() => setToast(null), 2500)
+  }
 
   // ── Auth ───────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -87,12 +96,16 @@ export default function AdminTrainersPage() {
   }, [router])
 
   // ── Fetch helpers (for refresh after mutations) ────────────────────────────
-  const fetchSchedules = useCallback(async () => {
+  const fetchSchedules = useCallback(async (): Promise<ScheduleRow[]> => {
     try {
       const res = await fetch('/api/admin/schedules')
       const data = await res.json()
-      setSchedules(data.schedules ?? [])
-    } catch { /* ignore */ }
+      const rows: ScheduleRow[] = data.schedules ?? []
+      setSchedules(rows)
+      return rows
+    } catch {
+      return []
+    }
   }, [])
 
   const fetchVacations = useCallback(async () => {
@@ -111,6 +124,12 @@ export default function AdminTrainersPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trainers])
 
+  // Clear per-trainer UI state when switching trainers
+  useEffect(() => {
+    setAddingSlots({})
+    setNewVacation({ startDate: '', endDate: '', note: '' })
+  }, [selectedTrainer])
+
   // ── Filtered data for selected trainer ─────────────────────────────────────
   const trainerSchedules = schedules.filter(s => s.trainer_id === selectedTrainer)
   const trainerVacations = vacations.filter(v => v.trainer_id === selectedTrainer)
@@ -122,29 +141,48 @@ export default function AdminTrainersPage() {
     scheduleByDay[s.weekday]?.push(s.time)
   })
 
+  const selectedTrainerData = trainers.find(t => t.id === selectedTrainer)
+
   // ── Actions ────────────────────────────────────────────────────────────────
   async function addScheduleSlot(weekday: number, time: string) {
-    await fetch('/api/admin/schedules', {
+    const trainerName = selectedTrainerData?.name ?? selectedTrainer
+    const res = await fetch('/api/admin/schedules', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ trainerId: selectedTrainer, weekday, time }),
     })
-    setAddingSlot(null)
-    fetchSchedules()
+    // Fetch fresh data and use it directly (avoids stale closure)
+    const freshRows = await fetchSchedules()
+    if (res.ok) {
+      showToast(`✓ ${WEEKDAYS[weekday]} ${time} aggiunto per ${trainerName}`)
+    }
+    // Compute next available time from fresh data
+    const usedNow = freshRows
+      .filter(s => s.trainer_id === selectedTrainer && s.weekday === weekday)
+      .map(s => s.time)
+    const nextAvail = ALL_TIMES.find(t => !usedNow.includes(t))
+    setAddingSlots(prev => {
+      if (nextAvail) return { ...prev, [weekday]: nextAvail }
+      const updated = { ...prev }; delete updated[weekday]; return updated
+    })
   }
 
   async function removeScheduleSlot(weekday: number, time: string) {
-    await fetch('/api/admin/schedules', {
+    const trainerName = selectedTrainerData?.name ?? selectedTrainer
+    if (!confirm(`Rimuovere ${WEEKDAYS[weekday]} ${time} per ${trainerName}?`)) return
+    const res = await fetch('/api/admin/schedules', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ trainerId: selectedTrainer, weekday, time }),
     })
-    fetchSchedules()
+    await fetchSchedules()
+    if (res.ok) showToast(`✓ ${WEEKDAYS[weekday]} ${time} rimosso`)
   }
 
   async function addVacation() {
     if (!newVacation.startDate || !newVacation.endDate) return
-    await fetch('/api/admin/vacations', {
+    const trainerName = selectedTrainerData?.name ?? selectedTrainer
+    const res = await fetch('/api/admin/vacations', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -155,12 +193,15 @@ export default function AdminTrainersPage() {
       }),
     })
     setNewVacation({ startDate: '', endDate: '', note: '' })
-    fetchVacations()
+    await fetchVacations()
+    if (res.ok) showToast(`✓ Ferie aggiunta per ${trainerName}`)
   }
 
   async function removeVacation(id: number) {
-    await fetch(`/api/admin/vacations?id=${id}`, { method: 'DELETE' })
-    fetchVacations()
+    if (!confirm('Rimuovere questo periodo di ferie?')) return
+    const res = await fetch(`/api/admin/vacations?id=${id}`, { method: 'DELETE' })
+    await fetchVacations()
+    if (res.ok) showToast('✓ Ferie rimossa')
   }
 
   // ── Loading / guard ────────────────────────────────────────────────────────
@@ -173,10 +214,15 @@ export default function AdminTrainersPage() {
   }
   if (!isAuthenticated) return null
 
-  const selectedTrainerData = trainers.find(t => t.id === selectedTrainer)
-
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
+      {/* Toast notification */}
+      {toast && (
+        <div className="fixed top-4 right-4 z-100 flex items-center gap-2 bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+          <CheckCircle className="w-4 h-4" />
+          {toast}
+        </div>
+      )}
       {/* Header */}
       <header className="bg-[#111111] border-b border-[#27272a] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -247,7 +293,7 @@ export default function AdminTrainersPage() {
             {/* ── SCHEDULE TAB ───────────────────────────────────────────── */}
             {tab === 'schedule' && (
               <motion.div
-                key="schedule"
+                key={`schedule-${selectedTrainer}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-[#111111] border border-[#27272a] rounded-2xl overflow-hidden"
@@ -283,11 +329,13 @@ export default function AdminTrainersPage() {
                         ))}
 
                         {/* Add slot */}
-                        {addingSlot?.weekday === dayIdx ? (
+                        {dayIdx in addingSlots ? (
                           <div className="flex items-center gap-1">
                             <select
-                              value={addingSlot.time}
-                              onChange={e => setAddingSlot({ ...addingSlot, time: e.target.value })}
+                              value={addingSlots[dayIdx]}
+                              onChange={e =>
+                                setAddingSlots(prev => ({ ...prev, [dayIdx]: e.target.value }))
+                              }
                               className="flex-1 bg-[#0a0a0a] border border-[#27272a] rounded-lg px-2 py-1.5 text-xs text-[#fafafa] focus:outline-none focus:border-[#dc2626]"
                             >
                               {ALL_TIMES.filter(t => !(scheduleByDay[dayIdx] ?? []).includes(t)).map(t => (
@@ -295,10 +343,20 @@ export default function AdminTrainersPage() {
                               ))}
                             </select>
                             <button
-                              onClick={() => addScheduleSlot(dayIdx, addingSlot.time)}
+                              onClick={() => addScheduleSlot(dayIdx, addingSlots[dayIdx])}
                               className="p-1.5 bg-[#dc2626] rounded-lg hover:bg-[#b91c1c] transition-colors"
+                              title="Save"
                             >
                               <Save className="w-3.5 h-3.5 text-white" />
+                            </button>
+                            <button
+                              onClick={() =>
+                                setAddingSlots(prev => { const n = { ...prev }; delete n[dayIdx]; return n })
+                              }
+                              className="p-1.5 bg-[#27272a] rounded-lg hover:bg-[#3f3f46] transition-colors"
+                              title="Cancel"
+                            >
+                              <span className="text-xs text-[#a1a1aa] leading-none">✕</span>
                             </button>
                           </div>
                         ) : (
@@ -306,7 +364,7 @@ export default function AdminTrainersPage() {
                             onClick={() => {
                               const available = ALL_TIMES.filter(t => !(scheduleByDay[dayIdx] ?? []).includes(t))
                               if (available.length > 0) {
-                                setAddingSlot({ weekday: dayIdx, time: available[0] })
+                                setAddingSlots(prev => ({ ...prev, [dayIdx]: available[0] }))
                               }
                             }}
                             className="w-full flex items-center justify-center gap-1 py-1.5 text-[#3f3f46] hover:text-[#dc2626] text-xs transition-colors"
@@ -324,7 +382,7 @@ export default function AdminTrainersPage() {
             {/* ── VACATION TAB ───────────────────────────────────────────── */}
             {tab === 'vacation' && (
               <motion.div
-                key="vacation"
+                key={`vacation-${selectedTrainer}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="space-y-6"

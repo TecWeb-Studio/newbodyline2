@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { ensureTables } from '@/lib/ensure-tables'
 
 // ── GET /api/admin/vacations ─────────────────────────────────────────────────
 export async function GET() {
   try {
+    await ensureTables()
     const result = await db.execute(
       'SELECT * FROM trainer_vacations ORDER BY start_date'
     )
@@ -18,6 +20,7 @@ export async function GET() {
 // Body: { trainerId, startDate, endDate, note? }
 export async function POST(request: Request) {
   try {
+    await ensureTables()
     const { trainerId, startDate, endDate, note } = await request.json()
     if (!trainerId || !startDate || !endDate) {
       return NextResponse.json(
@@ -45,6 +48,7 @@ export async function POST(request: Request) {
 // ── DELETE /api/admin/vacations?id=... ───────────────────────────────────────
 export async function DELETE(request: Request) {
   try {
+    await ensureTables()
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
     if (!id) {

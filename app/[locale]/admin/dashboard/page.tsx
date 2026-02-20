@@ -26,6 +26,7 @@ export default function AdminDashboardPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [refreshKey, setRefreshKey] = useState(0)
+  const [sessionFilter, setSessionFilter] = useState<'upcoming' | 'all'>('upcoming')
 
   useEffect(() => {
     const auth = localStorage.getItem('admin-auth')
@@ -57,6 +58,14 @@ export default function AdminDashboardPage() {
   const today = new Date().toISOString().split('T')[0]
   const todayBookings = bookings.filter(b => b.date === today)
   const upcomingBookings = bookings.filter(b => b.date >= today)
+
+  const displayedBookings = bookings
+    .filter(b => sessionFilter === 'all' || b.date >= today)
+    .sort((a, b) => {
+      const dtA = `${a.date} ${a.time}`
+      const dtB = `${b.date} ${b.time}`
+      return dtA.localeCompare(dtB)
+    })
 
   if (isLoading) {
     return (
@@ -174,15 +183,29 @@ export default function AdminDashboardPage() {
           transition={{ delay: 0.3 }}
           className="bg-[#111111] border border-[#27272a] rounded-2xl overflow-hidden"
         >
-          <div className="p-6 border-b border-[#27272a]">
-            <h2 className="text-xl font-bold text-[#fafafa]">All Bookings</h2>
-            <p className="text-[#71717a] text-sm mt-1">Manage personal training sessions</p>
+          <div className="p-6 border-b border-[#27272a] flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h2 className="text-xl font-bold text-[#fafafa]">
+                {sessionFilter === 'upcoming' ? 'Today & Upcoming Sessions' : 'All Sessions'}
+              </h2>
+              <p className="text-[#71717a] text-sm mt-1">Manage personal training sessions</p>
+            </div>
+            <select
+              value={sessionFilter}
+              onChange={e => setSessionFilter(e.target.value as 'upcoming' | 'all')}
+              className="bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none cursor-pointer"
+            >
+              <option value="upcoming">Today &amp; Upcoming</option>
+              <option value="all">All Sessions (incl. past)</option>
+            </select>
           </div>
 
-          {bookings.length === 0 ? (
+          {displayedBookings.length === 0 ? (
             <div className="p-12 text-center">
               <AlertCircle className="w-12 h-12 text-[#3f3f46] mx-auto mb-4" />
-              <p className="text-[#a1a1aa]">No bookings found</p>
+              <p className="text-[#a1a1aa]">
+                {sessionFilter === 'upcoming' ? 'No upcoming sessions' : 'No bookings found'}
+              </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -198,7 +221,7 @@ export default function AdminDashboardPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#27272a]">
-                  {bookings.map((booking) => (
+                  {displayedBookings.map((booking) => (
                     <motion.tr
                       key={booking.id}
                       initial={{ opacity: 0 }}

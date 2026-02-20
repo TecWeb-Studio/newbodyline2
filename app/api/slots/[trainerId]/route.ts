@@ -42,15 +42,9 @@ async function isOnVacation(trainerId: string, date: string): Promise<boolean> {
   }
 }
 
-// Generates and persists slots for a trainer+date if they don't exist yet.
-async function ensureSlotsExist(trainerId: string, date: string) {
-  const existing = await db.execute({
-    sql: 'SELECT id FROM time_slots WHERE trainer_id = ? AND date = ? LIMIT 1',
-    args: [trainerId, date],
-  })
-
-  if (existing.rows.length > 0) return // already generated
-
+// Syncs time_slots for a trainer+date with the current schedule.
+// Adds missing slots, removes unbooked slots whose time is no longer in the schedule.
+async function syncSlotsForDate(trainerId: string, date: string) {
   // Verify the trainer exists
   const trainerCheck = await db.execute({
     sql: 'SELECT id FROM trainers WHERE id = ?',
@@ -63,14 +57,36 @@ async function ensureSlotsExist(trainerId: string, date: string) {
   const jsDay = d.getDay() // 0=Sun
   const weekday = jsDay === 0 ? 6 : jsDay - 1 // convert to Mon=0
 
-  const times = await getScheduleForDay(trainerId, weekday)
+  const scheduledTimes = await getScheduleForDay(trainerId, weekday)
 
-  for (const time of times) {
-    const id = `${trainerId}-${date}-${time}`
-    await db.execute({
-      sql: 'INSERT OR IGNORE INTO time_slots (id, time, date, trainer_id, is_booked) VALUES (?, ?, ?, ?, 0)',
-      args: [id, time, date, trainerId],
-    })
+  // Get existing slots for this trainer+date
+  const existing = await db.execute({
+    sql: 'SELECT id, time, is_booked FROM time_slots WHERE trainer_id = ? AND date = ?',
+    args: [trainerId, date],
+  })
+
+  const existingTimes = new Set(existing.rows.map(r => r.time as string))
+
+  // 1) Add missing slot rows
+  for (const time of scheduledTimes) {
+    if (!existingTimes.has(time)) {
+      const id = `${trainerId}-${date}-${time}`
+      await db.execute({
+        sql: 'INSERT OR IGNORE INTO time_slots (id, time, date, trainer_id, is_booked) VALUES (?, ?, ?, ?, 0)',
+        args: [id, time, date, trainerId],
+      })
+    }
+  }
+
+  // 2) Remove unbooked slots whose time is no longer in the schedule
+  const scheduledSet = new Set(scheduledTimes)
+  for (const row of existing.rows) {
+    if (!scheduledSet.has(row.time as string) && (row.is_booked as number) === 0) {
+      await db.execute({
+        sql: 'DELETE FROM time_slots WHERE id = ?',
+        args: [row.id],
+      })
+    }
   }
 }
 
@@ -95,8 +111,8 @@ export async function GET(
       return NextResponse.json({ slots: [], onVacation: true })
     }
 
-    // Auto-generate slots for this date if needed
-    await ensureSlotsExist(trainerId, date)
+    // Auto-generate / sync slots for this date
+    await syncSlotsForDate(trainerId, date)
 
     const result = await db.execute({
       sql: `SELECT * FROM time_slots
