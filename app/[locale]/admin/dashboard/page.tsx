@@ -16,7 +16,8 @@ import {
   CalendarDays,
   TrendingUp,
   AlertCircle,
-  Settings
+  Settings,
+  Palmtree,
 } from 'lucide-react'
 import { useBooking } from '@/app/contexts/BookingContext'
 
@@ -27,6 +28,7 @@ export default function AdminDashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [refreshKey, setRefreshKey] = useState(0)
   const [sessionFilter, setSessionFilter] = useState<'upcoming' | 'all'>('upcoming')
+  const [vacations, setVacations] = useState<{ id: number; trainer_id: string; start_date: string; end_date: string; note: string | null }[]>([])
 
   useEffect(() => {
     const auth = localStorage.getItem('admin-auth')
@@ -35,6 +37,11 @@ export default function AdminDashboardPage() {
     } else {
       setIsAuthenticated(true)
       setIsLoading(false)
+      // Fetch vacations
+      fetch('/api/admin/vacations')
+        .then(r => r.json())
+        .then(d => setVacations(d.vacations ?? []))
+        .catch(() => {})
     }
   }, [router])
 
@@ -176,6 +183,46 @@ export default function AdminDashboardPage() {
             </div>
           </motion.div>
         </div>
+
+        {/* Active / Upcoming Vacations */}
+        {(() => {
+          const todayISO = new Date().toISOString().split('T')[0]
+          const activeOrUpcoming = vacations.filter(v => v.end_date >= todayISO)
+          if (activeOrUpcoming.length === 0) return null
+          return (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="mb-8 bg-orange-900/20 border border-orange-700/40 rounded-2xl p-5"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <Palmtree className="w-5 h-5 text-orange-400" />
+                <h3 className="text-orange-300 font-semibold text-sm">Trainer Vacations</h3>
+              </div>
+              <div className="space-y-2">
+                {activeOrUpcoming.map(v => {
+                  const trainer = trainers.find(t => t.id === v.trainer_id)
+                  const isActive = todayISO >= v.start_date && todayISO <= v.end_date
+                  return (
+                    <div key={v.id} className="flex items-center gap-3 text-sm">
+                      {isActive ? (
+                        <span className="text-[10px] bg-orange-500/30 text-orange-300 px-2 py-0.5 rounded-full font-semibold uppercase w-16 text-center">Active</span>
+                      ) : (
+                        <span className="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-semibold uppercase w-16 text-center">Upcoming</span>
+                      )}
+                      <span className="text-[#fafafa] font-medium">{trainer?.name ?? v.trainer_id}</span>
+                      <span className="text-[#71717a]">
+                        {new Date(v.start_date + 'T00:00:00').toLocaleDateString(undefined, { day: 'numeric', month: 'short' })} – {new Date(v.end_date + 'T00:00:00').toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}
+                      </span>
+                      {v.note && <span className="text-[#52525b] italic">{v.note}</span>}
+                    </div>
+                  )
+                })}
+              </div>
+            </motion.div>
+          )
+        })()}
 
         {/* Bookings Table */}
         <motion.div

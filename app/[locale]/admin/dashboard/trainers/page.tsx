@@ -13,6 +13,8 @@ import {
   Save,
   User,
   CheckCircle,
+  AlertCircle,
+  Loader2,
 } from 'lucide-react'
 import { useBooking } from '@/app/contexts/BookingContext'
 
@@ -59,15 +61,20 @@ export default function AdminTrainersPage() {
   // ── vacations ──────────────────────────────────────────────────────────────
   const [vacations, setVacations] = useState<VacationRow[]>([])
   const [newVacation, setNewVacation] = useState({ startDate: '', endDate: '', note: '' })
+  const [vacationSaving, setVacationSaving] = useState(false)
+  const [vacationError, setVacationError] = useState<string | null>(null)
+  const [dataError, setDataError] = useState<string | null>(null)
 
   // ── tab ────────────────────────────────────────────────────────────────────
   const [tab, setTab] = useState<'schedule' | 'vacation'>('schedule')
 
   // ── toast ──────────────────────────────────────────────────────────────────
   const [toast, setToast] = useState<string | null>(null)
-  const showToast = (msg: string) => {
+  const [toastType, setToastType] = useState<'success' | 'error'>('success')
+  const showToast = (msg: string, type: 'success' | 'error' = 'success') => {
     setToast(msg)
-    setTimeout(() => setToast(null), 2500)
+    setToastType(type)
+    setTimeout(() => setToast(null), 3000)
   }
 
   // ── Auth ───────────────────────────────────────────────────────────────────
@@ -86,11 +93,19 @@ export default function AdminTrainersPage() {
           fetch('/api/admin/schedules'),
           fetch('/api/admin/vacations'),
         ])
+        if (!schedulesRes.ok || !vacationsRes.ok) {
+          throw new Error('Failed to load data from server')
+        }
         const schedulesData = await schedulesRes.json()
         const vacationsData = await vacationsRes.json()
         setSchedules(schedulesData.schedules ?? [])
         setVacations(vacationsData.vacations ?? [])
-      } catch { /* ignore */ }
+        setDataError(null)
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : 'Failed to load data'
+        setDataError(msg)
+        showToast(msg, 'error')
+      }
     }
     loadData()
   }, [router])
@@ -111,9 +126,12 @@ export default function AdminTrainersPage() {
   const fetchVacations = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/vacations')
+      if (!res.ok) throw new Error('Failed to fetch vacations')
       const data = await res.json()
       setVacations(data.vacations ?? [])
-    } catch { /* ignore */ }
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : 'Failed to load vacations', 'error')
+    }
   }, [])
 
   // Auto-select first trainer when trainers load
@@ -181,27 +199,46 @@ export default function AdminTrainersPage() {
 
   async function addVacation() {
     if (!newVacation.startDate || !newVacation.endDate) return
+    setVacationSaving(true)
+    setVacationError(null)
     const trainerName = selectedTrainerData?.name ?? selectedTrainer
-    const res = await fetch('/api/admin/vacations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        trainerId: selectedTrainer,
-        startDate: newVacation.startDate,
-        endDate: newVacation.endDate,
-        note: newVacation.note || null,
-      }),
-    })
-    setNewVacation({ startDate: '', endDate: '', note: '' })
-    await fetchVacations()
-    if (res.ok) showToast(`✓ Ferie aggiunta per ${trainerName}`)
+    try {
+      const res = await fetch('/api/admin/vacations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          trainerId: selectedTrainer,
+          startDate: newVacation.startDate,
+          endDate: newVacation.endDate,
+          note: newVacation.note || null,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error ?? 'Failed to add vacation')
+      }
+      setNewVacation({ startDate: '', endDate: '', note: '' })
+      await fetchVacations()
+      showToast(`✓ Vacation added for ${trainerName}`)
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to add vacation'
+      setVacationError(msg)
+      showToast(msg, 'error')
+    } finally {
+      setVacationSaving(false)
+    }
   }
 
   async function removeVacation(id: number) {
-    if (!confirm('Rimuovere questo periodo di ferie?')) return
-    const res = await fetch(`/api/admin/vacations?id=${id}`, { method: 'DELETE' })
-    await fetchVacations()
-    if (res.ok) showToast('✓ Ferie rimossa')
+    if (!confirm('Remove this vacation period?')) return
+    try {
+      const res = await fetch(`/api/admin/vacations?id=${id}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error('Failed to delete vacation')
+      await fetchVacations()
+      showToast('✓ Vacation removed')
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : 'Failed to remove vacation', 'error')
+    }
   }
 
   // ── Loading / guard ────────────────────────────────────────────────────────
@@ -218,8 +255,10 @@ export default function AdminTrainersPage() {
     <div className="min-h-screen bg-[#0a0a0a]">
       {/* Toast notification */}
       {toast && (
-        <div className="fixed top-4 right-4 z-100 flex items-center gap-2 bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
-          <CheckCircle className="w-4 h-4" />
+        <div className={`fixed top-4 right-4 z-100 flex items-center gap-2 ${
+          toastType === 'error' ? 'bg-red-600' : 'bg-green-600'
+        } text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium animate-in fade-in duration-200`}>
+          {toastType === 'error' ? <AlertCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
           {toast}
         </div>
       )}
@@ -387,6 +426,15 @@ export default function AdminTrainersPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="space-y-6"
               >
+                {/* Data error banner */}
+                {dataError && (
+                  <div className="flex items-center gap-3 bg-red-900/30 border border-red-700 rounded-xl px-4 py-3 text-red-300 text-sm">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    {dataError}
+                    <button onClick={() => fetchVacations()} className="ml-auto underline hover:no-underline text-red-300">Retry</button>
+                  </div>
+                )}
+
                 {/* Add vacation form */}
                 <div className="bg-[#111111] border border-[#27272a] rounded-2xl p-6">
                   <h2 className="text-lg font-bold text-[#fafafa] mb-4">
@@ -398,8 +446,18 @@ export default function AdminTrainersPage() {
                       <input
                         type="date"
                         value={newVacation.startDate}
-                        onChange={e => setNewVacation(v => ({ ...v, startDate: e.target.value }))}
-                        className="w-full bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2.5 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none scheme-dark"
+                        min={new Date().toISOString().split('T')[0]}
+                        onChange={e => {
+                          const start = e.target.value
+                          setNewVacation(v => ({
+                            ...v,
+                            startDate: start,
+                            // auto-set endDate to startDate if empty or before start
+                            endDate: !v.endDate || v.endDate < start ? start : v.endDate,
+                          }))
+                          setVacationError(null)
+                        }}
+                        className="w-full bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2.5 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none [color-scheme:dark]"
                       />
                     </div>
                     <div>
@@ -407,8 +465,12 @@ export default function AdminTrainersPage() {
                       <input
                         type="date"
                         value={newVacation.endDate}
-                        onChange={e => setNewVacation(v => ({ ...v, endDate: e.target.value }))}
-                        className="w-full bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2.5 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none scheme-dark"
+                        min={newVacation.startDate || new Date().toISOString().split('T')[0]}
+                        onChange={e => {
+                          setNewVacation(v => ({ ...v, endDate: e.target.value }))
+                          setVacationError(null)
+                        }}
+                        className="w-full bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2.5 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none [color-scheme:dark]"
                       />
                     </div>
                     <div>
@@ -422,13 +484,26 @@ export default function AdminTrainersPage() {
                       />
                     </div>
                   </div>
+
+                  {/* Vacation form error */}
+                  {vacationError && (
+                    <div className="flex items-center gap-2 mt-3 text-red-400 text-sm">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      {vacationError}
+                    </div>
+                  )}
+
                   <button
                     onClick={addVacation}
-                    disabled={!newVacation.startDate || !newVacation.endDate}
+                    disabled={!newVacation.startDate || !newVacation.endDate || vacationSaving}
                     className="mt-4 flex items-center gap-2 px-5 py-2.5 bg-[#dc2626] hover:bg-[#b91c1c] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors"
                   >
-                    <Palmtree className="w-4 h-4" />
-                    Add Vacation Period
+                    {vacationSaving ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Palmtree className="w-4 h-4" />
+                    )}
+                    {vacationSaving ? 'Saving…' : 'Add Vacation Period'}
                   </button>
                 </div>
 
@@ -436,35 +511,54 @@ export default function AdminTrainersPage() {
                 <div className="bg-[#111111] border border-[#27272a] rounded-2xl overflow-hidden">
                   <div className="p-6 border-b border-[#27272a]">
                     <h3 className="text-lg font-bold text-[#fafafa]">Planned Vacations</h3>
+                    <p className="text-[#71717a] text-xs mt-1">
+                      Trainers on vacation will not have available slots for those dates
+                    </p>
                   </div>
 
                   {trainerVacations.length === 0 ? (
                     <div className="p-8 text-center text-[#71717a] text-sm">
+                      <Palmtree className="w-8 h-8 mx-auto mb-3 text-[#3f3f46]" />
                       No vacations scheduled for {selectedTrainerData.name}
                     </div>
                   ) : (
                     <div className="divide-y divide-[#27272a]">
-                      {trainerVacations.map(v => (
-                        <div key={v.id} className="flex items-center justify-between px-6 py-4 hover:bg-[#0a0a0a]/50 transition-colors">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                              <CalendarDays className="w-5 h-5 text-orange-500" />
+                      {trainerVacations.map(v => {
+                        const isActive = new Date().toISOString().split('T')[0] >= v.start_date && new Date().toISOString().split('T')[0] <= v.end_date
+                        const isPast = new Date().toISOString().split('T')[0] > v.end_date
+                        return (
+                          <div key={v.id} className={`flex items-center justify-between px-6 py-4 hover:bg-[#0a0a0a]/50 transition-colors ${isPast ? 'opacity-50' : ''}`}>
+                            <div className="flex items-center gap-4">
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                                isActive ? 'bg-green-500/10' : 'bg-orange-500/10'
+                              }`}>
+                                <CalendarDays className={`w-5 h-5 ${isActive ? 'text-green-500' : 'text-orange-500'}`} />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <p className="text-[#fafafa] font-medium text-sm">
+                                    {new Date(v.start_date + 'T00:00:00').toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })} → {new Date(v.end_date + 'T00:00:00').toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
+                                  </p>
+                                  {isActive && (
+                                    <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider">Active</span>
+                                  )}
+                                  {isPast && (
+                                    <span className="text-[10px] bg-zinc-700/50 text-zinc-400 px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider">Past</span>
+                                  )}
+                                </div>
+                                {v.note && <p className="text-[#71717a] text-xs mt-0.5">{v.note}</p>}
+                              </div>
                             </div>
-                            <div>
-                              <p className="text-[#fafafa] font-medium text-sm">
-                                {v.start_date} → {v.end_date}
-                              </p>
-                              {v.note && <p className="text-[#71717a] text-xs">{v.note}</p>}
-                            </div>
+                            <button
+                              onClick={() => removeVacation(v.id)}
+                              className="p-2 hover:bg-red-500/10 rounded-lg transition-colors group"
+                              title="Remove vacation"
+                            >
+                              <Trash2 className="w-4 h-4 text-[#3f3f46] group-hover:text-red-500" />
+                            </button>
                           </div>
-                          <button
-                            onClick={() => removeVacation(v.id)}
-                            className="p-2 hover:bg-red-500/10 rounded-lg transition-colors group"
-                          >
-                            <Trash2 className="w-4 h-4 text-[#3f3f46] group-hover:text-red-500" />
-                          </button>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   )}
                 </div>
