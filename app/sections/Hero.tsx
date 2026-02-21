@@ -2,7 +2,7 @@
 
 import { useI18n } from '@/app/contexts/I18nContext'
 import { Link } from '@/app/i18n/navigation'
-import { ArrowRight, Play } from 'lucide-react'
+import { ArrowRight, MapPin } from 'lucide-react'
 
 export default function Hero() {
   const { t } = useI18n()
@@ -49,12 +49,12 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-top-4 duration-600 delay-300">
-            <button className="btn-primary text-lg px-8 py-4">
+            <Link href="/courses" className="btn-primary text-lg px-8 py-4">
               {t('hero.ctaPrimary')}
               <ArrowRight className="w-5 h-5" />
-            </button>
-            <Link href="/courses" className="btn-secondary text-lg px-8 py-4">
-              <Play className="w-5 h-5" />
+            </Link>
+            <Link href="/location" className="btn-secondary text-lg px-8 py-4">
+              <MapPin className="w-5 h-5" />
               {t('hero.ctaSecondary')}
             </Link>
           </div>

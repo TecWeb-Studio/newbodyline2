@@ -1,44 +1,44 @@
 {
   "metadata": {
-    "title": "NEWBODYLINE2 - Transform Your Body, Elevate Your Life",
-    "description": "Premium fitness center offering state-of-the-art equipment, expert trainers, and transformative workout experiences."
+    "title": "New Body Line 2 - A Family Where the Common Goal is to Improve",
+    "description": "Gym in Cavallino-Treporti with expert staff, fitness and dance courses, and a welcoming environment for your wellbeing."
   },
   "nav": {
     "home": "Home",
     "courses": "Courses",
     "personalTraining": "Personal Training",
     "location": "Location",
-    "joinNow": "Join Now",
+    "joinNow": "Contact Us",
     "changingLanguage": "Changing language...",
     "selectLanguage": "Select Language"
   },
   "hero": {
-    "tagline": "Welcome to NEWBODYLINE2",
-    "title": "Transform Your Body",
-    "titleAccent": "Elevate Your Life",
-    "description": "Experience premium fitness with state-of-the-art equipment, expert trainers, and a community that pushes you to be your best.",
-    "ctaPrimary": "Start Your Journey",
-    "ctaSecondary": "View Courses",
+    "tagline": "Welcome to New Body Line 2",
+    "title": "A Family Where",
+    "titleAccent": "the Common Goal is to Improve",
+    "description": "At New Body Line 2 you will find trained staff ready to guide you on whatever path you choose, helping you understand the importance of fitness and personal wellbeing.",
+    "ctaPrimary": "Discover Our Courses",
+    "ctaSecondary": "Find Us",
     "scrollLabel": "Explore"
   },
   "features": {
-    "title": "Why Choose Us",
-    "subtitle": "Everything you need to achieve your fitness goals",
+    "title": "About Us",
+    "subtitle": "Welcome to your gym in Cavallino-Treporti!",
     "equipment": {
-      "title": "Premium Equipment",
-      "description": "State-of-the-art machines and free weights from leading brands"
+      "title": "More Than a Gym",
+      "description": "Located at Via Grisolera 33, a place where health, wellbeing and passion for movement come together."
     },
     "trainers": {
-      "title": "Expert Trainers",
-      "description": "Certified professionals dedicated to your success"
+      "title": "Welcoming Environment",
+      "description": "A professional and dynamic environment, designed to help you reach your personal goals."
     },
     "atmosphere": {
-      "title": "Energetic Atmosphere",
-      "description": "Motivating environment that pushes you to excel"
+      "title": "A Community",
+      "description": "A staff always ready to welcome you with a smile: your progress is our top priority."
     },
     "hours": {
-      "title": "24/7 Access",
-      "description": "Train on your schedule with round-the-clock access"
+      "title": "Your Wellbeing",
+      "description": "Every detail is designed for your wellbeing. Come visit us, we're waiting for you!"
     }
   },
   "stats": {
@@ -49,44 +49,61 @@
   },
   "courses": {
     "title": "Our Courses",
-    "subtitle": "Find the perfect workout for your goals",
-    "strength": {
-      "title": "Strength Training",
-      "description": "Build muscle and increase power with our comprehensive strength programs",
-      "duration": "60 min",
+    "subtitle": "All courses are designed to fit your needs and goals! Discover our wide range and join the path that's right for you.",
+    "fitnessSection": "Fitness Courses",
+    "danceSection": "Dance Courses",
+    "danceSubtitle": "Discover your passion for dance: our courses are waiting for you! Our two dance studios are ready just for you!",
+    "pilates": {
+      "title": "Pilates",
+      "description": "Rediscover balance, strength and flexibility with Pilates, a workout that unites body and mind through controlled and precise movements. Ideal for improving posture and muscle tone.",
       "level": "All Levels"
     },
-    "cardio": {
-      "title": "Cardio Blast",
-      "description": "High-energy cardio sessions to boost endurance and burn calories",
-      "duration": "45 min",
+    "kickboxing": {
+      "title": "Kickboxing",
+      "description": "Release stress and improve endurance, strength and coordination in a dynamic course combining boxing and martial arts techniques. Also available for kids: a fun and safe activity teaching discipline and self-control.",
+      "level": "All Levels"
+    },
+    "circuit": {
+      "title": "Circuit Training",
+      "description": "Get a full workout with our circuits, combining aerobic and resistance exercises to improve strength, speed and agility.",
       "level": "Intermediate"
     },
-    "hiit": {
-      "title": "HIIT",
-      "description": "Intense interval training for maximum results in minimum time",
-      "duration": "30 min",
-      "level": "Advanced"
-    },
-    "yoga": {
-      "title": "Power Yoga",
-      "description": "Combine strength, flexibility, and mindfulness in one session",
-      "duration": "60 min",
-      "level": "All Levels"
-    },
-    "boxing": {
-      "title": "Boxing Fitness",
-      "description": "Learn boxing techniques while getting an incredible workout",
-      "duration": "50 min",
-      "level": "All Levels"
-    },
-    "pilates": {
-      "title": "Pilates Core",
-      "description": "Strengthen your core and improve posture with controlled movements",
-      "duration": "45 min",
+    "lowImpact": {
+      "title": "Low Impact Structural Circuit",
+      "description": "A gentle but effective path, designed for those who want to train without overloading their joints. Perfect for recovery or for those who prefer a less intense approach.",
       "level": "Beginner"
     },
-    "cta": "Join This Class"
+    "spinning": {
+      "title": "Spinning",
+      "description": "Hop on the saddle and pedal your way to peak fitness! Our spinning sessions suit all levels, improving cardiovascular endurance and burning calories.",
+      "level": "All Levels"
+    },
+    "posturale": {
+      "title": "Postural Gymnastics",
+      "description": "Take care of your body with targeted exercises to correct posture, improve balance and relieve muscle tension. Ideal for those suffering from chronic pain or wanting to prevent future issues.",
+      "level": "All Levels"
+    },
+    "propedeutica": {
+      "title": "Dance Basics",
+      "description": "The perfect introduction for the little ones: a playful and educational experience that develops coordination, musicality and love for dance.",
+      "level": "Kids"
+    },
+    "modernDance": {
+      "title": "Modern Dance",
+      "description": "For those who want to move to the rhythm of the latest trends: technique and creativity blend into dynamic and engaging choreographies.",
+      "level": "All Levels"
+    },
+    "hipHop": {
+      "title": "Hip-Hop",
+      "description": "Unleash your energy and style! Our course will immerse you in urban culture, teaching you spectacular and unique moves.",
+      "level": "All Levels"
+    },
+    "choreography": {
+      "title": "Choreography Workshop",
+      "description": "Collaborate in creating unique choreographies, expressing your personality and improving your expressive and artistic abilities.",
+      "level": "All Levels"
+    },
+    "cta": "Contact Us"
   },
   "personalTraining": {
     "title": "Personal Training",
@@ -140,9 +157,9 @@
   "location": {
     "title": "Visit Our Gym",
     "subtitle": "Find our address, opening hours and directions to plan your visit",
-    "address": "Via Grisolera",
-    "city": "30013 Cavallino-Treporti VE, newbodyline2",
-    "phone": "+39 041 0000000",
+    "address": "Via Grisolera 33",
+    "city": "30013 Cavallino-Treporti VE",
+    "phone": "+39 347 963 3983",
     "email": "info@newbodyline2.com",
     "hours": {
       "title": "Opening Hours",
@@ -181,7 +198,7 @@
     }
   },
   "footer": {
-    "tagline": "Transform your body, elevate your life.",
+    "tagline": "A family where the common goal is to improve.",
     "rights": "All rights reserved."
   },
   "manage": {

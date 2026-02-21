@@ -1,12 +1,12 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { Dumbbell, Users, Zap, Clock } from 'lucide-react'
+import { Home, Users, Heart, Sparkles } from 'lucide-react'
 
 const features = [
   {
     key: 'equipment',
-    icon: Dumbbell,
+    icon: Home,
   },
   {
     key: 'trainers',
@@ -14,11 +14,11 @@ const features = [
   },
   {
     key: 'atmosphere',
-    icon: Zap,
+    icon: Heart,
   },
   {
     key: 'hours',
-    icon: Clock,
+    icon: Sparkles,
   },
 ]
 
@@ -31,7 +31,7 @@ export default function Features() {
         {/* Section Header */}
         <div className="text-center mb-16 animate-in fade-in slide-in-from-top-4 duration-600">
           <span className="text-[#dc2626] text-sm font-semibold uppercase tracking-wider mb-4 block">
-            Features
+            About
           </span>
           <h2 className="text-4xl sm:text-5xl font-bold text-[#fafafa] mb-4">
             {t('title')}

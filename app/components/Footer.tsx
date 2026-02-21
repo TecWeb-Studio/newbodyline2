@@ -2,32 +2,25 @@
 
 import { useI18n } from '@/app/contexts/I18nContext'
 import { Link } from '@/app/i18n/navigation'
-import { Instagram, Twitter, Facebook, Youtube, MapPin, Phone, Mail, Lock } from 'lucide-react'
+import { Instagram, Facebook, MapPin, Phone, Mail, Lock, MessageCircle } from 'lucide-react'
 
 export default function Footer() {
   const { t } = useI18n()
   const currentYear = new Date().getFullYear()
 
   const footerLinks = {
-    company: [
-      { label: 'About Us', href: '#' },
-      { label: 'Careers', href: '#' },
-      { label: 'Press', href: '#' },
-      { label: 'Blog', href: '#' },
-    ],
-    support: [
-      { label: 'Help Center', href: '#' },
-      { label: 'Contact Us', href: '#' },
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Service', href: '#' },
+    quickLinks: [
+      { label: t('nav.home'), href: '/' },
+      { label: t('nav.courses'), href: '/courses' },
+      { label: t('nav.personalTraining'), href: '/personal-training' },
+      { label: t('nav.location'), href: '/location' },
     ],
   }
 
   const socialLinks = [
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Youtube, href: '#', label: 'YouTube' },
+    { icon: Instagram, href: 'https://www.instagram.com/newbodyline2/', label: 'Instagram' },
+    { icon: Facebook, href: 'https://www.facebook.com/p/New-Body-Line-2-100063828272330/', label: 'Facebook' },
+    { icon: MessageCircle, href: 'https://wa.me/3479633983', label: 'WhatsApp' },
   ]
 
   return (
@@ -45,6 +38,7 @@ export default function Footer() {
                 NEWBODYLINE<span className="text-[#dc2626]">2</span>
               </span>
             </Link>
+            <p className="text-[#a1a1aa] text-sm mb-2">Not Only Fitness</p>
             <p className="text-[#a1a1aa] mb-6 leading-relaxed">
               {t('footer.tagline')}
             </p>
@@ -66,37 +60,31 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Company Links */}
+          {/* Quick Links */}
           <div>
-            <h4 className="text-[#fafafa] font-semibold mb-6">Company</h4>
+            <h4 className="text-[#fafafa] font-semibold mb-6">{t('nav.home')}</h4>
             <ul className="space-y-4">
-              {footerLinks.company.map((link) => (
+              {footerLinks.quickLinks.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Support Links */}
+          {/* Opening Hours */}
           <div>
-            <h4 className="text-[#fafafa] font-semibold mb-6">Support</h4>
+            <h4 className="text-[#fafafa] font-semibold mb-6">{t('location.hours.title')}</h4>
             <ul className="space-y-4">
-              {footerLinks.support.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li className="text-[#a1a1aa] text-sm">{t('location.hours.monWedFri')}</li>
+              <li className="text-[#a1a1aa] text-sm">{t('location.hours.tueThu')}</li>
+              <li className="text-[#a1a1aa] text-sm">{t('location.hours.saturday')}</li>
+              <li className="text-[#a1a1aa] text-sm">{t('location.hours.sunday')}</li>
             </ul>
           </div>
 

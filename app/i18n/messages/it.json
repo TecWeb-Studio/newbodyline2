@@ -1,44 +1,44 @@
 {
   "metadata": {
-    "title": "NEWBODYLINE2 - Trasforma il Tuo Corpo, Eleva la Tua Vita",
-    "description": "Centro fitness premium con attrezzature all'avanguardia, trainer esperti ed esperienze di allenamento trasformative."
+    "title": "New Body Line 2 - Una famiglia dove l'obbiettivo comune è migliorare",
+    "description": "Palestra a Cavallino-Treporti con personale preparato, corsi di fitness e danza, e un ambiente accogliente per il tuo benessere."
   },
   "nav": {
     "home": "Home",
     "courses": "Corsi",
     "personalTraining": "Personal Training",
     "location": "Dove Siamo",
-    "joinNow": "Unisciti Ora",
+    "joinNow": "Contattaci",
     "changingLanguage": "Cambio lingua in corso...",
     "selectLanguage": "Seleziona Lingua"
   },
   "hero": {
-    "tagline": "Benvenuto in NEWBODYLINE2",
-    "title": "Trasforma il Tuo Corpo",
-    "titleAccent": "Eleva la Tua Vita",
-    "description": "Scopri il fitness premium con attrezzature all'avanguardia, trainer esperti e una community che ti spinge a dare il massimo.",
-    "ctaPrimary": "Inizia il Tuo Percorso",
-    "ctaSecondary": "Vedi i Corsi",
+    "tagline": "Benvenuto in New Body Line 2",
+    "title": "Una famiglia dove",
+    "titleAccent": "l'obbiettivo comune è migliorare",
+    "description": "In New Body Line 2 troverai un personale preparato pronto a guidarti qualunque sia il percorso da te intrapreso e facendoti comprendere l'importanza del mondo del fitness e del benessere personale.",
+    "ctaPrimary": "Scopri i Nostri Corsi",
+    "ctaSecondary": "Dove Siamo",
     "scrollLabel": "Esplora"
   },
   "features": {
-    "title": "Perché Sceglierci",
-    "subtitle": "Tutto ciò di cui hai bisogno per raggiungere i tuoi obiettivi fitness",
+    "title": "Chi Siamo",
+    "subtitle": "Benvenuto nella tua palestra a Cavallino-Treporti!",
     "equipment": {
-      "title": "Attrezzature Premium",
-      "description": "Macchinari all'avanguardia e pesi liberi delle migliori marche"
+      "title": "Più di una Palestra",
+      "description": "Situata in via Grisolera 33, la nostra è un luogo dove salute, benessere e passione per il movimento si incontrano."
     },
     "trainers": {
-      "title": "Trainer Esperti",
-      "description": "Professionisti certificati dedicati al tuo successo"
+      "title": "Ambiente Accogliente",
+      "description": "Un ambiente professionale e dinamico, pensato per aiutarti a raggiungere i tuoi obiettivi personali."
     },
     "atmosphere": {
-      "title": "Atmosfera Energica",
-      "description": "Ambiente motivante che ti spinge a eccellere"
+      "title": "Una Comunità",
+      "description": "Uno staff sempre pronto ad accoglierti con un sorriso: i tuoi progressi sono il nostro primo obiettivo."
     },
     "hours": {
-      "title": "Accesso 24/7",
-      "description": "Allenati secondo i tuoi orari con accesso continuo"
+      "title": "Il Tuo Benessere",
+      "description": "Ogni dettaglio è pensato per il tuo benessere. Vieni a trovarci, ti aspettiamo!"
     }
   },
   "stats": {
@@ -49,44 +49,61 @@
   },
   "courses": {
     "title": "I Nostri Corsi",
-    "subtitle": "Trova l'allenamento perfetto per i tuoi obiettivi",
-    "strength": {
-      "title": "Allenamento Forza",
-      "description": "Sviluppa muscoli e aumenta la potenza con i nostri programmi completi",
-      "duration": "60 min",
+    "subtitle": "Tutti i corsi sono pensati per adattarsi alle tue esigenze e ai tuoi obiettivi! Scopri la nostra ampia offerta e unisciti al percorso che fa per te.",
+    "fitnessSection": "Corsi Fitness",
+    "danceSection": "Corsi di Danza",
+    "danceSubtitle": "Scopri la tua passione per la danza: i nostri corsi ti aspettano! Le nostre due sale danza stanno aspettando solo te!",
+    "pilates": {
+      "title": "Pilates",
+      "description": "Ritrova equilibrio, forza e flessibilità con il Pilates, un allenamento che unisce corpo e mente attraverso movimenti controllati e precisi. Ideale per migliorare postura e tonicità muscolare.",
       "level": "Tutti i Livelli"
     },
-    "cardio": {
-      "title": "Cardio Intenso",
-      "description": "Sessioni cardio ad alta energia per migliorare resistenza e bruciare calorie",
-      "duration": "45 min",
+    "kickboxing": {
+      "title": "Kickboxing",
+      "description": "Sfoga lo stress e migliora resistenza, forza e coordinazione in un corso dinamico che combina tecniche di boxe e arti marziali. Disponibile anche per bambini: un'attività sicura e divertente che insegna disciplina e autocontrollo.",
+      "level": "Tutti i Livelli"
+    },
+    "circuit": {
+      "title": "Circuit Training",
+      "description": "Allenati in modo completo con i nostri circuiti, che combinano esercizi aerobici e di resistenza per migliorare forza, velocità e agilità.",
       "level": "Intermedio"
     },
-    "hiit": {
-      "title": "HIIT",
-      "description": "Allenamento a intervalli ad alta intensità per risultati massimi in tempo minimo",
-      "duration": "30 min",
-      "level": "Avanzato"
-    },
-    "yoga": {
-      "title": "Power Yoga",
-      "description": "Combina forza, flessibilità e consapevolezza in una sola sessione",
-      "duration": "60 min",
-      "level": "Tutti i Livelli"
-    },
-    "boxing": {
-      "title": "Fitness Boxe",
-      "description": "Impara le tecniche di boxe mentre fai un allenamento incredibile",
-      "duration": "50 min",
-      "level": "Tutti i Livelli"
-    },
-    "pilates": {
-      "title": "Pilates Core",
-      "description": "Rafforza il core e migliora la postura con movimenti controllati",
-      "duration": "45 min",
+    "lowImpact": {
+      "title": "Circuito Low Impact Strutturale",
+      "description": "Un percorso dolce ma efficace, pensato per chi vuole allenarsi senza sovraccaricare le articolazioni. Perfetto per il recupero o per chi desidera un approccio meno intenso.",
       "level": "Principiante"
     },
-    "cta": "Unisciti a Questo Corso"
+    "spinning": {
+      "title": "Spinning",
+      "description": "Sali in sella e pedala verso il massimo della forma fisica! Le nostre sessioni di spinning sono adatte a tutti i livelli, per migliorare resistenza cardiovascolare e bruciare calorie.",
+      "level": "Tutti i Livelli"
+    },
+    "posturale": {
+      "title": "Ginnastica Posturale",
+      "description": "Prenditi cura del tuo corpo con esercizi mirati a correggere la postura, migliorare l'equilibrio e alleviare le tensioni muscolari. Ideale per chi soffre di dolori cronici o desidera prevenire problemi futuri.",
+      "level": "Tutti i Livelli"
+    },
+    "propedeutica": {
+      "title": "Propedeutica",
+      "description": "L'introduzione perfetta per i più piccoli: un'esperienza ludica e formativa che sviluppa coordinazione, musicalità e amore per la danza.",
+      "level": "Bambini"
+    },
+    "modernDance": {
+      "title": "Danza Moderna",
+      "description": "Per chi desidera muoversi al ritmo delle tendenze più attuali: tecnica e creatività si fondono in coreografie dinamiche e coinvolgenti.",
+      "level": "Tutti i Livelli"
+    },
+    "hipHop": {
+      "title": "Hip-Hop",
+      "description": "Scatenati con energia e stile! Il nostro corso ti immergerà nella cultura urbana, insegnandoti movimenti spettacolari e unici.",
+      "level": "Tutti i Livelli"
+    },
+    "choreography": {
+      "title": "Laboratorio Coreografico",
+      "description": "Collabora alla creazione di coreografie uniche, esprimendo la tua personalità e migliorando le tue capacità espressive e artistiche.",
+      "level": "Tutti i Livelli"
+    },
+    "cta": "Contattaci"
   },
   "personalTraining": {
     "title": "Personal Training",
@@ -140,9 +157,9 @@
   "location": {
     "title": "La Nostra Sede",
     "subtitle": "Scopri la nostra sede, gli orari di apertura e come raggiungerci per la tua visita",
-    "address": "Via Grisolera",
-    "city": "30013 Cavallino-Treporti VE, newbodyline2",
-    "phone": "+39 041 0000000",
+    "address": "Via Grisolera 33",
+    "city": "30013 Cavallino-Treporti VE",
+    "phone": "+39 347 963 3983",
     "email": "info@newbodyline2.it",
     "hours": {
       "title": "Orari di Apertura",
@@ -181,7 +198,7 @@
     }
   },
   "footer": {
-    "tagline": "Trasforma il tuo corpo, eleva la tua vita.",
+    "tagline": "Una famiglia dove l'obbiettivo comune è migliorare.",
     "rights": "Tutti i diritti riservati."
   },
   "manage": {
