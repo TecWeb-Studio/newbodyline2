@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLocale } from 'next-intl'
 
 interface Props {
   value: string        // ISO date  yyyy-mm-dd  or ''
@@ -12,11 +13,18 @@ interface Props {
   accent?: 'red' | 'amber'
 }
 
-const DAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-const MONTHS = [
-  'January','February','March','April','May','June',
-  'July','August','September','October','November','December',
-]
+function getDaysShort(locale: string): string[] {
+  const base = new Date(2024, 0, 1) // Monday
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(base)
+    d.setDate(d.getDate() + i)
+    return d.toLocaleDateString(locale, { weekday: 'short' }).slice(0, 2)
+  })
+}
+
+function getMonthName(month: number, locale: string): string {
+  return new Date(2024, month, 1).toLocaleDateString(locale, { month: 'long' })
+}
 
 function isoToLocal(iso: string): Date {
   const [y, m, d] = iso.split('-').map(Number)
@@ -33,6 +41,11 @@ export default function BookingCalendar({
   maxDate,
   accent = 'red',
 }: Props) {
+  const locale = useLocale()
+  const localeMap: Record<string, string> = { it: 'it-IT', en: 'en-US', de: 'de-DE' }
+  const dateLocale = localeMap[locale] || locale
+  const DAYS_SHORT = getDaysShort(dateLocale)
+
   const todayISO = toISO(new Date())
   const min = minDate ?? todayISO
   const max = maxDate ?? (() => {
@@ -106,8 +119,8 @@ export default function BookingCalendar({
           <ChevronLeft className={`w-4 h-4 ${headerText}`} />
         </button>
 
-        <span className={`font-semibold text-sm ${headerText}`}>
-          {MONTHS[viewMonth]} {viewYear}
+        <span className={`font-semibold text-sm ${headerText} capitalize`}>
+          {getMonthName(viewMonth, dateLocale)} {viewYear}
         </span>
 
         <button
@@ -169,8 +182,8 @@ export default function BookingCalendar({
 
       {/* Selected date label */}
       {value && (
-        <p className={`mt-3 text-xs text-center ${accentText} font-medium`}>
-          {isoToLocal(value).toLocaleDateString('en-US', {
+        <p className={`mt-3 text-xs text-center ${accentText} font-medium capitalize`}>
+          {isoToLocal(value).toLocaleDateString(dateLocale, {
             weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
           })}
         </p>

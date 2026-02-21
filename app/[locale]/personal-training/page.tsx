@@ -103,9 +103,9 @@ export default function PersonalTrainingPage() {
         clientPhone: formData.phone.trim(),
       });
       setBookingSuccess(true);
-      toast('Your session has been booked successfully!');
+      toast(t('booking.successToast'));
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Booking failed. Please try again.';
+      const msg = err instanceof Error ? err.message : t('booking.failedToast');
       setBookingError(msg);
       toast(msg, 'error');
     } finally {
@@ -418,8 +418,8 @@ export default function PersonalTrainingPage() {
                           ) : trainerOnVacation ? (
                             <div className="text-center py-8">
                               <Palmtree className="w-10 h-10 text-orange-500 mx-auto mb-3" />
-                              <p className="text-[#fafafa] font-medium mb-1">Trainer on vacation</p>
-                              <p className="text-[#71717a] text-sm">This trainer is not available on the selected date. Please choose another date.</p>
+                              <p className="text-[#fafafa] font-medium mb-1">{t('booking.trainerOnVacation')}</p>
+                              <p className="text-[#71717a] text-sm">{t('booking.trainerOnVacationDesc')}</p>
                             </div>
                           ) : (
                             <p className="text-[#a1a1aa] text-center py-8">

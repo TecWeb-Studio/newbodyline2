@@ -30,7 +30,7 @@ export default function LocationPage() {
               className="text-center"
             >
               <span className="text-[#dc2626] text-sm font-semibold uppercase tracking-wider mb-4 block">
-                Location
+                {t('location.sectionLabel')}
               </span>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#fafafa] mb-6">
                 {t('location.title')}
@@ -75,7 +75,7 @@ export default function LocationPage() {
                       <Phone className="w-6 h-6 text-[#dc2626]" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-[#fafafa] mb-2">Contact</h3>
+                      <h3 className="text-xl font-semibold text-[#fafafa] mb-2">{t('location.contact')}</h3>
                       <a href={`tel:${t('location.phone').replace(/\s/g, '')}`} className="text-[#a1a1aa] hover:text-[#dc2626] transition-colors block mb-1">
                         {t('location.phone')}
                       </a>
@@ -118,15 +118,15 @@ export default function LocationPage() {
 
                 {/* Getting Here */}
                 <div className="bg-[#0a0a0a] border border-[#27272a] rounded-2xl p-8">
-                  <h3 className="text-xl font-semibold text-[#fafafa] mb-4">Getting Here</h3>
+                  <h3 className="text-xl font-semibold text-[#fafafa] mb-4">{t('location.gettingHere')}</h3>
                   <div className="space-y-4">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-[#27272a] flex items-center justify-center">
                         <Car className="w-5 h-5 text-[#dc2626]" />
                       </div>
                       <div>
-                        <p className="text-[#fafafa] font-medium">By Car</p>
-                        <p className="text-[#a1a1aa] text-sm">Free parking available</p>
+                        <p className="text-[#fafafa] font-medium">{t('location.byCar')}</p>
+                        <p className="text-[#a1a1aa] text-sm">{t('location.freeParking')}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -134,8 +134,8 @@ export default function LocationPage() {
                         <Train className="w-5 h-5 text-[#dc2626]" />
                       </div>
                       <div>
-                        <p className="text-[#fafafa] font-medium">By Public Transit</p>
-                        <p className="text-[#a1a1aa] text-sm">Metro Line 4 - Fitness Station</p>
+                        <p className="text-[#fafafa] font-medium">{t('location.byTransit')}</p>
+                        <p className="text-[#a1a1aa] text-sm">{t('location.transitInfo')}</p>
                       </div>
                     </div>
                   </div>
@@ -203,7 +203,7 @@ export default function LocationPage() {
                       className="flex items-center justify-center gap-2 w-full py-3 bg-[#dc2626] hover:bg-[#b91c1c] text-white font-medium rounded-xl transition-colors"
                     >
                       <Navigation className="w-5 h-5" />
-                      Get Directions
+                      {t('location.getDirections')}
                     </a>
                   </div>
                 </div>
@@ -227,13 +227,13 @@ export default function LocationPage() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#fafafa] mb-6">
-                Visit Us Today
+                {t('location.ctaTitle')}
               </h2>
               <p className="text-lg text-[#a1a1aa] mb-8 max-w-2xl mx-auto">
-                Come experience our state-of-the-art facility and meet our team. Your first session is on us!
+                {t('location.ctaDescription')}
               </p>
               <Link href="/personal-training" className="btn-primary text-lg px-8 py-4">
-                Book a Free Trial
+                {t('location.ctaPrimary')}
               </Link>
             </motion.div>
           </div>

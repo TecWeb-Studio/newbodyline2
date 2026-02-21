@@ -31,7 +31,7 @@ export default function Features() {
         {/* Section Header */}
         <div className="text-center mb-16 animate-in fade-in slide-in-from-top-4 duration-600">
           <span className="text-[#dc2626] text-sm font-semibold uppercase tracking-wider mb-4 block">
-            About
+            {t('sectionLabel')}
           </span>
           <h2 className="text-4xl sm:text-5xl font-bold text-[#fafafa] mb-4">
             {t('title')}

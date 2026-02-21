@@ -62,7 +62,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-[#fafafa] font-semibold mb-6">{t('nav.home')}</h4>
+            <h4 className="text-[#fafafa] font-semibold mb-6">{t('footer.quickLinks')}</h4>
             <ul className="space-y-4">
               {footerLinks.quickLinks.map((link) => (
                 <li key={link.label}>
@@ -90,7 +90,7 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-[#fafafa] font-semibold mb-6">Contact</h4>
+            <h4 className="text-[#fafafa] font-semibold mb-6">{t('footer.contact')}</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-[#dc2626] mt-0.5 shrink-0" />
@@ -122,20 +122,20 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-6">
               <Link href="/courses" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
-                Courses
+                {t('nav.courses')}
               </Link>
               <Link href="/personal-training" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
-                Personal Training
+                {t('nav.personalTraining')}
               </Link>
               <Link href="/location" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
-                Location
+                {t('nav.location')}
               </Link>
               <Link 
                 href="/admin" 
                 className="flex items-center gap-1.5 text-[#71717a] hover:text-[#dc2626] text-sm transition-colors"
               >
                 <Lock className="w-3 h-3" />
-                Staff
+                {t('footer.staff')}
               </Link>
             </div>
           </div>

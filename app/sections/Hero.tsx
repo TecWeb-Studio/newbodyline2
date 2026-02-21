@@ -62,14 +62,14 @@ export default function Hero() {
           {/* Stats Preview */}
           <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto animate-in fade-in slide-in-from-top-4 duration-600 delay-500">
             {[
-              { value: '10K+', label: 'Members' },
-              { value: '50+', label: 'Classes/Week' },
-              { value: '25+', label: 'Trainers' },
-              { value: '15', label: 'Years' },
+              { value: '10K+', labelKey: 'stats.members' },
+              { value: '50+', labelKey: 'stats.classes' },
+              { value: '25+', labelKey: 'stats.trainers' },
+              { value: '15', labelKey: 'stats.years' },
             ].map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl sm:text-4xl font-bold text-[#fafafa] mb-1">{stat.value}</div>
-                <div className="text-sm text-[#71717a]">{stat.label}</div>
+                <div className="text-sm text-[#71717a]">{t(stat.labelKey)}</div>
               </div>
             ))}
           </div>
