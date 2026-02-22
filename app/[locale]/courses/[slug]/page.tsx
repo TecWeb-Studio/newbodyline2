@@ -11,7 +11,7 @@ import {
   ArrowLeft, ArrowRight, Clock, Flame, CalendarDays,
   Backpack, Users, ChevronRight, Sparkles, Target, Star,
 } from 'lucide-react'
-import { getCourseBySlug, getRelatedCourses, levelColors, type CourseData } from '@/lib/courses'
+import { getCourseBySlug, getRelatedCourses, levelColors } from '@/lib/courses'
 
 /* ------------------------------------------------------------------ */
 /*  Intensity visual bar                                               */
@@ -61,7 +61,7 @@ function BenefitCard({ index, title, description, accentColor }: {
       <h4 className="text-lg font-bold text-[#fafafa] mb-2">{title}</h4>
       <p className="text-sm text-[#a1a1aa] leading-relaxed">{description}</p>
       {/* Subtle glow on hover */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-white/2 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </motion.div>
   )
 }
@@ -128,8 +128,8 @@ export default function CourseDetailPage() {
         <section ref={heroRef} className="relative py-28 sm:py-40 overflow-hidden">
           {/* Background layers */}
           <div className="absolute inset-0 bg-[#0a0a0a]">
-            <div className={`absolute top-0 left-1/3 w-[600px] h-[600px] bg-gradient-to-br ${course.color} rounded-full blur-[200px] opacity-40 animate-pulse`} />
-            <div className={`absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-tl ${course.color} rounded-full blur-[160px] opacity-20 animate-pulse`} style={{ animationDelay: '2s' }} />
+            <div className={`absolute top-0 left-1/3 w-150 h-150 bg-linear-to-br ${course.color} rounded-full blur-[200px] opacity-40 animate-pulse`} />
+            <div className={`absolute bottom-0 right-1/4 w-100 h-100 bg-linear-to-tl ${course.color} rounded-full blur-[160px] opacity-20 animate-pulse`} style={{ animationDelay: '2s' }} />
             <div
               className="absolute inset-0 opacity-[0.025]"
               style={{
@@ -207,7 +207,7 @@ export default function CourseDetailPage() {
                 <div className={`relative w-40 h-40 rounded-3xl ${course.accent} border flex items-center justify-center`}>
                   <Icon className={`w-20 h-20 ${course.iconColor}`} />
                   {/* Decorative ring */}
-                  <div className={`absolute -inset-3 rounded-[2rem] border ${course.accent.replace('bg-', 'border-')} opacity-30`} />
+                  <div className={`absolute -inset-3 rounded-4xl border ${course.accent.replace('bg-', 'border-')} opacity-30`} />
                   <div className={`absolute -inset-6 rounded-[2.5rem] border ${course.accent.replace('bg-', 'border-')} opacity-10`} />
                 </div>
               </motion.div>
@@ -217,7 +217,7 @@ export default function CourseDetailPage() {
 
         {/* ─── LONG DESCRIPTION ─── */}
         <section className="py-20 sm:py-28 bg-[#111111] relative">
-          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-[#dc2626]/20 to-transparent" />
+          <div className="absolute top-0 left-0 w-1 h-full bg-linear-to-b from-transparent via-[#dc2626]/20 to-transparent" />
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -234,7 +234,7 @@ export default function CourseDetailPage() {
 
         {/* ─── BENEFITS ─── */}
         <section className="py-20 sm:py-28 bg-[#0a0a0a] relative overflow-hidden">
-          <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#dc2626]/3 rounded-full blur-[200px]" />
+          <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-125 h-125 bg-[#dc2626]/3 rounded-full blur-[200px]" />
 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
@@ -295,7 +295,7 @@ export default function CourseDetailPage() {
 
         {/* ─── PRACTICAL INFO ─── */}
         <section className="py-20 sm:py-28 bg-[#0a0a0a] relative overflow-hidden">
-          <div className="absolute right-0 top-0 w-[400px] h-[400px] bg-[#dc2626]/3 rounded-full blur-[200px]" />
+          <div className="absolute right-0 top-0 w-100 h-100 bg-[#dc2626]/3 rounded-full blur-[200px]" />
 
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
@@ -327,7 +327,7 @@ export default function CourseDetailPage() {
                     className="bg-[#111111] rounded-2xl p-6 border border-[#27272a]"
                   >
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 border border-[#dc2626]/20 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 border border-[#dc2626]/20 flex items-center justify-center shrink-0">
                         <ItemIcon className="w-5 h-5 text-[#dc2626]" />
                       </div>
                       <span className="text-sm font-semibold text-[#a1a1aa] uppercase tracking-wider">{item.label}</span>
@@ -363,9 +363,9 @@ export default function CourseDetailPage() {
 
         {/* ─── CTA ─── */}
         <section className="py-28 sm:py-36 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/15 via-[#0a0a0a] to-[#dc2626]/10" />
+          <div className="absolute inset-0 bg-linear-to-br from-[#dc2626]/15 via-[#0a0a0a] to-[#dc2626]/10" />
           <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#dc2626]/8 rounded-full blur-[200px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-175 h-175 bg-[#dc2626]/8 rounded-full blur-[200px]" />
           </div>
           {/* Floating particles */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -439,7 +439,7 @@ export default function CourseDetailPage() {
                         transition={{ duration: 0.4 }}
                         className="relative bg-[#0a0a0a] rounded-2xl overflow-hidden border border-[#27272a] hover:border-[#3f3f46] transition-all duration-300"
                       >
-                        <div className={`h-1.5 w-full bg-gradient-to-r ${rc.color}`} />
+                        <div className={`h-1.5 w-full bg-linear-to-r ${rc.color}`} />
                         <div className="p-6">
                           <div className={`w-12 h-12 rounded-xl ${rc.accent} border flex items-center justify-center mb-4`}>
                             <RcIcon className={`w-6 h-6 ${rc.iconColor}`} />

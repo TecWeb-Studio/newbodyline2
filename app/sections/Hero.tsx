@@ -3,14 +3,30 @@
 import { useI18n } from '@/app/contexts/I18nContext'
 import { Link } from '@/app/i18n/navigation'
 import { ArrowRight, MapPin } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Hero() {
   const { t } = useI18n()
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Effects */}
+      {/* Background Image */}
       <div className="absolute inset-0 bg-[#0a0a0a]">
+        <Image
+          src="/images/hero-gym.jpg"
+          alt="New Body Line 2 - Palestra"
+          fill
+          className="object-cover object-center"
+          priority
+          sizes="100vw"
+          onError={(e) => { e.currentTarget.style.display = 'none' }}
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-[#0a0a0a]/70" />
+      </div>
+
+      {/* Background Effects (on top of image) */}
+      <div className="absolute inset-0">
         {/* Gradient Orbs */}
         <div className="hidden md:block absolute top-1/4 left-1/4 w-72 h-72 bg-[#dc2626]/20 rounded-full blur-[60px] animate-pulse" />
         <div className="hidden md:block absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#dc2626]/10 rounded-full blur-[50px] animate-pulse" style={{ animationDelay: '1s' }} />
@@ -30,7 +46,7 @@ export default function Hero() {
         <div className="text-center">
           {/* Tagline */}
           <div className="animate-in fade-in slide-in-from-top-4 duration-600">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#dc2626]/10 border border-[#dc2626]/20 text-[#dc2626] text-sm font-medium mb-8">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#dc2626]/10 border border-[#dc2626]/20 text-[#dc2626] text-sm font-medium mb-8 backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-[#dc2626] animate-pulse" />
               {t('hero.tagline')}
             </span>

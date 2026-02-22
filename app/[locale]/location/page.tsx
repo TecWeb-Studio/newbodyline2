@@ -5,7 +5,7 @@ import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
 import { useI18n } from '@/app/contexts/I18nContext'
 import { motion } from 'framer-motion'
-import { MapPin, Phone, Mail, Clock, Navigation, Car, Train } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Navigation, Car } from 'lucide-react'
 
 export default function LocationPage() {
   const { t } = useI18n()
@@ -129,15 +129,6 @@ export default function LocationPage() {
                         <p className="text-[#a1a1aa] text-sm">{t('location.freeParking')}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-[#27272a] flex items-center justify-center">
-                        <Train className="w-5 h-5 text-[#dc2626]" />
-                      </div>
-                      <div>
-                        <p className="text-[#fafafa] font-medium">{t('location.byTransit')}</p>
-                        <p className="text-[#a1a1aa] text-sm">{t('location.transitInfo')}</p>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -152,7 +143,7 @@ export default function LocationPage() {
               >
                 <div className="sticky top-24 bg-[#0a0a0a] border border-[#27272a] rounded-2xl overflow-hidden">
                   {/* Map Placeholder - In production, use Google Maps or similar */}
-                  <div className="aspect-[4/3] lg:aspect-auto lg:h-[600px] bg-[#111111] relative flex items-center justify-center">
+                  <div className="aspect-4/3 lg:aspect-auto lg:h-150 bg-[#111111] relative flex items-center justify-center">
                     {/* Decorative Map Background */}
                     <div className="absolute inset-0 opacity-20">
                       <svg className="w-full h-full" viewBox="0 0 400 400">
@@ -214,9 +205,9 @@ export default function LocationPage() {
 
         {/* CTA Section */}
         <section className="py-24 sm:py-32 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/20 to-[#0a0a0a]" />
+          <div className="absolute inset-0 bg-linear-to-br from-[#dc2626]/20 to-[#0a0a0a]" />
           <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#dc2626]/10 rounded-full blur-[150px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-[#dc2626]/10 rounded-full blur-[150px]" />
           </div>
 
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

@@ -34,7 +34,7 @@ function CourseCard({ course, index, t }: { course: CourseData, index: number, t
         className="relative bg-[#0a0a0a] rounded-2xl overflow-hidden origin-center will-change-transform"
       >
         {/* Top gradient band */}
-        <div className={`h-1.5 w-full bg-gradient-to-r ${course.color}`} />
+        <div className={`h-1.5 w-full bg-linear-to-r ${course.color}`} />
         
         <div className="p-7">
           {/* Header row */}
@@ -72,7 +72,7 @@ function CourseCard({ course, index, t }: { course: CourseData, index: number, t
         </div>
 
         {/* Hover shimmer */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-br from-white/2 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       </motion.div>
     </motion.div>
   )
@@ -95,9 +95,9 @@ export default function CoursesPage() {
         {/* Hero with parallax */}
         <section ref={heroRef} className="relative py-28 sm:py-36 overflow-hidden">
           <div className="absolute inset-0 bg-[#0a0a0a]">
-            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#dc2626]/8 rounded-full blur-[180px] animate-pulse" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#dc2626]/5 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '1.5s' }} />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#dc2626]/3 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '3s' }} />
+            <div className="absolute top-0 left-1/4 w-125 h-125 bg-[#dc2626]/8 rounded-full blur-[180px] animate-pulse" />
+            <div className="absolute bottom-0 right-1/4 w-100 h-100 bg-[#dc2626]/5 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '1.5s' }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-75 h-75 bg-[#dc2626]/3 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '3s' }} />
             <div
               className="absolute inset-0 opacity-[0.03]"
               style={{
@@ -135,7 +135,7 @@ export default function CoursesPage() {
 
         {/* Fitness Courses */}
         <section className="py-20 sm:py-28 bg-[#111111] relative">
-          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-[#dc2626]/20 to-transparent" />
+          <div className="absolute top-0 left-0 w-1 h-full bg-linear-to-b from-transparent via-[#dc2626]/20 to-transparent" />
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -153,7 +153,7 @@ export default function CoursesPage() {
                   {t('fitnessSection')}
                 </h2>
               </div>
-              <div className="h-px sm:h-auto sm:w-px flex-1 bg-gradient-to-r sm:bg-gradient-to-b from-transparent via-[#27272a] to-transparent" />
+              <div className="h-px sm:h-auto sm:w-px flex-1 bg-linear-to-r sm:bg-linear-to-b from-transparent via-[#27272a] to-transparent" />
               <p className="text-[#a1a1aa] max-w-sm text-sm leading-relaxed">
                 {t('subtitle')}
               </p>
@@ -169,7 +169,7 @@ export default function CoursesPage() {
 
         {/* Dance Courses */}
         <section className="py-20 sm:py-28 bg-[#0a0a0a] relative overflow-hidden">
-          <div className="absolute -right-32 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#dc2626]/3 rounded-full blur-[200px]" />
+          <div className="absolute -right-32 top-1/2 -translate-y-1/2 w-125 h-125 bg-[#dc2626]/3 rounded-full blur-[200px]" />
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -201,9 +201,9 @@ export default function CoursesPage() {
 
         {/* CTA Section */}
         <section className="py-28 sm:py-36 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/15 via-[#0a0a0a] to-[#dc2626]/10" />
+          <div className="absolute inset-0 bg-linear-to-br from-[#dc2626]/15 via-[#0a0a0a] to-[#dc2626]/10" />
           <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#dc2626]/8 rounded-full blur-[200px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-175 h-175 bg-[#dc2626]/8 rounded-full blur-[200px]" />
           </div>
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {[...Array(6)].map((_, i) => (

@@ -81,7 +81,7 @@ export default function AdminTrainersPage() {
   useEffect(() => {
     const auth = localStorage.getItem('admin-auth')
     if (auth !== 'true') {
-      router.push('/admin' as any)
+      router.push('/admin' as string)
       return
     }
     setIsAuthenticated(true)
@@ -268,7 +268,7 @@ export default function AdminTrainersPage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => router.push('/admin/dashboard' as any)}
+                onClick={() => router.push('/admin/dashboard' as string)}
                 className="p-2 hover:bg-[#27272a] rounded-lg transition-colors"
               >
                 <ChevronLeft className="w-5 h-5 text-[#a1a1aa]" />
@@ -457,7 +457,7 @@ export default function AdminTrainersPage() {
                           }))
                           setVacationError(null)
                         }}
-                        className="w-full bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2.5 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none [color-scheme:dark]"
+                        className="w-full bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2.5 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none scheme-dark"
                       />
                     </div>
                     <div>
@@ -470,7 +470,7 @@ export default function AdminTrainersPage() {
                           setNewVacation(v => ({ ...v, endDate: e.target.value }))
                           setVacationError(null)
                         }}
-                        className="w-full bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2.5 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none [color-scheme:dark]"
+                        className="w-full bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2.5 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none scheme-dark"
                       />
                     </div>
                     <div>

@@ -31,7 +31,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center">
                 <span className="text-white font-bold text-lg">N</span>
               </div>
               <span className="text-xl font-bold tracking-tight">

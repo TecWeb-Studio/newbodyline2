@@ -51,7 +51,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
+            <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
               <span className="text-white font-bold text-lg">N</span>
             </div>
             <span className="text-xl font-bold tracking-tight">
