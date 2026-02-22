@@ -3,27 +3,14 @@
 import { useI18n } from '@/app/contexts/I18nContext'
 import { Link } from '@/app/i18n/navigation'
 import { ArrowRight, MapPin } from 'lucide-react'
-import Image from 'next/image'
 
 export default function Hero() {
   const { t } = useI18n()
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 bg-[#0a0a0a]">
-        <Image
-          src="/images/hero-gym.jpg"
-          alt="New Body Line 2 - Palestra"
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="100vw"
-          onError={(e) => { e.currentTarget.style.display = 'none' }}
-        />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-[#0a0a0a]/70" />
-      </div>
+      {/* Background */}
+      <div className="absolute inset-0 bg-[#0a0a0a]" />
 
       {/* Background Effects (on top of image) */}
       <div className="absolute inset-0">
