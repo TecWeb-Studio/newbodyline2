@@ -4,6 +4,7 @@ import {
   notifyCustomerBookingUpdated,
   notifyTrainerBookingUpdated,
 } from '@/lib/whatsapp'
+import { migrateAddBookingStatus } from '@/lib/migrate-add-booking-status'
 
 // ─── GET – Fetch a single booking (by id + email for auth) ───────────────────
 
@@ -20,6 +21,7 @@ export async function GET(
   }
 
   try {
+    await migrateAddBookingStatus()
     const result = await db.execute({
       sql: `SELECT b.*, t.phone as trainer_phone
             FROM bookings b
@@ -46,6 +48,7 @@ export async function GET(
         clientEmail: row.client_email,
         clientPhone: row.client_phone,
         bookedAt: row.booked_at,
+        status: row.status ?? 'confirmed',
       },
     })
   } catch (error) {
@@ -63,6 +66,8 @@ export async function PATCH(
   const { id: bookingId } = await params
 
   try {
+    await migrateAddBookingStatus()
+
     const body = await request.json()
     const { clientEmail, newSlotId, newTrainerId } = body as {
       clientEmail: string
@@ -209,6 +214,7 @@ export async function PATCH(
         clientEmail: current.client_email,
         clientPhone: current.client_phone,
         bookedAt: current.booked_at,
+        status: current.status ?? 'confirmed',
       },
     })
   } catch (error) {

@@ -19,6 +19,8 @@ export interface TimeSlot {
   isBooked: boolean
 }
 
+export type BookingStatus = 'pending' | 'confirmed' | 'rejected'
+
 export interface Booking {
   id: string
   trainerId: string
@@ -30,15 +32,18 @@ export interface Booking {
   clientEmail: string
   clientPhone: string
   bookedAt: string
+  status: BookingStatus
 }
 
 interface BookingContextType {
   bookings: Booking[]
   availableSlots: TimeSlot[]
   trainers: Trainer[]
-  addBooking: (booking: Omit<Booking, 'id' | 'bookedAt'>) => Promise<void>
+  addBooking: (booking: Omit<Booking, 'id' | 'bookedAt' | 'status'>) => Promise<Booking>
   cancelBooking: (bookingId: string) => Promise<void>
   editBooking: (bookingId: string, clientEmail: string, newSlotId: string, newTrainerId?: string) => Promise<Booking>
+  approveBooking: (bookingId: string) => Promise<void>
+  rejectBooking: (bookingId: string) => Promise<void>
   getAvailableSlotsForTrainer: (trainerId: string, date: string) => Promise<{ slots: TimeSlot[]; onVacation: boolean }>
   refreshBookings: () => Promise<void>
   isLoading: boolean
@@ -68,6 +73,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         client_email: string
         client_phone: string
         booked_at: string
+        status?: string
       }) => ({
         id: booking.id,
         trainerId: booking.trainer_id,
@@ -78,7 +84,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         clientName: booking.client_name,
         clientEmail: booking.client_email,
         clientPhone: booking.client_phone,
-        bookedAt: booking.booked_at
+        bookedAt: booking.booked_at,
+        status: (booking.status ?? 'confirmed') as BookingStatus,
       }))
       setBookings(mappedBookings)
     } catch (error) {
@@ -106,7 +113,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     fetchData()
   }, [])
 
-  const addBooking = async (bookingData: Omit<Booking, 'id' | 'bookedAt'>) => {
+  const addBooking = async (bookingData: Omit<Booking, 'id' | 'bookedAt' | 'status'>): Promise<Booking> => {
     try {
       const response = await fetch('/api/bookings', {
         method: 'POST',
@@ -131,7 +138,12 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       }
 
       const data = await response.json()
-      setBookings(prev => [...prev, data.booking])
+      const newBooking: Booking = {
+        ...data.booking,
+        status: data.booking.status ?? 'pending',
+      }
+      setBookings(prev => [...prev, newBooking])
+      return newBooking
     } catch (error) {
       console.error('Error adding booking:', error)
       throw error
@@ -183,10 +195,37 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       clientEmail: data.booking.client_email ?? data.booking.clientEmail,
       clientPhone: data.booking.client_phone ?? data.booking.clientPhone,
       bookedAt: data.booking.booked_at ?? data.booking.bookedAt,
+      status: data.booking.status ?? 'confirmed',
     }
 
     setBookings(prev => prev.map(b => b.id === bookingId ? updated : b))
     return updated
+  }
+
+  const approveBooking = async (bookingId: string) => {
+    const response = await fetch(`/api/admin/bookings/${encodeURIComponent(bookingId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'approve' }),
+    })
+    if (!response.ok) {
+      const data = await response.json()
+      throw new Error(data.error ?? 'Failed to approve booking')
+    }
+    setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'confirmed' as const } : b))
+  }
+
+  const rejectBooking = async (bookingId: string) => {
+    const response = await fetch(`/api/admin/bookings/${encodeURIComponent(bookingId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'reject' }),
+    })
+    if (!response.ok) {
+      const data = await response.json()
+      throw new Error(data.error ?? 'Failed to reject booking')
+    }
+    setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'rejected' as const } : b))
   }
 
   const getAvailableSlotsForTrainer = async (trainerId: string, date: string): Promise<{ slots: TimeSlot[]; onVacation: boolean }> => {
@@ -217,6 +256,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       addBooking,
       cancelBooking,
       editBooking,
+      approveBooking,
+      rejectBooking,
       getAvailableSlotsForTrainer,
       refreshBookings: fetchBookings,
       isLoading

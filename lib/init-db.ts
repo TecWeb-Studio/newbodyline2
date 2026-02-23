@@ -128,6 +128,7 @@ async function initDatabase() {
         client_email TEXT NOT NULL,
         client_phone TEXT NOT NULL,
         booked_at TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'pending',
         FOREIGN KEY (trainer_id) REFERENCES trainers(id),
         FOREIGN KEY (slot_id) REFERENCES time_slots(id)
       )

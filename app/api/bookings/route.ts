@@ -8,6 +8,7 @@ import {
   notifyCustomerBookingCancelled,
   notifyTrainerBookingCancelled,
 } from '@/lib/whatsapp'
+import { migrateAddBookingStatus } from '@/lib/migrate-add-booking-status'
 
 function buildManageUrl(bookingId: string, clientEmail: string): string {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
@@ -17,6 +18,7 @@ function buildManageUrl(bookingId: string, clientEmail: string): string {
 // GET - Ottieni tutte le prenotazioni
 export async function GET() {
   try {
+    await migrateAddBookingStatus()
     const result = await db.execute('SELECT * FROM bookings ORDER BY date, time')
     
     return NextResponse.json({ 
@@ -31,9 +33,11 @@ export async function GET() {
   }
 }
 
-// POST - Create a new booking
+// POST - Create a new booking request (status = pending)
 export async function POST(request: Request) {
   try {
+    await migrateAddBookingStatus()
+
     // Rate limit: max 5 bookings per minute per IP
     const rlKey = getRateLimitKey(request, 'booking')
     const rl = checkRateLimit(rlKey, 5, 60_000)
@@ -105,7 +109,7 @@ export async function POST(request: Request) {
     const bookingId = `booking-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
     const bookedAt = new Date().toISOString()
 
-    // Use batch for atomicity
+    // Use batch for atomicity – booking starts as 'pending'
     const batchResult = await db.batch([
       {
         sql: 'UPDATE time_slots SET is_booked = 1 WHERE id = ? AND is_booked = 0',
@@ -113,8 +117,8 @@ export async function POST(request: Request) {
       },
       {
         sql: `INSERT INTO bookings 
-            (id, trainer_id, trainer_name, slot_id, date, time, client_name, client_email, client_phone, booked_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            (id, trainer_id, trainer_name, slot_id, date, time, client_name, client_email, client_phone, booked_at, status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
         args: [bookingId, trainerId, trainerName, slotId, date, time, clientName, clientEmail, clientPhone, bookedAt]
       }
     ], 'write')
@@ -179,7 +183,8 @@ export async function POST(request: Request) {
         clientName,
         clientEmail,
         clientPhone,
-        bookedAt
+        bookedAt,
+        status: 'pending',
       }
     }, { status: 201 })
 

@@ -19,6 +19,8 @@ export interface TimeSlot {
   isBooked: boolean
 }
 
+export type BookingStatus = 'pending' | 'confirmed' | 'rejected'
+
 export interface Booking {
   id: string
   trainerId: string
@@ -30,6 +32,7 @@ export interface Booking {
   clientEmail: string
   clientPhone: string
   bookedAt: string
+  status: BookingStatus
 }
 
 export interface ScheduleRow {

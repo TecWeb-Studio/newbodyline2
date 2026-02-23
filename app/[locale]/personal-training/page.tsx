@@ -23,7 +23,10 @@ import {
   Shield,
   Palmtree,
   AlertCircle,
+  MessageCircle,
 } from "lucide-react";
+
+const WHATSAPP_NUMBER = "393479633983"; // +39 347 963 3983
 
 export default function PersonalTrainingPage() {
   const t = useTranslations("personalTraining");
@@ -79,7 +82,7 @@ export default function PersonalTrainingPage() {
 
   const selectedTrainerData = trainers.find((t) => t.id === selectedTrainer);
 
-  const handleBook = async () => {
+  const handleBook = () => {
     if (!selectedTrainerData || !selectedSlot) return;
     const slot = availableSlots.find((s) => s.id === selectedSlot);
     if (!slot) return;
@@ -88,6 +91,15 @@ export default function PersonalTrainingPage() {
     const validation = validateBookingForm(formData);
     setFieldErrors(validation.errors);
     if (!validation.valid) return;
+
+    // Show confirmation screen (no API call yet)
+    setBookingSuccess(true);
+  };
+
+  const handleConfirmRequest = async () => {
+    if (!selectedTrainerData || !selectedSlot) return;
+    const slot = availableSlots.find((s) => s.id === selectedSlot);
+    if (!slot) return;
 
     setIsSubmitting(true);
     setBookingError(null);
@@ -102,8 +114,17 @@ export default function PersonalTrainingPage() {
         clientEmail: formData.email.trim(),
         clientPhone: formData.phone.trim(),
       });
-      setBookingSuccess(true);
-      toast(t('booking.successToast'));
+      toast(t('booking.requestSentToast'));
+
+      // Build WhatsApp URL and redirect
+      const message = t('booking.whatsappMessage', {
+        trainer: selectedTrainerData.name,
+        date: slot.date,
+        time: slot.time,
+        name: formData.name.trim(),
+      });
+      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, '_blank');
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : t('booking.failedToast');
       setBookingError(msg);
@@ -274,14 +295,14 @@ export default function PersonalTrainingPage() {
                       animate={{ opacity: 1, scale: 1 }}
                       className="text-center py-12"
                     >
-                      <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Check className="w-10 h-10 text-green-500" />
+                      <div className="w-20 h-20 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Clock className="w-10 h-10 text-amber-500" />
                       </div>
                       <h3 className="text-2xl font-bold text-[#fafafa] mb-4">
-                        {t("booking.bookingSuccess")}
+                        {t("booking.requestSent")}
                       </h3>
                       <p className="text-[#a1a1aa] mb-8">
-                        {t("booking.bookingSuccessMessage")}
+                        {t("booking.requestSentMessage")}
                       </p>
 
                       <div className="bg-[#0a0a0a] rounded-2xl p-6 mb-8 text-left max-w-md mx-auto">
@@ -319,18 +340,43 @@ export default function PersonalTrainingPage() {
                           </div>
                           <div className="flex justify-between">
                             <span className="text-[#71717a]">
-                              {t("booking.duration")}
+                              {t("booking.status")}
                             </span>
-                            <span className="text-[#fafafa]">
-                              {t("booking.sessionDuration")}
+                            <span className="text-amber-400 font-medium">
+                              {t("booking.pendingApproval")}
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      <button onClick={resetBooking} className="btn-primary">
-                        {t("booking.bookSession")}
-                      </button>
+                      {bookingError && (
+                        <p className="text-red-500 text-sm text-center mb-4">
+                          {bookingError}
+                        </p>
+                      )}
+
+                      <div className="flex flex-col gap-3 max-w-md mx-auto">
+                        <button
+                          onClick={handleConfirmRequest}
+                          disabled={isSubmitting}
+                          className="flex items-center justify-center gap-2 w-full py-4 bg-[#25D366] hover:bg-[#1da851] text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isSubmitting ? (
+                            <span className="flex items-center gap-2">
+                              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              {t("booking.sendingRequest")}…
+                            </span>
+                          ) : (
+                            <>
+                              <MessageCircle className="w-5 h-5" />
+                              {t("booking.confirmRequest")}
+                            </>
+                          )}
+                        </button>
+                        <button onClick={resetBooking} disabled={isSubmitting} className="w-full py-3 border border-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] font-medium rounded-xl transition-colors disabled:opacity-50">
+                          {t("booking.bookAnother")}
+                        </button>
+                      </div>
                     </motion.div>
                   ) : (
                     <>
@@ -502,10 +548,10 @@ export default function PersonalTrainingPage() {
                             {isSubmitting ? (
                               <span className="flex items-center justify-center gap-2">
                                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                {t("booking.bookSession")}…
+                                {t("booking.sendingRequest")}…
                               </span>
                             ) : (
-                              t("booking.bookSession")
+                              t("booking.sendRequest")
                             )}
                           </button>
                         </div>
