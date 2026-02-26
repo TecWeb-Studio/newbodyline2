@@ -9,6 +9,7 @@ import {
   notifyTrainerBookingCancelled,
 } from '@/lib/whatsapp'
 import { migrateAddBookingStatus } from '@/lib/migrate-add-booking-status'
+import { sendPushToAdmins } from '@/lib/push'
 
 function buildManageUrl(bookingId: string, clientEmail: string): string {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
@@ -169,6 +170,17 @@ export async function POST(request: Request) {
       ])
     } catch (waErr) {
       console.error('[WhatsApp] notification error (booking was still created):', waErr)
+    }
+
+    // ── Push notification to admin devices ──
+    try {
+      await sendPushToAdmins({
+        title: 'Nuova Prenotazione',
+        body: `${clientName} ha richiesto un appuntamento con ${trainerName} il ${date} alle ${time}`,
+        url: '/it/admin/dashboard',
+      })
+    } catch (pushErr) {
+      console.error('[Push] notification error (booking was still created):', pushErr)
     }
 
     return NextResponse.json({

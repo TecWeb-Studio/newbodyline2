@@ -124,7 +124,13 @@ export default function PersonalTrainingPage() {
         name: formData.name.trim(),
       });
       const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-      window.open(waUrl, '_blank');
+
+      // window.open is blocked in PWA standalone mode on mobile,
+      // so fall back to location.href which opens WhatsApp directly
+      const opened = window.open(waUrl, '_blank');
+      if (!opened) {
+        window.location.href = waUrl;
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : t('booking.failedToast');
       setBookingError(msg);

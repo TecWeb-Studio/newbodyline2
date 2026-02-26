@@ -1,0 +1,25 @@
+{
+  "name": "New Body Line 2 – Personal Training",
+  "short_name": "NBL2 Training",
+  "description": "Prenota il tuo personal training con New Body Line 2",
+  "start_url": "/it/personal-training",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#dc2626",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/images/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

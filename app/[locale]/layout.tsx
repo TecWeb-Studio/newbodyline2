@@ -9,6 +9,7 @@ import { I18nProvider } from '../contexts/I18nContext';
 import { ToastProvider } from '../components/Toast';
 import ErrorBoundary from '../components/ErrorBoundary';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import RegisterSW from '../components/RegisterSW';
 import "../globals.css";
 
 const geistSans = Geist({
@@ -51,6 +52,14 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#dc2626" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="NBL2 Training" />
+        <link rel="apple-touch-icon" href="/images/logo.jpg" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-[#fafafa]`}
       >
@@ -62,6 +71,7 @@ export default async function LocaleLayout({
                   {children}
                 </ErrorBoundary>
                 <LanguageSwitcher />
+                <RegisterSW />
               </ToastProvider>
             </I18nProvider>
           </BookingProvider>

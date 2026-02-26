@@ -22,6 +22,7 @@ import {
   XCircle,
 } from 'lucide-react'
 import { useBooking } from '@/app/contexts/BookingContext'
+import PushToggle from '@/app/components/PushToggle'
 
 export default function AdminDashboardPage() {
   const router = useRouter()
@@ -136,6 +137,7 @@ export default function AdminDashboardPage() {
             </div>
             
             <div className="flex items-center gap-3">
+              <PushToggle />
               <button
                 onClick={() => router.push('/admin/dashboard/trainers' as any)}
                 className="flex items-center gap-2 px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] rounded-lg transition-colors text-[#fafafa] text-sm font-medium"
