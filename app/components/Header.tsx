@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link, usePathname, useRouter } from '@/app/i18n/navigation'
 import { Menu, X } from 'lucide-react'
 import { useI18n } from '@/app/contexts/I18nContext'
+import Image from 'next/image'
 
 // Throttle function for scroll events
 const throttle = (func: Function, delay: number) => {
@@ -51,8 +52,15 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
-              <span className="text-white font-bold text-lg">N</span>
+            <div className="w-10 h-10 rounded-lg overflow-hidden transform group-hover:scale-105 transition-transform duration-300">
+              <Image
+                src="/images/logo.jpg"
+                alt="NEWBODYLINE2 logo"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+                priority
+              />
             </div>
             <span className="text-xl font-bold tracking-tight">
               NEWBODYLINE<span className="text-[#dc2626]">2</span>

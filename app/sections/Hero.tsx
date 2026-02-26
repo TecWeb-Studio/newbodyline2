@@ -65,10 +65,10 @@ export default function Hero() {
           {/* Stats Preview */}
           <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto animate-in fade-in slide-in-from-top-4 duration-600 delay-500">
             {[
-              { value: '10K+', labelKey: 'stats.members' },
-              { value: '50+', labelKey: 'stats.classes' },
-              { value: '25+', labelKey: 'stats.trainers' },
-              { value: '15', labelKey: 'stats.years' },
+              { value: '1k+', labelKey: 'stats.members' },
+              { value: '10+', labelKey: 'stats.classes' },
+              { value: '5+', labelKey: 'stats.trainers' },
+              { value: '10+', labelKey: 'stats.years' },
             ].map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl sm:text-4xl font-bold text-[#fafafa] mb-1">{stat.value}</div>

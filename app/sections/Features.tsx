@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Home, Users, Heart, Sparkles, ImageIcon } from 'lucide-react'
 import Image from 'next/image'
 
-function FeatureImage({ src, alt }: { src: string; alt: string }) {
+function FeatureImage({ src, alt, objectPosition = 'center' }: { src: string; alt: string; objectPosition?: string }) {
   const [hasError, setHasError] = useState(false)
   return (
     <div className="relative w-full h-40 rounded-xl overflow-hidden mb-6 bg-[#0a0a0a] border border-[#27272a]">
@@ -15,6 +15,7 @@ function FeatureImage({ src, alt }: { src: string; alt: string }) {
           alt={alt}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
+          style={{ objectPosition }}
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
           onError={() => setHasError(true)}
         />
@@ -32,22 +33,26 @@ const features = [
   {
     key: 'equipment',
     icon: Home,
-    image: '/images/features/equipment.jpg',
+    image: '/images/features/equipment.jpeg',
+    objectPosition: 'center 10%',
   },
   {
     key: 'trainers',
     icon: Users,
-    image: '/images/features/trainers.jpg',
+    image: '/images/features/trainers.jpeg',
+    objectPosition: undefined,
   },
   {
     key: 'atmosphere',
     icon: Heart,
     image: '/images/features/atmosphere.jpg',
+    objectPosition: undefined,
   },
   {
     key: 'hours',
     icon: Sparkles,
     image: '/images/features/wellbeing.jpg',
+    objectPosition: undefined,
   },
 ]
 
@@ -84,6 +89,7 @@ export default function Features() {
                 <FeatureImage
                   src={feature.image}
                   alt={t(`${feature.key}.title`)}
+                  objectPosition={feature.objectPosition}
                 />
 
                 <div className="w-14 h-14 rounded-xl bg-[#dc2626]/10 border border-[#dc2626]/20 flex items-center justify-center mb-6 group-hover:bg-[#dc2626]/20 transition-colors">
