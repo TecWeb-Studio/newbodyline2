@@ -24,6 +24,7 @@ import {
   Palmtree,
   AlertCircle,
   MessageCircle,
+  Info,
 } from "lucide-react";
 
 const WHATSAPP_NUMBER = "393479633983"; // +39 347 963 3983
@@ -49,6 +50,7 @@ export default function PersonalTrainingPage() {
   const [availableSlots, setAvailableSlots] = useState<any[]>([]);
   const [trainerOnVacation, setTrainerOnVacation] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [specialtyTrainerId, setSpecialtyTrainerId] = useState<string | null>(null);
   const { toast } = useToast();
 
   // Scroll to booking section when a trainer is selected
@@ -257,7 +259,65 @@ export default function PersonalTrainingPage() {
                         {trainer.rating}
                       </span>
                     </div>
+
+                    {/* Info Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSpecialtyTrainerId(
+                          specialtyTrainerId === trainer.id ? null : trainer.id,
+                        );
+                      }}
+                      className="absolute top-4 left-4 z-10 w-9 h-9 flex items-center justify-center bg-[#0a0a0a]/80 backdrop-blur-sm rounded-full border border-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] hover:border-[#dc2626] transition-all"
+                      title="View specializations"
+                    >
+                      <Info className="w-4 h-4" />
+                    </button>
                   </div>
+
+                  {/* Specialization Popover */}
+                  <AnimatePresence>
+                    {specialtyTrainerId === trainer.id && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden border-t border-[#27272a] bg-[#0a0a0a]"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="p-5 space-y-3">
+                          <div className="flex items-center gap-2">
+                            <Star className="w-4 h-4 text-amber-400" />
+                            <span className="text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider">
+                              Specialization
+                            </span>
+                          </div>
+                          <p className="text-[#dc2626] font-semibold text-sm">
+                            {trainer.specialty}
+                          </p>
+                          <p className="text-[#a1a1aa] text-xs leading-relaxed">
+                            {trainer.description}
+                          </p>
+                          <div className="flex items-center gap-1 pt-1">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-3.5 h-3.5 ${
+                                  i < Math.round(trainer.rating)
+                                    ? 'text-amber-400 fill-amber-400'
+                                    : 'text-[#3f3f46]'
+                                }`}
+                              />
+                            ))}
+                            <span className="text-xs text-[#71717a] ml-1">
+                              {trainer.rating}
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   {/* Trainer Info */}
                   <div className="p-6">
