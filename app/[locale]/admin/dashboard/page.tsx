@@ -274,66 +274,77 @@ export default function AdminDashboardPage() {
     <div className="min-h-screen bg-[#0a0a0a]">
       {/* Header */}
       <header className="bg-[#111111] border-b border-[#27272a] sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center">
-                <span className="text-white font-bold">N</span>
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          {/* Main row */}
+          <div className="flex items-center justify-between h-14 sm:h-16">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-[#dc2626] to-[#991b1b] flex items-center justify-center shrink-0">
+                <span className="text-white font-bold text-sm">N</span>
               </div>
               <div>
-                <h1 className="text-lg font-bold text-[#fafafa]">Admin Dashboard</h1>
-                <p className="text-xs text-[#71717a]">NEWBODYLINE2</p>
+                <h1 className="text-base sm:text-lg font-bold text-[#fafafa]">Admin</h1>
+                <p className="text-[10px] sm:text-xs text-[#71717a]">NEWBODYLINE2</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <PushToggle />
               <button
                 onClick={() => { resetBookingModal(); setShowBookingModal(true) }}
-                className="flex items-center gap-2 px-4 py-2 bg-[#dc2626] hover:bg-[#b91c1c] rounded-lg transition-colors text-white text-sm font-medium"
+                className="flex items-center gap-1.5 px-3 py-2 bg-[#dc2626] hover:bg-[#b91c1c] rounded-lg transition-colors text-white text-sm font-medium"
               >
                 <UserPlus className="w-4 h-4" />
                 <span className="hidden sm:inline">New Booking</span>
               </button>
               <button
                 onClick={() => router.push('/admin/dashboard/trainers' as any)}
-                className="flex items-center gap-2 px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] rounded-lg transition-colors text-[#fafafa] text-sm font-medium"
+                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] rounded-lg transition-colors text-[#fafafa] text-sm font-medium"
               >
                 <Settings className="w-4 h-4" />
-                <span className="hidden sm:inline">Manage Trainers</span>
+                Manage Trainers
               </button>
               <button
                 onClick={handleRefresh}
                 className="p-2 hover:bg-[#27272a] rounded-lg transition-colors"
                 title="Refresh"
               >
-                <RefreshCw className="w-5 h-5 text-[#a1a1aa]" />
+                <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 text-[#a1a1aa]" />
               </button>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-[#27272a] hover:bg-[#dc2626] rounded-lg transition-colors text-[#fafafa] text-sm font-medium"
+                className="p-2 hover:bg-[#27272a] rounded-lg transition-colors"
+                title="Logout"
               >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Logout</span>
+                <LogOut className="w-4 h-4 sm:w-5 sm:h-5 text-[#a1a1aa]" />
               </button>
             </div>
+          </div>
+          {/* Mobile second row – secondary actions */}
+          <div className="flex sm:hidden items-center gap-2 pb-2">
+            <button
+              onClick={() => router.push('/admin/dashboard/trainers' as any)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#27272a] hover:bg-[#3f3f46] rounded-lg transition-colors text-[#a1a1aa] text-xs font-medium"
+            >
+              <Settings className="w-3.5 h-3.5" />
+              Manage Trainers
+            </button>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`bg-[#111111] border rounded-2xl p-6 cursor-pointer transition-all ${sessionFilter === 'pending' ? 'border-amber-500/50 shadow-lg shadow-amber-500/10' : pendingBookings.length > 0 ? 'border-amber-500/30' : 'border-[#27272a] hover:border-[#3f3f46]'}`}
+            className={`bg-[#111111] border rounded-2xl p-4 sm:p-6 cursor-pointer transition-all ${sessionFilter === 'pending' ? 'border-amber-500/50 shadow-lg shadow-amber-500/10' : pendingBookings.length > 0 ? 'border-amber-500/30' : 'border-[#27272a] hover:border-[#3f3f46]'}`}
             onClick={() => setSessionFilter('pending')}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#71717a] text-sm mb-1">Pending Requests</p>
-                <p className="text-3xl font-bold text-amber-400">{pendingBookings.length}</p>
+                <p className="text-[#71717a] text-xs sm:text-sm mb-1">In Attesa</p>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-400">{pendingBookings.length}</p>
               </div>
               <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center">
                 <Clock className="w-6 h-6 text-amber-500" />
@@ -345,13 +356,13 @@ export default function AdminDashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className={`bg-[#111111] border rounded-2xl p-6 cursor-pointer transition-all ${sessionFilter === 'total' ? 'border-[#dc2626]/50 shadow-lg shadow-[#dc2626]/10' : 'border-[#27272a] hover:border-[#3f3f46]'}`}
+            className={`bg-[#111111] border rounded-2xl p-4 sm:p-6 cursor-pointer transition-all ${sessionFilter === 'total' ? 'border-[#dc2626]/50 shadow-lg shadow-[#dc2626]/10' : 'border-[#27272a] hover:border-[#3f3f46]'}`}
             onClick={() => setSessionFilter('total')}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#71717a] text-sm mb-1">Total Bookings</p>
-                <p className="text-3xl font-bold text-[#fafafa]">{bookings.filter(b => b.status !== 'rejected').length}</p>
+                <p className="text-[#71717a] text-xs sm:text-sm mb-1">Totale</p>
+                <p className="text-2xl sm:text-3xl font-bold text-[#fafafa]">{bookings.filter(b => b.status !== 'rejected').length}</p>
               </div>
               <div className="w-12 h-12 bg-[#dc2626]/10 rounded-xl flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-[#dc2626]" />
@@ -363,13 +374,13 @@ export default function AdminDashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className={`bg-[#111111] border rounded-2xl p-6 cursor-pointer transition-all ${sessionFilter === 'today' ? 'border-green-500/50 shadow-lg shadow-green-500/10' : 'border-[#27272a] hover:border-[#3f3f46]'}`}
+            className={`bg-[#111111] border rounded-2xl p-4 sm:p-6 cursor-pointer transition-all ${sessionFilter === 'today' ? 'border-green-500/50 shadow-lg shadow-green-500/10' : 'border-[#27272a] hover:border-[#3f3f46]'}`}
             onClick={() => setSessionFilter('today')}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#71717a] text-sm mb-1">Today's Bookings</p>
-                <p className="text-3xl font-bold text-[#fafafa]">{todayBookings.length}</p>
+                <p className="text-[#71717a] text-xs sm:text-sm mb-1">Oggi</p>
+                <p className="text-2xl sm:text-3xl font-bold text-[#fafafa]">{todayBookings.length}</p>
               </div>
               <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
                 <CalendarDays className="w-6 h-6 text-green-500" />
@@ -381,13 +392,13 @@ export default function AdminDashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className={`bg-[#111111] border rounded-2xl p-6 cursor-pointer transition-all ${sessionFilter === 'upcoming' ? 'border-blue-500/50 shadow-lg shadow-blue-500/10' : 'border-[#27272a] hover:border-[#3f3f46]'}`}
+            className={`bg-[#111111] border rounded-2xl p-4 sm:p-6 cursor-pointer transition-all ${sessionFilter === 'upcoming' ? 'border-blue-500/50 shadow-lg shadow-blue-500/10' : 'border-[#27272a] hover:border-[#3f3f46]'}`}
             onClick={() => setSessionFilter('upcoming')}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#71717a] text-sm mb-1">Upcoming Sessions</p>
-                <p className="text-3xl font-bold text-[#fafafa]">{upcomingBookings.length}</p>
+                <p className="text-[#71717a] text-xs sm:text-sm mb-1">Prossimi</p>
+                <p className="text-2xl sm:text-3xl font-bold text-[#fafafa]">{upcomingBookings.length}</p>
               </div>
               <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
                 <Users className="w-6 h-6 text-blue-500" />
@@ -448,11 +459,11 @@ export default function AdminDashboardPage() {
               <div>
                 <h2 className="text-xl font-bold text-[#fafafa]">
                   {{
-                    pending: 'Pending Requests',
-                    total: 'Total Bookings',
-                    today: "Today's Bookings",
-                    upcoming: 'Upcoming Sessions',
-                    all: 'All Sessions',
+                    pending: 'Richieste in Attesa',
+                    total: 'Prenotazioni Totali',
+                    today: 'Prenotazioni Oggi',
+                    upcoming: 'Sessioni Future',
+                    all: 'Tutte le Sessioni',
                   }[sessionFilter]}
                 </h2>
                 <p className="text-[#71717a] text-sm mt-1">
@@ -473,12 +484,12 @@ export default function AdminDashboardPage() {
               </div>
             </div>
             {/* Filters row */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="relative flex-1 min-w-50 max-w-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <div className="relative w-full sm:flex-1 sm:min-w-50 sm:max-w-xs">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#71717a]" />
                 <input
                   type="text"
-                  placeholder="Search client, email, phone..."
+                  placeholder="Cerca cliente, email..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-[#0a0a0a] border border-[#27272a] rounded-xl text-sm text-[#fafafa] placeholder-[#52525b] focus:border-[#dc2626] focus:outline-none"
@@ -489,29 +500,31 @@ export default function AdminDashboardPage() {
                   </button>
                 )}
               </div>
-              <select
-                value={sessionFilter}
-                onChange={e => setSessionFilter(e.target.value as 'pending' | 'total' | 'today' | 'upcoming' | 'all')}
-                className="bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none cursor-pointer"
-              >
-                <option value="pending">Pending ({pendingBookings.length})</option>
-                <option value="total">Total Bookings</option>
-                <option value="today">Today&apos;s Bookings</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="all">All (incl. rejected)</option>
-              </select>
-              <div className="flex items-center gap-1.5">
-                <Filter className="w-4 h-4 text-[#71717a]" />
+              <div className="flex items-center gap-2">
                 <select
-                  value={trainerFilter}
-                  onChange={e => setTrainerFilter(e.target.value)}
-                  className="bg-[#0a0a0a] border border-[#27272a] rounded-xl px-4 py-2 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none cursor-pointer"
+                  value={sessionFilter}
+                  onChange={e => setSessionFilter(e.target.value as 'pending' | 'total' | 'today' | 'upcoming' | 'all')}
+                  className="flex-1 sm:flex-none bg-[#0a0a0a] border border-[#27272a] rounded-xl px-3 py-2 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none cursor-pointer"
                 >
-                  <option value="all">All Trainers</option>
-                  {trainers.map(t => (
-                    <option key={t.id} value={t.id}>{t.name}</option>
-                  ))}
+                  <option value="pending">In attesa ({pendingBookings.length})</option>
+                  <option value="total">Totali</option>
+                  <option value="today">Oggi</option>
+                  <option value="upcoming">Prossimi</option>
+                  <option value="all">Tutti</option>
                 </select>
+                <div className="flex items-center gap-1.5">
+                  <Filter className="w-4 h-4 text-[#71717a] shrink-0" />
+                  <select
+                    value={trainerFilter}
+                    onChange={e => setTrainerFilter(e.target.value)}
+                    className="flex-1 sm:flex-none bg-[#0a0a0a] border border-[#27272a] rounded-xl px-3 py-2 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none cursor-pointer"
+                  >
+                    <option value="all">Tutti</option>
+                    {trainers.map(t => (
+                      <option key={t.id} value={t.id}>{t.name}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -521,16 +534,94 @@ export default function AdminDashboardPage() {
               <AlertCircle className="w-12 h-12 text-[#3f3f46] mx-auto mb-4" />
               <p className="text-[#a1a1aa]">
                 {{
-                  pending: 'No pending requests',
-                  total: 'No bookings found',
-                  today: 'No bookings for today',
-                  upcoming: 'No upcoming sessions',
-                  all: 'No bookings found',
+                  pending: 'Nessuna richiesta in attesa',
+                  total: 'Nessuna prenotazione',
+                  today: 'Nessuna prenotazione oggi',
+                  upcoming: 'Nessuna sessione futura',
+                  all: 'Nessuna prenotazione',
                 }[sessionFilter]}
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <>
+              {/* Mobile card list */}
+              <div className="sm:hidden divide-y divide-[#27272a]">
+                {displayedBookings.map((booking) => (
+                  <div key={booking.id} className={`p-4 ${booking.status === 'pending' ? 'bg-amber-500/5' : ''}`}>
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-9 h-9 rounded-full bg-[#27272a] flex items-center justify-center shrink-0">
+                          <User className="w-4 h-4 text-[#71717a]" />
+                        </div>
+                        <div>
+                          <p className="text-[#fafafa] font-semibold text-sm">{booking.clientName}</p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#dc2626]" />
+                            <span className="text-[#a1a1aa] text-xs">{booking.trainerName}</span>
+                          </div>
+                        </div>
+                      </div>
+                      {booking.status === 'pending' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-500/10 text-amber-400 text-[10px] font-semibold rounded-full shrink-0">
+                          <Clock className="w-2.5 h-2.5" />In Attesa
+                        </span>
+                      )}
+                      {booking.status === 'confirmed' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-500/10 text-green-400 text-[10px] font-semibold rounded-full shrink-0">
+                          <CheckCircle className="w-2.5 h-2.5" />Confermato
+                        </span>
+                      )}
+                      {booking.status === 'rejected' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-500/10 text-red-400 text-[10px] font-semibold rounded-full shrink-0">
+                          <XCircle className="w-2.5 h-2.5" />Rifiutato
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-4 mb-2 text-xs text-[#a1a1aa]">
+                      <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-[#dc2626]" />{booking.date}</span>
+                      <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{booking.time}</span>
+                    </div>
+                    <div className="flex flex-col gap-1 mb-3 text-xs text-[#71717a]">
+                      <a href={`mailto:${booking.clientEmail}`} className="flex items-center gap-1.5 hover:text-[#a1a1aa] transition-colors">
+                        <Mail className="w-3.5 h-3.5 shrink-0" />{booking.clientEmail}
+                      </a>
+                      <a href={`tel:${booking.clientPhone}`} className="flex items-center gap-1.5 hover:text-[#a1a1aa] transition-colors">
+                        <Phone className="w-3.5 h-3.5 shrink-0" />{booking.clientPhone}
+                      </a>
+                    </div>
+                    {(booking.status === 'pending' || booking.status === 'confirmed') && (
+                      <div className="flex items-center gap-2 pt-2 border-t border-[#27272a]">
+                        {booking.status === 'pending' && (
+                          <>
+                            <button
+                              onClick={() => handleApproveBooking(booking.id)}
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-green-500/10 hover:bg-green-500/20 text-green-400 rounded-lg transition-colors text-xs font-semibold"
+                            >
+                              <CheckCircle className="w-3.5 h-3.5" />Approva
+                            </button>
+                            <button
+                              onClick={() => handleRejectBooking(booking.id)}
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors text-xs font-semibold"
+                            >
+                              <XCircle className="w-3.5 h-3.5" />Rifiuta
+                            </button>
+                          </>
+                        )}
+                        {booking.status === 'confirmed' && (
+                          <button
+                            onClick={() => handleCancelBooking(booking.id)}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#27272a] hover:bg-red-500/10 text-[#71717a] hover:text-red-400 rounded-lg transition-colors text-xs font-semibold"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />Cancella
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {/* Desktop table */}
+              <div className="hidden sm:block overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-[#0a0a0a]">
                   <tr>
@@ -659,7 +750,8 @@ export default function AdminDashboardPage() {
                   ))}
                 </tbody>
               </table>
-            </div>
+              </div>
+            </>
           )}
         </motion.div>
 
