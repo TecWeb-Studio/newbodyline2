@@ -28,6 +28,8 @@ import {
   Filter,
   Loader2,
   UserPlus,
+  ArrowUp,
+  ArrowDown,
 } from 'lucide-react'
 import { useBooking, type TimeSlot } from '@/app/contexts/BookingContext'
 import PushToggle from '@/app/components/PushToggle'
@@ -56,6 +58,19 @@ export default function AdminDashboardPage() {
   const [mbError, setMbError] = useState('')
   const [mbSubmitting, setMbSubmitting] = useState(false)
   const [mbOnVacation, setMbOnVacation] = useState(false)
+
+  // Sorting state
+  const [sortBy, setSortBy] = useState<'date' | 'trainer'>('date')
+  const [sortAsc, setSortAsc] = useState(true)
+
+  const handleSortClick = (column: 'date' | 'trainer') => {
+    if (sortBy === column) {
+      setSortAsc(!sortAsc)
+    } else {
+      setSortBy(column)
+      setSortAsc(true)
+    }
+  }
 
   useEffect(() => {
     const auth = localStorage.getItem('admin-auth')
@@ -226,12 +241,21 @@ export default function AdminDashboardPage() {
       return true
     })
     .sort((a, b) => {
-      // Pending first, then by date/time
+      // Pending first, then by selected sort column
       if (a.status === 'pending' && b.status !== 'pending') return -1
       if (a.status !== 'pending' && b.status === 'pending') return 1
-      const dtA = `${a.date} ${a.time}`
-      const dtB = `${b.date} ${b.time}`
-      return dtA.localeCompare(dtB)
+      
+      let comparison = 0
+      if (sortBy === 'trainer') {
+        comparison = a.trainerName.localeCompare(b.trainerName)
+      } else {
+        // Sort by date and time
+        const dtA = `${a.date} ${a.time}`
+        const dtB = `${b.date} ${b.time}`
+        comparison = dtA.localeCompare(dtB)
+      }
+      
+      return sortAsc ? comparison : -comparison
     })
 
   if (isLoading) {
@@ -511,8 +535,22 @@ export default function AdminDashboardPage() {
                 <thead className="bg-[#0a0a0a]">
                   <tr>
                     <th className="text-left px-6 py-4 text-[#71717a] text-sm font-medium">Client</th>
-                    <th className="text-left px-6 py-4 text-[#71717a] text-sm font-medium">Trainer</th>
-                    <th className="text-left px-6 py-4 text-[#71717a] text-sm font-medium">Date & Time</th>
+                    <th className="text-left px-6 py-4 text-[#71717a] text-sm font-medium cursor-pointer hover:text-[#fafafa] transition-colors group" onClick={() => handleSortClick('trainer')}>
+                      <div className="flex items-center gap-1.5">
+                        <span>Trainer</span>
+                        {sortBy === 'trainer' && (
+                          sortAsc ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
+                        )}
+                      </div>
+                    </th>
+                    <th className="text-left px-6 py-4 text-[#71717a] text-sm font-medium cursor-pointer hover:text-[#fafafa] transition-colors" onClick={() => handleSortClick('date')}>
+                      <div className="flex items-center gap-1.5">
+                        <span>Date & Time</span>
+                        {sortBy === 'date' && (
+                          sortAsc ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
+                        )}
+                      </div>
+                    </th>
                     <th className="text-left px-6 py-4 text-[#71717a] text-sm font-medium">Contact</th>
                     <th className="text-left px-6 py-4 text-[#71717a] text-sm font-medium">Status</th>
                     <th className="text-right px-6 py-4 text-[#71717a] text-sm font-medium">Actions</th>
