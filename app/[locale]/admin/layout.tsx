@@ -1,7 +1,20 @@
+import type { Metadata } from 'next'
 import IOSInstallPrompt from '@/app/components/IOSInstallPrompt'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'NBL2 Admin',
+  manifest: '/admin-manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'NBL2 Admin',
+  },
+  icons: {
+    apple: '/images/logo.jpg',
+  },
+  other: {
+    'theme-color': '#dc2626',
+  },
 }
 
 export default function AdminLayout({
@@ -11,14 +24,6 @@ export default function AdminLayout({
 }) {
   return (
     <>
-      <head>
-        <link rel="manifest" href="/admin-manifest.json" />
-        <meta name="theme-color" content="#dc2626" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="NBL2 Admin" />
-        <link rel="apple-touch-icon" href="/images/logo.jpg" />
-      </head>
       {children}
       <IOSInstallPrompt />
     </>

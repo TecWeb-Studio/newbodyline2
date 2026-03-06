@@ -31,6 +31,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: (messages.metadata as { title: string }).title,
     description: (messages.metadata as { description: string }).description,
+    manifest: '/manifest.json',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'black-translucent',
+      title: 'NBL2 Training',
+    },
+    icons: {
+      apple: '/images/logo.jpg',
+    },
   };
 }
 
@@ -53,12 +62,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <head>
-        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#dc2626" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="NBL2 Training" />
-        <link rel="apple-touch-icon" href="/images/logo.jpg" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-[#fafafa]`}
