@@ -2,7 +2,7 @@
   "name": "NBL2 Admin",
   "short_name": "NBL2 Admin",
   "description": "New Body Line 2 – Pannello Amministrazione",
-  "start_url": "/it/admin",
+  "start_url": "/it/admin/dashboard",
   "scope": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
@@ -20,6 +20,12 @@
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any"
+    },
+    {
+      "src": "/images/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
     }
   ]
 }

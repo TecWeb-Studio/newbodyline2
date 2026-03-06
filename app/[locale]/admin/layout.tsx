@@ -1,3 +1,5 @@
+import IOSInstallPrompt from '@/app/components/IOSInstallPrompt'
+
 export const metadata = {
   title: 'NBL2 Admin',
 }
@@ -18,6 +20,7 @@ export default function AdminLayout({
         <link rel="apple-touch-icon" href="/images/logo.jpg" />
       </head>
       {children}
+      <IOSInstallPrompt />
     </>
   )
 }

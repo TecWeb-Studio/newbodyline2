@@ -30,21 +30,35 @@ export default function PushToggle() {
       return
     }
 
-    // Check current subscription state
-    navigator.serviceWorker.ready.then((reg) => {
-      reg.pushManager.getSubscription().then((sub) => {
+    // Register (or get) the admin SW and check its push subscription
+    navigator.serviceWorker
+      .register('/admin-sw.js')
+      .then((reg) => reg.pushManager.getSubscription())
+      .then((sub) => {
         setIsSubscribed(!!sub)
         setIsLoading(false)
       })
-    })
+      .catch(() => setIsLoading(false))
   }, [])
 
   const subscribe = async () => {
     setIsLoading(true)
     try {
-      // Register admin service worker (replaces generic one on this scope)
+      // Register (or get existing) admin service worker
       const reg = await navigator.serviceWorker.register('/admin-sw.js')
-      await navigator.serviceWorker.ready
+      // Wait until the SW is active before subscribing
+      await new Promise<void>((resolve) => {
+        if (reg.active) { resolve(); return }
+        const sw = reg.installing || reg.waiting
+        if (sw) {
+          sw.addEventListener('statechange', function handler() {
+            if ((sw as ServiceWorker).state === 'activated') {
+              sw.removeEventListener('statechange', handler)
+              resolve()
+            }
+          })
+        } else { resolve() }
+      })
 
       const subscription = await reg.pushManager.subscribe({
         userVisibleOnly: true,
@@ -69,7 +83,7 @@ export default function PushToggle() {
   const unsubscribe = async () => {
     setIsLoading(true)
     try {
-      const reg = await navigator.serviceWorker.ready
+      const reg = await navigator.serviceWorker.register('/admin-sw.js')
       const subscription = await reg.pushManager.getSubscription()
       if (subscription) {
         await fetch('/api/admin/push', {
