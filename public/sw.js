@@ -1,5 +1,5 @@
 // Service worker for PWA installability + admin push notifications
-const CACHE_NAME = 'nbl2-v2'
+const CACHE_NAME = 'nbl2-v3'
 
 self.addEventListener('install', (event) => {
   self.skipWaiting()

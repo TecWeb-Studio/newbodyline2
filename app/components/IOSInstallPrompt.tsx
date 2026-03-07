@@ -21,8 +21,11 @@ export default function IOSInstallPrompt() {
       /iPad|iPhone|iPod/.test(navigator.userAgent) &&
       !(window as Window & { MSStream?: unknown }).MSStream
 
-    // `standalone` is true when running as an installed PWA on iOS
-    const isStandalone = (window.navigator as Navigator & { standalone?: boolean }).standalone === true
+    // Detect standalone (installed PWA) mode — multiple checks for reliability
+    const isStandalone =
+      (window.navigator as Navigator & { standalone?: boolean }).standalone === true ||
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.matchMedia('(display-mode: fullscreen)').matches
 
     const dismissed = sessionStorage.getItem('ios-install-dismissed') === '1'
 
