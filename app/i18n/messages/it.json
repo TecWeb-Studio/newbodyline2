@@ -364,6 +364,38 @@
         "title": "Tecnica Corretta",
         "description": "Impara la forma corretta per massimizzare i risultati e prevenire infortuni"
       }
+    },
+    "reviews": {
+      "title": "Recensioni dei Clienti",
+      "subtitle": "Scopri cosa dicono i nostri clienti dei loro personal trainer",
+      "writeReview": "Scrivi una Recensione",
+      "yourName": "Il Tuo Nome",
+      "yourEmail": "La Tua Email",
+      "reviewTitle": "Titolo della Recensione",
+      "reviewTitlePlaceholder": "es. Esperienza fantastica!",
+      "yourReview": "La Tua Recensione",
+      "reviewPlaceholder": "Racconta la tua esperienza con questo trainer...",
+      "selectRating": "Seleziona Valutazione",
+      "submitReview": "Invia Recensione",
+      "submitting": "Invio in corso...",
+      "thankYou": "Grazie per la tua recensione!",
+      "thankYouMessage": "La tua recensione è stata pubblicata con successo.",
+      "writeAnother": "Scrivi un'altra recensione",
+      "noReviews": "Nessuna recensione ancora. Sii il primo!",
+      "verified": "Verificato",
+      "allTrainers": "Tutti i Trainer",
+      "filterByTrainer": "Filtra per Trainer",
+      "sortRecent": "Più Recenti",
+      "sortHighest": "Voto Più Alto",
+      "sortLowest": "Voto Più Basso",
+      "reviewCount": "{count} recensioni",
+      "averageRating": "Valutazione Media",
+      "ratingDistribution": "Distribuzione Voti",
+      "alreadyReviewed": "Hai già recensito questo trainer",
+      "selectTrainerFirst": "Seleziona un trainer per scrivere una recensione",
+      "minChars": "Minimo 10 caratteri",
+      "showMore": "Mostra Altre Recensioni",
+      "showLess": "Mostra Meno"
     }
   },
   "location": {

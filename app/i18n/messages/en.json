@@ -364,6 +364,38 @@
         "title": "Proper Technique",
         "description": "Learn correct form to maximize results and prevent injury"
       }
+    },
+    "reviews": {
+      "title": "Client Reviews",
+      "subtitle": "See what our clients say about their personal trainers",
+      "writeReview": "Write a Review",
+      "yourName": "Your Name",
+      "yourEmail": "Your Email",
+      "reviewTitle": "Review Title",
+      "reviewTitlePlaceholder": "e.g. Amazing experience!",
+      "yourReview": "Your Review",
+      "reviewPlaceholder": "Tell us about your experience with this trainer...",
+      "selectRating": "Select Rating",
+      "submitReview": "Submit Review",
+      "submitting": "Submitting...",
+      "thankYou": "Thank you for your review!",
+      "thankYouMessage": "Your review has been published successfully.",
+      "writeAnother": "Write another review",
+      "noReviews": "No reviews yet. Be the first!",
+      "verified": "Verified",
+      "allTrainers": "All Trainers",
+      "filterByTrainer": "Filter by Trainer",
+      "sortRecent": "Most Recent",
+      "sortHighest": "Highest Rated",
+      "sortLowest": "Lowest Rated",
+      "reviewCount": "{count} reviews",
+      "averageRating": "Average Rating",
+      "ratingDistribution": "Rating Distribution",
+      "alreadyReviewed": "You have already reviewed this trainer",
+      "selectTrainerFirst": "Select a trainer to write a review",
+      "minChars": "Minimum 10 characters",
+      "showMore": "Show More Reviews",
+      "showLess": "Show Less"
     }
   },
   "location": {

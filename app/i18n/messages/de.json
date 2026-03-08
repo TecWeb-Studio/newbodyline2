@@ -364,6 +364,38 @@
         "title": "Korrekte Technik",
         "description": "Lerne die richtige Form, um Ergebnisse zu maximieren und Verletzungen zu vermeiden"
       }
+    },
+    "reviews": {
+      "title": "Kundenbewertungen",
+      "subtitle": "Erfahre, was unsere Kunden über ihre Personal Trainer sagen",
+      "writeReview": "Bewertung Schreiben",
+      "yourName": "Dein Name",
+      "yourEmail": "Deine E-Mail",
+      "reviewTitle": "Bewertungstitel",
+      "reviewTitlePlaceholder": "z.B. Fantastische Erfahrung!",
+      "yourReview": "Deine Bewertung",
+      "reviewPlaceholder": "Erzähle uns von deiner Erfahrung mit diesem Trainer...",
+      "selectRating": "Bewertung Auswählen",
+      "submitReview": "Bewertung Absenden",
+      "submitting": "Wird gesendet...",
+      "thankYou": "Danke für deine Bewertung!",
+      "thankYouMessage": "Deine Bewertung wurde erfolgreich veröffentlicht.",
+      "writeAnother": "Weitere Bewertung schreiben",
+      "noReviews": "Noch keine Bewertungen. Sei der Erste!",
+      "verified": "Verifiziert",
+      "allTrainers": "Alle Trainer",
+      "filterByTrainer": "Nach Trainer Filtern",
+      "sortRecent": "Neueste",
+      "sortHighest": "Beste Bewertung",
+      "sortLowest": "Niedrigste Bewertung",
+      "reviewCount": "{count} Bewertungen",
+      "averageRating": "Durchschnittsbewertung",
+      "ratingDistribution": "Bewertungsverteilung",
+      "alreadyReviewed": "Du hast diesen Trainer bereits bewertet",
+      "selectTrainerFirst": "Wähle einen Trainer, um eine Bewertung zu schreiben",
+      "minChars": "Mindestens 10 Zeichen",
+      "showMore": "Mehr Bewertungen Anzeigen",
+      "showLess": "Weniger Anzeigen"
     }
   },
   "location": {

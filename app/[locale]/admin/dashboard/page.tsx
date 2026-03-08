@@ -30,6 +30,8 @@ import {
   UserPlus,
   ArrowUp,
   ArrowDown,
+  Star,
+  MessageSquare,
 } from 'lucide-react'
 import { useBooking, type TimeSlot } from '@/app/contexts/BookingContext'
 import PushToggle from '@/app/components/PushToggle'
@@ -44,6 +46,12 @@ export default function AdminDashboardPage() {
   const [trainerFilter, setTrainerFilter] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [vacations, setVacations] = useState<{ id: number; trainer_id: string; start_date: string; end_date: string; note: string | null }[]>([])
+
+  // Reviews management
+  const [adminReviews, setAdminReviews] = useState<{ id: number; trainer_id: string; trainer_name: string; reviewer_name: string; reviewer_email: string; rating: number; title: string | null; comment: string; created_at: string }[]>([])
+  const [reviewSearchQuery, setReviewSearchQuery] = useState('')
+  const [reviewTrainerFilter, setReviewTrainerFilter] = useState<string>('all')
+  const [deletingReviewId, setDeletingReviewId] = useState<number | null>(null)
 
   // Manual booking modal
   const [showBookingModal, setShowBookingModal] = useState(false)
@@ -84,8 +92,52 @@ export default function AdminDashboardPage() {
         .then(r => r.json())
         .then(d => setVacations(d.vacations ?? []))
         .catch(() => {})
+      // Fetch reviews
+      fetch('/api/admin/reviews')
+        .then(r => r.json())
+        .then(d => setAdminReviews(d.reviews ?? []))
+        .catch(() => {})
     }
   }, [router])
+
+  const fetchAdminReviews = async () => {
+    try {
+      const res = await fetch('/api/admin/reviews')
+      const data = await res.json()
+      setAdminReviews(data.reviews ?? [])
+    } catch {
+      // noop
+    }
+  }
+
+  const handleDeleteReview = async (reviewId: number) => {
+    if (!confirm('Delete this review? The trainer\'s rating will be recalculated.')) return
+    setDeletingReviewId(reviewId)
+    try {
+      const res = await fetch(`/api/admin/reviews?id=${reviewId}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error('Failed to delete')
+      setAdminReviews(prev => prev.filter(r => r.id !== reviewId))
+    } catch (err) {
+      console.error('Failed to delete review:', err)
+    } finally {
+      setDeletingReviewId(null)
+    }
+  }
+
+  const filteredAdminReviews = adminReviews
+    .filter(r => {
+      if (reviewTrainerFilter !== 'all' && r.trainer_id !== reviewTrainerFilter) return false
+      if (reviewSearchQuery) {
+        const q = reviewSearchQuery.toLowerCase()
+        return (
+          r.reviewer_name.toLowerCase().includes(q) ||
+          r.reviewer_email.toLowerCase().includes(q) ||
+          r.comment.toLowerCase().includes(q) ||
+          (r.title ?? '').toLowerCase().includes(q)
+        )
+      }
+      return true
+    })
 
   const handleLogout = () => {
     localStorage.removeItem('admin-auth')
@@ -791,6 +843,118 @@ export default function AdminDashboardPage() {
               )
             })}
           </div>
+        </motion.div>
+
+        {/* ── Reviews Management ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+          className="mt-8 bg-[#111111] border border-[#27272a] rounded-2xl overflow-hidden"
+        >
+          <div className="p-6 border-b border-[#27272a]">
+            <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 text-amber-500" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[#fafafa]">Reviews Management</h3>
+                  <p className="text-[#71717a] text-sm">{adminReviews.length} total reviews · Delete fake or inappropriate ones</p>
+                </div>
+              </div>
+              <button
+                onClick={fetchAdminReviews}
+                className="p-2 hover:bg-[#27272a] rounded-lg transition-colors"
+                title="Refresh reviews"
+              >
+                <RefreshCw className="w-4 h-4 text-[#a1a1aa]" />
+              </button>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <div className="relative flex-1 sm:max-w-xs">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#71717a]" />
+                <input
+                  type="text"
+                  placeholder="Search reviews..."
+                  value={reviewSearchQuery}
+                  onChange={e => setReviewSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-[#0a0a0a] border border-[#27272a] rounded-xl text-sm text-[#fafafa] placeholder-[#52525b] focus:border-[#dc2626] focus:outline-none"
+                />
+              </div>
+              <select
+                value={reviewTrainerFilter}
+                onChange={e => setReviewTrainerFilter(e.target.value)}
+                className="bg-[#0a0a0a] border border-[#27272a] rounded-xl px-3 py-2 text-sm text-[#fafafa] focus:border-[#dc2626] focus:outline-none cursor-pointer"
+              >
+                <option value="all">All Trainers</option>
+                {trainers.map(t => (
+                  <option key={t.id} value={t.id}>{t.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {filteredAdminReviews.length === 0 ? (
+            <div className="p-12 text-center">
+              <Star className="w-12 h-12 text-[#3f3f46] mx-auto mb-4" />
+              <p className="text-[#a1a1aa]">No reviews found</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-[#27272a]">
+              {filteredAdminReviews.map((review) => (
+                <div key={review.id} className="p-4 sm:p-5 hover:bg-[#0a0a0a]/30 transition-colors">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-xs">
+                            {review.reviewer_name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="text-[#fafafa] font-semibold text-sm">{review.reviewer_name}</p>
+                            <p className="text-[#52525b] text-xs">{review.reviewer_email}</p>
+                          </div>
+                        </div>
+                        <span className="text-[#dc2626] text-xs font-medium bg-[#dc2626]/10 px-2 py-0.5 rounded-full">
+                          {review.trainer_name || review.trainer_id}
+                        </span>
+                        <div className="flex items-center gap-0.5">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <Star
+                              key={s}
+                              className={`w-3.5 h-3.5 ${
+                                s <= review.rating ? 'text-yellow-500 fill-yellow-500' : 'text-[#3f3f46]'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-[#52525b] text-xs">
+                          {new Date(review.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </span>
+                      </div>
+                      {review.title && (
+                        <p className="text-[#fafafa] font-medium text-sm mb-1">{review.title}</p>
+                      )}
+                      <p className="text-[#a1a1aa] text-sm leading-relaxed">{review.comment}</p>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteReview(review.id)}
+                      disabled={deletingReviewId === review.id}
+                      className="shrink-0 p-2 hover:bg-red-500/10 rounded-lg transition-colors group"
+                      title="Delete review"
+                    >
+                      {deletingReviewId === review.id ? (
+                        <Loader2 className="w-5 h-5 text-red-400 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-5 h-5 text-[#71717a] group-hover:text-red-500 transition-colors" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </motion.div>
 
         {/* Quick insights */}
