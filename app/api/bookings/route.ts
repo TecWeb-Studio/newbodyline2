@@ -11,6 +11,9 @@ import {
 import { migrateAddBookingStatus } from '@/lib/migrate-add-booking-status'
 import { sendPushToAdmins } from '@/lib/push'
 
+// Force Node.js runtime – web-push uses crypto/http unavailable in Edge
+export const runtime = 'nodejs'
+
 function buildManageUrl(bookingId: string, clientEmail: string): string {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
   return `${base}/personal-training/manage?id=${bookingId}&email=${encodeURIComponent(clientEmail)}`

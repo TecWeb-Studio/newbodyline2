@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { saveSubscription, removeSubscription } from '@/lib/push'
 
+// Force Node.js runtime – web-push uses crypto/http unavailable in Edge
+export const runtime = 'nodejs'
+
 // POST – save a push subscription
 export async function POST(request: Request) {
   try {

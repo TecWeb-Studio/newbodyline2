@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { sendPushToAdmins } from '@/lib/push'
 
+// Force Node.js runtime – web-push uses crypto/http unavailable in Edge
+export const runtime = 'nodejs'
+
 // POST – Send a test push notification to all subscribed admin devices
 export async function POST() {
   try {
