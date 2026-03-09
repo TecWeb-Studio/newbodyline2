@@ -58,6 +58,17 @@ export async function sendPushToAdmins(payload: { title: string; body: string; u
   await ensurePushTable()
   const result = await db.execute('SELECT endpoint, keys_p256dh, keys_auth FROM push_subscriptions')
 
+  console.log(`[Push] Sending to ${result.rows.length} subscriber(s): "${payload.title}"`)
+
+  if (result.rows.length === 0) {
+    console.warn('[Push] No subscriptions found – nobody will receive this notification')
+    return
+  }
+
+  let sent = 0
+  let failed = 0
+  let removed = 0
+
   const notifications = result.rows.map(async (row) => {
     const subscription = {
       endpoint: row.endpoint as string,
@@ -69,16 +80,21 @@ export async function sendPushToAdmins(payload: { title: string; body: string; u
 
     try {
       await webpush.sendNotification(subscription, JSON.stringify(payload))
+      sent++
     } catch (err: unknown) {
       const status = (err as { statusCode?: number }).statusCode
       // If subscription expired / invalid, remove it
       if (status === 404 || status === 410) {
         await removeSubscription(subscription.endpoint)
+        removed++
+        console.log(`[Push] Removed stale subscription (${status}): ${subscription.endpoint.slice(0, 60)}…`)
       } else {
-        console.error('[Push] send error:', err)
+        failed++
+        console.error(`[Push] Send failed (status ${status}):`, (err as Error).message ?? err)
       }
     }
   })
 
   await Promise.allSettled(notifications)
+  console.log(`[Push] Done – sent: ${sent}, failed: ${failed}, removed stale: ${removed}`)
 }

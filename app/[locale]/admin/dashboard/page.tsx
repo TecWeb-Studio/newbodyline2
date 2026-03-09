@@ -35,6 +35,7 @@ import {
 } from 'lucide-react'
 import { useBooking, type TimeSlot } from '@/app/contexts/BookingContext'
 import PushToggle from '@/app/components/PushToggle'
+import { Send } from 'lucide-react'
 
 export default function AdminDashboardPage() {
   const router = useRouter()
@@ -341,6 +342,22 @@ export default function AdminDashboardPage() {
             
             <div className="flex items-center gap-1.5 sm:gap-2">
               <PushToggle />
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await fetch('/api/admin/push/test', { method: 'POST' })
+                    if (!res.ok) throw new Error('Send failed')
+                    alert('Test notification inviata!')
+                  } catch {
+                    alert('Errore invio test push')
+                  }
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-[#27272a] text-[#a1a1aa] border border-[#3f3f46] hover:text-[#fafafa] hover:border-[#dc2626]/30 transition-all duration-200"
+                title="Invia notifica push di test"
+              >
+                <Send className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Test Push</span>
+              </button>
               <button
                 onClick={() => { resetBookingModal(); setShowBookingModal(true) }}
                 className="flex items-center gap-1.5 px-3 py-2 bg-[#dc2626] hover:bg-[#b91c1c] rounded-lg transition-colors text-white text-sm font-medium"

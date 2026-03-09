@@ -89,6 +89,13 @@ export default function PushToggle() {
   const subscribe = async () => {
     setState('loading')
     try {
+      // Explicitly request notification permission first (required on some mobile browsers)
+      const permission = await Notification.requestPermission()
+      if (permission !== 'granted') {
+        setState(permission === 'denied' ? 'denied' : 'unsubscribed')
+        return
+      }
+
       await navigator.serviceWorker.register('/sw.js')
       const reg = await navigator.serviceWorker.ready
 
