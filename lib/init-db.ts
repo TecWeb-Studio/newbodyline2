@@ -6,7 +6,7 @@ const trainersData = [
     id: 'trainer-1',
     name: 'Giorgio',
     specialty: 'Strength & Conditioning',
-    image: '/images/trainers/giorgio.jpg',
+    image: '/images/trainers/giorgio.png',
     description: 'Former professional athlete with 10+ years of experience in strength training and athletic performance.',
     rating: 4.9
   },

@@ -342,7 +342,7 @@ export default function PersonalTrainingPage() {
                     <img
                       src={trainer.image}
                       alt={trainer.name}
-                      className="absolute inset-0 w-full h-full object-cover object-center"
+                      className={`absolute inset-0 w-full h-full object-cover ${trainer.id === 'trainer-1' ? 'object-[center_70%]' : 'object-center'}`}
                       onError={(e) => {
                         e.currentTarget.style.display = "none";
                         e.currentTarget.nextElementSibling?.classList.remove(

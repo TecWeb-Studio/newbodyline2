@@ -9,7 +9,8 @@
     "lint": "eslint",
     "db:init": "tsx lib/init-db.ts",
     "db:migrate": "tsx lib/migrate-add-trainer-phone.ts",
-    "db:migrate-schedules": "tsx lib/migrate-schedules.ts"
+    "db:migrate-schedules": "tsx lib/migrate-schedules.ts",
+    "db:migrate-giorgio-image": "tsx lib/migrate-giorgio-image.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.17.0",
