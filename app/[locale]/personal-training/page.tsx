@@ -31,6 +31,12 @@ import {
   ChevronDown,
   Filter,
   Quote,
+  X,
+  Dumbbell,
+  Heart,
+  Zap,
+  Flame,
+  Trophy,
 } from "lucide-react";
 
 interface Review {
@@ -51,6 +57,107 @@ interface ReviewAverage {
 }
 
 const WHATSAPP_NUMBER = "393479633983"; // +39 347 963 3983
+
+interface TrainerProfile {
+  preview: string;
+  subtitle: string;
+  quote: string;
+  sections: { title: string; content: string }[];
+  tags: string[];
+  highlight: string;
+}
+
+const TRAINER_PROFILES: Record<string, TrainerProfile> = {
+  'trainer-3': {
+    preview: 'Preparazione fisica e mentale per superare ogni limite.',
+    subtitle: 'Personal Trainer & Mental Coach',
+    quote: 'Vuoi superare i tuoi limiti e scoprire di cosa sei davvero capace?',
+    sections: [
+      {
+        title: 'Chi è Diego',
+        content: 'Diego ti guida in un percorso che va oltre il semplice allenamento: unisce preparazione fisica e mentale per aiutarti a ottenere risultati concreti e duraturi.\n\nIstruttore con grande esperienza, è specializzato in fitness femminile, allenamento personalizzato e preparazione atletica. Il suo approccio combina forza, resistenza e mentalità, per costruire un corpo performante e una mente più determinata.',
+      },
+      {
+        title: 'Cosa lo rende diverso',
+        content: 'Diego è il primo a mettersi in gioco: vive in prima persona il mondo delle competizioni, con una solida esperienza in gare Spartan, OCR, trail e percorsi estremi come l\'Agoge. Questo gli permette di trasmettere un metodo autentico, pratico e motivante.\n\nÈ inoltre il creatore del Gruppo ALIVE, una community dedicata a chi vuole migliorarsi, prepararsi a sfide sportive e condividere un percorso di crescita insieme ad altri.',
+      },
+      {
+        title: 'Il suo approccio',
+        content: 'Allenamenti dinamici e coinvolgenti che includono fitness femminile e personal training, circuiti funzionali, Yoga Fitness e Panca Fit, preparazione per gare OCR e Spartan.',
+      },
+    ],
+    tags: ['Mental Coach', 'Fitness Femminile', 'OCR & Spartan', 'Circuiti Funzionali', 'Yoga Fitness'],
+    highlight: 'Più forza, più sicurezza e una mentalità capace di affrontare qualsiasi sfida.',
+  },
+  'trainer-5': {
+    preview: 'Risultati concreti con allenamenti semplici ed efficaci.',
+    subtitle: 'Personal Trainer',
+    quote: 'Il mio lavoro è aiutarti a ottenere risultati concreti con allenamenti semplici, efficaci e sostenibili.',
+    sections: [
+      {
+        title: 'La sua missione',
+        content: 'Insieme costruiremo un percorso su misura per te, che si adatti alla tua vita.\n\nVuoi diventare più forte e tonico? Vuoi migliorare il tuo fisico senza perdere tempo? Vuoi finalmente essere costante? Se ti riconosci anche solo in uno di questi punti, sei nel posto giusto.',
+      },
+      {
+        title: 'Come lavoreremo insieme',
+        content: 'Analizziamo il tuo punto di partenza e i tuoi obiettivi. Creiamo un programma progressivo e personalizzato. Ti seguo passo dopo passo con aggiornamenti continui.',
+      },
+    ],
+    tags: ['Personalizzazione', 'Forza & Tonificazione', 'Costanza', 'Programmi Progressivi'],
+    highlight: 'Un corpo più forte, più energia e un metodo che puoi mantenere nel tempo.',
+  },
+  'trainer-1': {
+    preview: 'Da calciatore professionista a preparatore atletico d\'élite.',
+    subtitle: 'Personal Trainer & Preparatore Atletico',
+    quote: 'Con me non esistono scorciatoie: si lavora bene, si lavora duro, e si ottengono risultati.',
+    sections: [
+      {
+        title: 'Chi è Giorgio',
+        content: 'Ex calciatore con esperienza in squadre di alto livello, oggi personal trainer e preparatore atletico. Forte mentalità sportiva, disciplina e determinazione, unite a un approccio solare e motivante.',
+      },
+      {
+        title: 'Le sue specializzazioni',
+        content: 'Specializzato nello sviluppo della performance atletica, prevenzione infortuni e miglioramento della condizione fisica per atleti e clienti di ogni livello.\n\nChe tu voglia dimagrire, aumentare massa o migliorare la performance, costruisce percorsi su misura basati su metodo, esperienza e costanza.',
+      },
+    ],
+    tags: ['Performance Atletica', 'Prevenzione Infortuni', 'Dimagrimento', 'Massa Muscolare'],
+    highlight: 'Si lavora bene, si lavora duro, e si ottengono risultati.',
+  },
+  'trainer-4': {
+    preview: 'Danza, fitness e percorsi su misura per ogni fase della vita.',
+    subtitle: 'Ballerina, Istruttrice & Personal Trainer',
+    quote: 'Il tuo obiettivo diventa il suo. E se oggi ti manca la determinazione, insieme la trasformerete nella tua forza.',
+    sections: [
+      {
+        title: 'Chi è Cleo',
+        content: 'Cleo Bagarotto è ballerina e direttrice artistica del settore danza, da sempre guidata da una profonda passione per il movimento e l\'espressione del corpo. Nel mondo del fitness, lavora come istruttrice di corsi e circuito funzionale, creando allenamenti dinamici, coinvolgenti e adatti a ogni livello.',
+      },
+      {
+        title: 'Il suo approccio',
+        content: 'Come personal trainer, costruisce percorsi su misura, accompagnando ogni persona passo dopo passo verso i propri obiettivi.\n\nÈ inoltre specializzata nell\'allenamento pre e post gravidanza, offrendo programmi sicuri, mirati e attenti al benessere della donna in ogni fase.',
+      },
+    ],
+    tags: ['Danza', 'Circuito Funzionale', 'Pre & Post Gravidanza', 'Percorsi su Misura'],
+    highlight: 'Cleo è pronta a camminare al tuo fianco: il tuo obiettivo diventa il suo.',
+  },
+  'trainer-2': {
+    preview: 'Postura, benessere e recupero funzionale con grinta ed energia.',
+    subtitle: 'Istruttrice Posturale & Personal Trainer',
+    quote: 'Energia, determinazione e passione sono la sua forza, e la trasmette ogni giorno a chi si allena con lei.',
+    sections: [
+      {
+        title: 'Chi è Teresa',
+        content: 'Teresa Corbetti è istruttrice di Postural Program, circuiti Low Impact e ginnastica posturale riabilitativa, oltre che personal trainer. Con competenza ed esperienza, accompagna le persone in percorsi di allenamento mirati al benessere, alla postura e al recupero funzionale.',
+      },
+      {
+        title: 'Il suo approccio',
+        content: 'Il suo approccio unisce attenzione, precisione e ascolto, creando programmi efficaci e adatti a ogni esigenza, sempre nel rispetto del corpo e dei suoi tempi.',
+      },
+    ],
+    tags: ['Postural Program', 'Low Impact', 'Ginnastica Riabilitativa', 'Recupero Funzionale'],
+    highlight: 'Teresa è una donna piena di grinta: energia, determinazione e passione sono la sua forza.',
+  },
+};
 
 export default function PersonalTrainingPage() {
   const t = useTranslations("personalTraining");
@@ -74,6 +181,7 @@ export default function PersonalTrainingPage() {
   const [trainerOnVacation, setTrainerOnVacation] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [specialtyTrainerId, setSpecialtyTrainerId] = useState<string | null>(null);
+  const [descriptionTrainerId, setDescriptionTrainerId] = useState<string | null>(null);
   const { toast } = useToast();
 
   // ── Review system state ──
@@ -373,64 +481,7 @@ export default function PersonalTrainingPage() {
                       );
                     })()}
 
-                    {/* Info Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSpecialtyTrainerId(
-                          specialtyTrainerId === trainer.id ? null : trainer.id,
-                        );
-                      }}
-                      className="absolute top-4 left-4 z-10 w-9 h-9 flex items-center justify-center bg-[#0a0a0a]/80 backdrop-blur-sm rounded-full border border-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] hover:border-[#dc2626] transition-all"
-                      title="View specializations"
-                    >
-                      <Info className="w-4 h-4" />
-                    </button>
                   </div>
-
-                  {/* Specialization Popover */}
-                  <AnimatePresence>
-                    {specialtyTrainerId === trainer.id && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden border-t border-[#27272a] bg-[#0a0a0a]"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <div className="p-5 space-y-3">
-                          <div className="flex items-center gap-2">
-                            <Star className="w-4 h-4 text-amber-400" />
-                            <span className="text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider">
-                              Specialization
-                            </span>
-                          </div>
-                          <p className="text-[#dc2626] font-semibold text-sm">
-                            {trainer.specialty}
-                          </p>
-                          <p className="text-[#a1a1aa] text-xs leading-relaxed">
-                            {trainer.description}
-                          </p>
-                          <div className="flex items-center gap-1 pt-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`w-3.5 h-3.5 ${
-                                  i < Math.round(trainer.rating)
-                                    ? 'text-amber-400 fill-amber-400'
-                                    : 'text-[#3f3f46]'
-                                }`}
-                              />
-                            ))}
-                            <span className="text-xs text-[#71717a] ml-1">
-                              {trainer.rating}
-                            </span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
 
                   {/* Trainer Info */}
                   <div className="p-4 sm:p-6">
@@ -438,13 +489,26 @@ export default function PersonalTrainingPage() {
                       {trainer.name}
                     </h3>
                     <p className="text-[#dc2626] font-medium text-xs sm:text-sm mb-2 sm:mb-3">
-                      {trainer.specialty}
+                      {TRAINER_PROFILES[trainer.id]?.subtitle ?? trainer.specialty}
                     </p>
                     <p className="text-[#a1a1aa] text-xs sm:text-sm leading-relaxed line-clamp-2 hidden sm:block">
-                      {trainer.description}
+                      {TRAINER_PROFILES[trainer.id]?.preview ?? trainer.description}
                     </p>
 
-                    <button className="mt-3 sm:mt-4 w-full py-2 sm:py-2.5 rounded-lg border border-[#27272a] text-[#fafafa] text-sm font-medium hover:bg-[#dc2626] hover:border-[#dc2626] transition-all">
+                    {TRAINER_PROFILES[trainer.id] && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDescriptionTrainerId(trainer.id);
+                        }}
+                        className="mt-3 sm:mt-4 w-full py-2 sm:py-2.5 rounded-lg border border-[#27272a] text-[#a1a1aa] text-xs sm:text-sm font-medium hover:text-[#fafafa] hover:border-[#dc2626]/50 transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <Info className="w-3.5 h-3.5" />
+                        Mostra competenze
+                      </button>
+                    )}
+
+                    <button className="mt-2 sm:mt-3 w-full py-2 sm:py-2.5 rounded-lg border border-[#27272a] text-[#fafafa] text-sm font-medium hover:bg-[#dc2626] hover:border-[#dc2626] transition-all">
                       {t("booking.bookSession")}
                     </button>
                   </div>
@@ -453,6 +517,156 @@ export default function PersonalTrainingPage() {
             </div>
           </div>
         </section>
+
+        {/* Trainer Description Modal */}
+        <AnimatePresence>
+          {descriptionTrainerId && (() => {
+            const trainerData = trainers.find((t) => t.id === descriptionTrainerId);
+            const profile = TRAINER_PROFILES[descriptionTrainerId];
+            if (!trainerData || !profile) return null;
+            const stats = getTrainerReviewStats(trainerData.id);
+            const rating = stats.reviewCount > 0 ? stats.avgRating : trainerData.rating;
+            return (
+              <motion.div
+                key="desc-modal"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 z-50 bg-black/80"
+                onClick={() => setDescriptionTrainerId(null)}
+              >
+                <div
+                  className="fixed inset-0 z-50 overflow-y-auto overscroll-contain"
+                  style={{ WebkitOverflowScrolling: 'touch' }}
+                  onClick={() => setDescriptionTrainerId(null)}
+                >
+                  {/* Centering wrapper — works on both mobile & desktop */}
+                  <div className="flex min-h-full items-start sm:items-center justify-center px-0 sm:px-6 py-0 sm:py-8">
+                    <div
+                      className="relative w-full sm:max-w-md bg-[#0a0a0a] sm:rounded-2xl sm:border sm:border-[#1f1f23] sm:shadow-2xl sm:shadow-black/50"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {/* ── Top bar ── */}
+                      <div className="sticky top-0 z-20 flex items-center justify-between px-5 py-3.5 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-[#1f1f23] sm:rounded-t-2xl">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-9 h-9 rounded-full overflow-hidden bg-[#18181b] border-2 border-[#dc2626]/30 shrink-0">
+                            <img src={trainerData.image} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <div className="min-w-0">
+                            <h3 className="text-sm font-bold text-[#fafafa] truncate">{trainerData.name}</h3>
+                            <p className="text-[11px] text-[#dc2626] font-semibold truncate">{profile.subtitle}</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setDescriptionTrainerId(null)}
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-[#18181b] border border-[#27272a] text-[#71717a] hover:text-[#fafafa] active:bg-[#27272a] transition-colors shrink-0 ml-3"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      {/* ── Body ── */}
+                      <div className="px-5 sm:px-6 pt-5 pb-8 space-y-5">
+                        {/* Rating + subtitle row */}
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-1">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-3.5 h-3.5 ${i < Math.round(rating) ? 'text-yellow-400 fill-yellow-400' : 'text-[#27272a]'}`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-[#71717a] text-xs">{(Math.round(rating * 10) / 10).toFixed(1)}</span>
+                          {stats.reviewCount > 0 && (
+                            <span className="text-[#52525b] text-xs">({stats.reviewCount} recensioni)</span>
+                          )}
+                        </div>
+
+                        {/* Quote */}
+                        <div className="bg-[#111113] rounded-xl p-4 border-l-2 border-[#dc2626]">
+                          <p className="text-[#e4e4e7] text-[13px] sm:text-sm leading-relaxed italic">
+                            &ldquo;{profile.quote}&rdquo;
+                          </p>
+                        </div>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-1.5">
+                          {profile.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#dc2626]/8 text-[#f87171] border border-[#dc2626]/15"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Sections */}
+                        {profile.sections.map((section, i) => (
+                          <div key={section.title} className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-md bg-[#dc2626]/10 flex items-center justify-center shrink-0">
+                                {i === 0 ? (
+                                  <User className="w-3 h-3 text-[#dc2626]" />
+                                ) : i === 1 ? (
+                                  <Target className="w-3 h-3 text-[#dc2626]" />
+                                ) : (
+                                  <Dumbbell className="w-3 h-3 text-[#dc2626]" />
+                                )}
+                              </div>
+                              <h4 className="text-[13px] sm:text-sm font-bold text-[#fafafa]">
+                                {section.title}
+                              </h4>
+                            </div>
+                            <p className="text-[#a1a1aa] text-[13px] leading-[1.65] whitespace-pre-line pl-8">
+                              {section.content}
+                            </p>
+                            {i < profile.sections.length - 1 && (
+                              <div className="h-px bg-[#1f1f23] mt-4" />
+                            )}
+                          </div>
+                        ))}
+
+                        {/* Highlight */}
+                        <div className="rounded-xl bg-gradient-to-r from-[#dc2626]/10 to-transparent border border-[#dc2626]/15 p-4">
+                          <div className="flex items-center gap-1.5 mb-2">
+                            <Flame className="w-3.5 h-3.5 text-[#dc2626]" />
+                            <span className="text-[#dc2626] text-[10px] font-bold uppercase tracking-widest">
+                              Il risultato
+                            </span>
+                          </div>
+                          <p className="text-[#fafafa] text-[13px] sm:text-sm font-semibold leading-relaxed">
+                            {profile.highlight}
+                          </p>
+                        </div>
+
+                        {/* CTA */}
+                        <button
+                          onClick={() => {
+                            setDescriptionTrainerId(null);
+                            setSelectedTrainer(trainerData.id);
+                            setSelectedDate("");
+                            setSelectedSlot(null);
+                            setAvailableSlots([]);
+                            setTrainerOnVacation(false);
+                            setBookingSuccess(false);
+                            setBookingError(null);
+                            setShowBookingForm(true);
+                          }}
+                          className="w-full py-3 rounded-xl bg-[#dc2626] hover:bg-[#b91c1c] text-white font-bold text-sm transition-colors active:scale-[0.98]"
+                        >
+                          {t("booking.bookSession")}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })()}
+        </AnimatePresence>
 
         {/* Booking Section */}
         <AnimatePresence>
