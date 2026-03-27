@@ -6,17 +6,17 @@ const trainersData = [
     id: 'trainer-1',
     name: 'Giorgio',
     specialty: 'Strength & Conditioning',
-    image: '/images/trainers/giorgio.png',
+    image: '/images/trainers/giorgio.jpeg',
     description: 'Former professional athlete with 10+ years of experience in strength training and athletic performance.',
-    rating: 4.9
+    rating: 5.0
   },
   {
     id: 'trainer-2',
     name: 'Teresa',
     specialty: 'HIIT & Cardio',
-    image: '/images/trainers/teresa.jpg',
+    image: '/images/trainers/teresa.jpeg',
     description: 'Certified HIIT specialist known for high-energy sessions that maximize calorie burn and endurance.',
-    rating: 4.8
+    rating: 5.0
   },
   {
     id: 'trainer-3',
@@ -32,15 +32,15 @@ const trainersData = [
     specialty: 'Boxing & Combat',
     image: '/images/trainers/cleo.jpg',
     description: 'Professional boxing coach focusing on technique, conditioning, and confidence building.',
-    rating: 4.9
+    rating: 5.0
   },
   {
     id: 'trainer-5',
     name: 'Filippo',
     specialty: 'Pilates & Core',
-    image: '/images/trainers/filippo.jpg',
+    image: '/images/trainers/filippo.png',
     description: 'Expert in pilates and core strengthening with a focus on posture correction and injury prevention.',
-    rating: 4.9
+    rating: 5.0
   }
 ]
 

@@ -45,11 +45,6 @@ export default function Hero() {
             <span className="block gradient-text mt-2">{t('hero.titleAccent')}</span>
           </h1>
 
-          {/* Description */}
-          <p className="max-w-2xl mx-auto text-lg sm:text-xl text-[#a1a1aa] mb-10 leading-relaxed animate-in fade-in slide-in-from-top-4 duration-600 delay-200">
-            {t('hero.description')}
-          </p>
-
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-top-4 duration-600 delay-300">
             <Link href="/courses" className="btn-primary text-lg px-8 py-4">

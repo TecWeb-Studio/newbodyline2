@@ -2,12 +2,24 @@ import 'dotenv/config'
 import { db } from './db'
 
 async function migrate() {
-  const result = await db.execute({
-    sql: 'UPDATE trainers SET image = ? WHERE id = ? OR name = ?',
-    args: ['/images/trainers/giorgio.png', 'trainer-1', 'Giorgio'],
-  })
+  const [giorgioResult, filippoResult, teresaResult] = await db.batch([
+    {
+      sql: 'UPDATE trainers SET image = ? WHERE id = ? OR name = ?',
+      args: ['/images/trainers/giorgio.jpeg', 'trainer-1', 'Giorgio'],
+    },
+    {
+      sql: 'UPDATE trainers SET image = ? WHERE id = ? OR name = ?',
+      args: ['/images/trainers/filippo.png', 'trainer-5', 'Filippo'],
+    },
+    {
+      sql: 'UPDATE trainers SET image = ? WHERE id = ? OR name = ?',
+      args: ['/images/trainers/teresa.jpeg', 'trainer-2', 'Teresa'],
+    },
+  ], 'write')
 
-  console.log(`✅ Updated Giorgio image path (${result.rowsAffected ?? 0} row(s))`)
+  console.log(
+    `✅ Updated trainer image paths (Giorgio: ${giorgioResult.rowsAffected ?? 0}, Filippo: ${filippoResult.rowsAffected ?? 0}, Teresa: ${teresaResult.rowsAffected ?? 0})`
+  )
 }
 
 migrate()

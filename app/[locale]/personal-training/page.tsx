@@ -56,7 +56,14 @@ interface ReviewAverage {
   review_count: number;
 }
 
-const WHATSAPP_NUMBER = "393479633983"; // +39 347 963 3983
+const WHATSAPP_NUMBER_DEFAULT = "393479633983"; // Diego – fallback
+const TRAINER_WHATSAPP: Record<string, string> = {
+  'trainer-1': '393293508756',  // Giorgio
+  'trainer-2': '393283394711',  // Teresa
+  'trainer-3': '393479633983',  // Diego
+  'trainer-4': '393463510095',  // Cleo
+  'trainer-5': '393404858684',  // Filippo
+};
 
 interface TrainerProfile {
   preview: string;
@@ -334,7 +341,8 @@ export default function PersonalTrainingPage() {
         time: slot.time,
         name: formData.name.trim(),
       });
-      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      const trainerWa = TRAINER_WHATSAPP[selectedTrainerData.id] ?? WHATSAPP_NUMBER_DEFAULT;
+      const waUrl = `https://wa.me/${trainerWa}?text=${encodeURIComponent(message)}`;
 
       // window.open is blocked in PWA standalone mode on mobile,
       // so fall back to location.href which opens WhatsApp directly
@@ -568,6 +576,17 @@ export default function PersonalTrainingPage() {
 
                       {/* ── Body ── */}
                       <div className="px-5 sm:px-6 pt-5 pb-8 space-y-5">
+                        {/* Hero image */}
+                        {trainerData.id === 'trainer-2' && (
+                          <div className="relative -mx-5 sm:-mx-6 -mt-5 h-56 sm:h-64 overflow-hidden">
+                            <img
+                              src="/images/trainers/teresa.jpeg"
+                              alt="Teresa Corbetti"
+                              className="w-full h-full object-cover object-[center_30%]"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
+                          </div>
+                        )}
                         {/* Rating + subtitle row */}
                         <div className="flex items-center gap-3">
                           <div className="flex items-center gap-1">

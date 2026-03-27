@@ -8,11 +8,11 @@ import 'dotenv/config'
 import { db } from './db'
 
 const trainerPhones: Record<string, string> = {
-  'trainer-1': '+39XXXXXXXXXX', // Giorgio
-  'trainer-2': '+39XXXXXXXXXX', // Teresa
-  'trainer-3': '+39XXXXXXXXXX', // Diego
-  'trainer-4': '+39XXXXXXXXXX', // Cleo
-  'trainer-5': '+39XXXXXXXXXX', // Filippo
+  'trainer-1': '+393293508756',  // Giorgio
+  'trainer-2': '+393283394711',  // Teresa
+  'trainer-3': '+393479633983',  // Diego
+  'trainer-4': '+393463510095',  // Cleo
+  'trainer-5': '+393404858684',  // Filippo
 }
 
 async function migrate() {

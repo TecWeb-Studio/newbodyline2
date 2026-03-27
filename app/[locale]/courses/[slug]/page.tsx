@@ -5,13 +5,147 @@ import { Link } from '@/app/i18n/navigation'
 import { useParams } from 'next/navigation'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
 import {
   ArrowLeft, ArrowRight, Clock, Flame, CalendarDays,
   Backpack, Users, ChevronRight, Sparkles, Target, Star,
 } from 'lucide-react'
 import { getCourseBySlug, getRelatedCourses, levelColors } from '@/lib/courses'
+
+const courseImages: Record<string, { src: string; alt: string }[]> = {
+  circuit: [
+    { src: '/images/gallery/photo-02.jpeg', alt: 'Circuit training workout at New Body Line 2' },
+    { src: '/images/gallery/photo-01.jpeg', alt: 'Circuit training session at New Body Line 2' },
+    { src: '/images/gallery/photo-11.jpeg', alt: 'Circuit training class at New Body Line 2' },
+  ],
+  kickboxing: [
+    { src: '/images/gallery/kickboxing1.jpg', alt: 'Kickboxing class at New Body Line 2' },
+    { src: '/images/gallery/kickboxing2.jpg', alt: 'Kickboxing training at New Body Line 2' },
+    { src: '/images/gallery/kickboxing3.jpg', alt: 'Kickboxing workout session at New Body Line 2' },
+  ],
+  pilates: [
+    { src: '/images/gallery/pilates1.jpg', alt: 'Pilates class at New Body Line 2' },
+    { src: '/images/gallery/pilates2.jpg', alt: 'Pilates training session at New Body Line 2' },
+  ],
+  propedeutica: [
+    { src: '/images/gallery/propedeutica1.jpg', alt: 'Propedeutica dance class at New Body Line 2' },
+    { src: '/images/gallery/propedeutica2.jpg', alt: 'Children in propedeutica dance training at New Body Line 2' },
+  ],
+  choreography: [
+    { src: '/images/gallery/coreo1.jpg', alt: 'Lab coreografico at New Body Line 2' },
+    { src: '/images/gallery/coreo2.jpg', alt: 'Choreography class at New Body Line 2' },
+  ],
+  'hip-hop': [
+    { src: '/images/gallery/hip1.jpg', alt: 'Hip-hop dance class at New Body Line 2' },
+    { src: '/images/gallery/hip2.jpg', alt: 'Hip-hop training at New Body Line 2' },
+    { src: '/images/gallery/hip3.jpg', alt: 'Hip-hop workout at New Body Line 2' },
+  ],
+  'modern-dance': [
+    { src: '/images/gallery/danza1.jpg', alt: 'Danza moderna at New Body Line 2' },
+    { src: '/images/gallery/danza2.jpg', alt: 'Modern dance class at New Body Line 2' },
+    { src: '/images/gallery/danza3.jpeg', alt: 'Modern dance training at New Body Line 2' },
+  ],
+}
+
+/* ------------------------------------------------------------------ */
+/*  Dance Image Carousel                                              */
+/* ------------------------------------------------------------------ */
+const DANCE_SLUGS = ['choreography', 'hip-hop', 'modern-dance', 'propedeutica']
+
+function DanceCarousel({ images, accentColor }: { images: { src: string; alt: string }[]; accentColor: string }) {
+  const [current, setCurrent] = useState(0)
+  const [direction, setDirection] = useState(1)
+  const total = images.length
+
+  const go = (next: number, dir: number) => {
+    setDirection(dir)
+    setCurrent((next + total) % total)
+  }
+
+  useEffect(() => {
+    const id = setInterval(() => go(current + 1, 1), 3800)
+    return () => clearInterval(id)
+  }, [current, total])
+
+  const variants = {
+    enter: (d: number) => ({ x: d > 0 ? '60%' : '-60%', opacity: 0, scale: 0.92, rotate: d > 0 ? 3 : -3 }),
+    center: { x: 0, opacity: 1, scale: 1, rotate: 0 },
+    exit: (d: number) => ({ x: d > 0 ? '-60%' : '60%', opacity: 0, scale: 0.92, rotate: d > 0 ? -3 : 3 }),
+  }
+
+  const accentGlow = accentColor.includes('fuchsia') ? '#d946ef' : accentColor.includes('purple') || accentColor.includes('violet') ? '#a855f7' : accentColor.includes('pink') ? '#ec4899' : '#dc2626'
+
+  return (
+    <div className="relative w-full max-w-2xl mx-auto select-none">
+      {/* Main image */}
+      <div className="relative overflow-hidden rounded-3xl border border-[#27272a] bg-[#111111] p-2 shadow-[0_30px_80px_rgba(0,0,0,0.5)]" style={{ boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 60px ${accentGlow}18` }}>
+        <div className="relative overflow-hidden rounded-[1.5rem] aspect-[4/3]">
+          <AnimatePresence custom={direction} mode="popLayout">
+            <motion.img
+              key={images[current].src}
+              src={images[current].src}
+              alt={images[current].alt}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
+              className="absolute inset-0 w-full h-full object-cover"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.08}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -60) go(current + 1, 1)
+                else if (info.offset.x > 60) go(current - 1, -1)
+              }}
+            />
+          </AnimatePresence>
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+          {/* Counter */}
+          <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-full border border-white/10 pointer-events-none">
+            {current + 1} / {total}
+          </div>
+        </div>
+      </div>
+
+      {/* Prev / Next */}
+      <button
+        onClick={() => go(current - 1, -1)}
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-white hover:bg-black/80 transition-colors z-10"
+        aria-label="Previous"
+      >
+        <ArrowLeft className="w-4 h-4" />
+      </button>
+      <button
+        onClick={() => go(current + 1, 1)}
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-white hover:bg-black/80 transition-colors z-10"
+        aria-label="Next"
+      >
+        <ArrowRight className="w-4 h-4" />
+      </button>
+
+      {/* Dots */}
+      <div className="flex items-center justify-center gap-2.5 mt-5">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => go(i, i > current ? 1 : -1)}
+            className="transition-all duration-300 rounded-full"
+            style={{
+              width: i === current ? 24 : 8,
+              height: 8,
+              background: i === current ? accentGlow : '#3f3f46',
+            }}
+            aria-label={`Go to image ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /*  Intensity visual bar                                               */
@@ -106,6 +240,11 @@ export default function CourseDetailPage() {
   const level = t(`${course.key}.level`)
   const levelClass = levelColors[level] || 'bg-[#dc2626]/10 text-[#dc2626] border-[#dc2626]/20'
   const related = getRelatedCourses(course, 3)
+  const courseImagesForPage = courseImages[course.slug] ?? []
+  const isCircuitCourse = course.slug === 'circuit'
+  const isDanceCourse = DANCE_SLUGS.includes(course.slug)
+  const leadCourseImage = isCircuitCourse ? courseImagesForPage[0] : undefined
+  const supportingCourseImages = isCircuitCourse ? courseImagesForPage.slice(1) : courseImagesForPage
 
   const benefits = [1, 2, 3, 4].map(i => ({
     title: td(`${course.key}.benefit${i}Title`),
@@ -195,6 +334,23 @@ export default function CourseDetailPage() {
                     {td(`${course.key}.frequency`)}
                   </span>
                 </div>
+
+                {leadCourseImage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 26 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.65, delay: 0.18 }}
+                    className="mt-10 max-w-xl"
+                  >
+                    <div className="overflow-hidden rounded-[2rem] border border-[#27272a] bg-[#111111] p-2 shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
+                      <img
+                        src={leadCourseImage.src}
+                        alt={leadCourseImage.alt}
+                        className="block h-auto w-auto max-w-full rounded-[1.5rem]"
+                      />
+                    </div>
+                  </motion.div>
+                )}
               </motion.div>
 
               {/* Right: icon accent block */}
@@ -231,6 +387,69 @@ export default function CourseDetailPage() {
             </motion.div>
           </div>
         </section>
+
+        {supportingCourseImages.length > 0 && (
+          <section className="py-20 sm:py-24 bg-[#0a0a0a] relative overflow-hidden">
+            <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_top_left,_#dc2626,_transparent_35%)]" />
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+              {isDanceCourse ? (
+                /* ── Dance carousel layout ── */
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <DanceCarousel images={supportingCourseImages} accentColor={course.accent} />
+                </motion.div>
+              ) : (
+                /* ── Default editorial layout ── */
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+                  <motion.div
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="lg:col-span-4 lg:sticky lg:top-28"
+                  >
+                    <div className="rounded-3xl border border-[#27272a] bg-[#111111] p-6 sm:p-8">
+                      <span className="text-[#dc2626] text-sm font-semibold uppercase tracking-[0.2em] block mb-4">
+                        {t(`${course.key}.title`)}
+                      </span>
+                      <h2 className="text-3xl sm:text-4xl font-bold text-[#fafafa] leading-tight mb-4">
+                        Dentro l&apos;energia del corso.
+                      </h2>
+                      <p className="text-[#a1a1aa] leading-relaxed text-base sm:text-lg">
+                        Una sezione visiva integrata nella pagina, con immagini disposte in modo piu naturale e coerente con il ritmo del layout.
+                      </p>
+                    </div>
+                  </motion.div>
+
+                  <div className={isCircuitCourse ? 'lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 items-start' : 'lg:col-span-8 grid grid-cols-1 gap-6 lg:gap-10'}>
+                    {supportingCourseImages.map((image, index) => (
+                      <motion.div
+                        key={image.src}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: '-40px' }}
+                        transition={{ duration: 0.55, delay: index * 0.12 }}
+                        className={isCircuitCourse ? (index % 2 === 0 ? 'justify-self-start' : 'justify-self-end sm:mt-10') : (index % 2 === 0 ? 'justify-self-start' : 'justify-self-end lg:-mt-6')}
+                      >
+                        <div className="overflow-hidden rounded-[2rem] border border-[#27272a] bg-[#111111] p-2 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            className={isCircuitCourse ? 'block h-auto w-auto max-w-[320px] rounded-[1.5rem]' : 'block h-auto w-auto max-w-full rounded-[1.5rem]'}
+                          />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* ─── BENEFITS ─── */}
         <section className="py-20 sm:py-28 bg-[#0a0a0a] relative overflow-hidden">
