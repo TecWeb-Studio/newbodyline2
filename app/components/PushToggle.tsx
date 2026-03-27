@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { Bell, BellOff, Smartphone, ShieldOff } from 'lucide-react'
 
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? ''
@@ -42,7 +43,11 @@ type State =
   | 'unsubscribed'
 
 export default function PushToggle() {
+  const pathname = usePathname()
   const [state, setState] = useState<State>('loading')
+  
+  // Use admin-sw.js for admin pages, regular sw.js otherwise
+  const swPath = pathname?.includes('/admin') ? '/admin-sw.js' : '/sw.js'
 
   useEffect(() => {
     const init = async () => {
@@ -72,8 +77,8 @@ export default function PushToggle() {
       }
 
       try {
-        // Use the single sw.js — it handles both caching and push
-        await navigator.serviceWorker.register('/sw.js')
+        // Register the appropriate service worker
+        await navigator.serviceWorker.register(swPath)
         const reg = await navigator.serviceWorker.ready
         const sub = await reg.pushManager.getSubscription()
         setState(sub ? 'subscribed' : 'unsubscribed')
@@ -84,7 +89,7 @@ export default function PushToggle() {
     }
 
     init()
-  }, [])
+  }, [swPath])
 
   const subscribe = async () => {
     setState('loading')
@@ -96,7 +101,8 @@ export default function PushToggle() {
         return
       }
 
-      await navigator.serviceWorker.register('/sw.js')
+      // Register the appropriate service worker
+      await navigator.serviceWorker.register(swPath)
       const reg = await navigator.serviceWorker.ready
 
       const subscription = await reg.pushManager.subscribe({

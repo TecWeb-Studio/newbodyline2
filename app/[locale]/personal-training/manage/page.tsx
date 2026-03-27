@@ -392,14 +392,23 @@ export default function ManageBookingPage() {
                     {/* Date */}
                     <div>
                       <label className="block text-sm text-zinc-400 mb-2">Date</label>
-                      <BookingCalendar
-                        value={selectedDate}
-                        onChange={(date) => {
-                          setSelectedDate(date)
-                          setSelectedSlot('')
-                        }}
-                        accent="amber"
-                      />
+                      {(() => {
+                        // Calendar must start from tomorrow (24-hour advance requirement)
+                        const tomorrow = new Date();
+                        tomorrow.setDate(tomorrow.getDate() + 1);
+                        const minDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+                        return (
+                          <BookingCalendar
+                            value={selectedDate}
+                            onChange={(date) => {
+                              setSelectedDate(date)
+                              setSelectedSlot('')
+                            }}
+                            minDate={minDate}
+                            accent="amber"
+                          />
+                        );
+                      })()}
                     </div>
 
                     {/* Time slots */}

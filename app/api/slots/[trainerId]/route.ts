@@ -139,17 +139,18 @@ export async function GET(
       args: [trainerId, date]
     })
 
-    // Filter out past time slots for today
+    // Filter out today's slots entirely (require 24-hour advance booking)
+    // and filter out past time slots for tomorrow and beyond
     const now = new Date()
     const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
-    const currentMinutes = now.getHours() * 60 + now.getMinutes()
+    
+    // Don't allow booking for today at all
+    if (date === todayISO) {
+      return NextResponse.json({ slots: [] })
+    }
 
-    const slots = date === todayISO
-      ? result.rows.filter(slot => {
-          const [h, m] = (slot.time as string).split(':').map(Number)
-          return h * 60 + m > currentMinutes
-        })
-      : result.rows
+    // For other dates, just return available slots as-is
+    const slots = result.rows
 
     return NextResponse.json({ slots })
   } catch (error) {

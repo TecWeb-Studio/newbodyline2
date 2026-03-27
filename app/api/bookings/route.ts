@@ -89,6 +89,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Cannot book a date in the past' }, { status: 400 })
     }
 
+    // Validate that booking is at least 24 hours in advance
+    const now = new Date()
+    const appointmentDateTime = new Date(`${date}T${time}:00`)
+    const hoursUntilAppointment = (appointmentDateTime.getTime() - now.getTime()) / (1000 * 60 * 60)
+
+    if (hoursUntilAppointment < 24) {
+      return NextResponse.json(
+        { error: 'Bookings must be made at least 24 hours in advance' },
+        { status: 400 }
+      )
+    }
+
     // Verifica che lo slot esiste e non è già prenotato (controllo concorrenza)
     const slotCheck = await db.execute({
       sql: 'SELECT is_booked FROM time_slots WHERE id = ?',

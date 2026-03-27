@@ -8,6 +8,11 @@
   "background_color": "#0a0a0a",
   "theme_color": "#dc2626",
   "orientation": "portrait",
+  "service_worker": {
+    "src": "/admin-sw.js",
+    "scope": "/",
+    "update_via_cache": "none"
+  },
   "icons": [
     {
       "src": "/images/logo.jpg",

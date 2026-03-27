@@ -828,11 +828,20 @@ export default function PersonalTrainingPage() {
                           <p className="text-[#a1a1aa] mb-6">
                             {t("booking.selectDate")}
                           </p>
-                          <BookingCalendar
-                            value={selectedDate}
-                            onChange={(date) => setSelectedDate(date)}
-                            accent="red"
-                          />
+                          {(() => {
+                            // Calendar must start from tomorrow (24-hour advance requirement)
+                            const tomorrow = new Date();
+                            tomorrow.setDate(tomorrow.getDate() + 1);
+                            const minDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+                            return (
+                              <BookingCalendar
+                                value={selectedDate}
+                                onChange={(date) => setSelectedDate(date)}
+                                minDate={minDate}
+                                accent="red"
+                              />
+                            );
+                          })()}
                         </div>
                       ) : !selectedSlot ? (
                         <div>
