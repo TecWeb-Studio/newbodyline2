@@ -1,5 +1,5 @@
 import {
-  Activity, Zap, Dumbbell, Shield, Bike, Baby, Music, Disc, Theater,
+  Activity, Zap, Dumbbell, Shield, Bike, Baby, Music, Disc, Theater, Waves, Wind,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -11,6 +11,7 @@ export interface CourseData {
   accent: string
   iconColor: string
   category: 'fitness' | 'dance'
+  isNew?: boolean
 }
 
 export const fitnessCourses: CourseData[] = [
@@ -20,6 +21,8 @@ export const fitnessCourses: CourseData[] = [
   { key: 'lowImpact', slug: 'low-impact', icon: Shield, color: 'from-pink-500/20 to-red-600/20', accent: 'bg-pink-500/10 border-pink-500/20', iconColor: 'text-pink-500', category: 'fitness' },
   { key: 'spinning', slug: 'spinning', icon: Bike, color: 'from-red-600/20 to-orange-500/20', accent: 'bg-red-600/10 border-red-600/20', iconColor: 'text-red-600', category: 'fitness' },
   { key: 'posturale', slug: 'posturale', icon: Activity, color: 'from-rose-400/20 to-red-500/20', accent: 'bg-rose-400/10 border-rose-400/20', iconColor: 'text-rose-400', category: 'fitness' },
+  { key: 'yogaHatha', slug: 'yoga-hatha', icon: Waves, color: 'from-teal-500/20 to-emerald-600/20', accent: 'bg-teal-500/10 border-teal-500/20', iconColor: 'text-teal-400', category: 'fitness', isNew: true },
+  { key: 'yogaVinyasa', slug: 'yoga-vinyasa', icon: Wind, color: 'from-cyan-500/20 to-teal-600/20', accent: 'bg-cyan-500/10 border-cyan-500/20', iconColor: 'text-cyan-400', category: 'fitness', isNew: true },
 ]
 
 export const danceCourses: CourseData[] = [
@@ -27,6 +30,8 @@ export const danceCourses: CourseData[] = [
   { key: 'modernDance', slug: 'modern-dance', icon: Music, color: 'from-fuchsia-500/20 to-pink-600/20', accent: 'bg-fuchsia-500/10 border-fuchsia-500/20', iconColor: 'text-fuchsia-400', category: 'dance' },
   { key: 'hipHop', slug: 'hip-hop', icon: Disc, color: 'from-purple-500/20 to-violet-600/20', accent: 'bg-purple-500/10 border-purple-500/20', iconColor: 'text-purple-400', category: 'dance' },
   { key: 'choreography', slug: 'choreography', icon: Theater, color: 'from-pink-500/20 to-fuchsia-600/20', accent: 'bg-pink-500/10 border-pink-500/20', iconColor: 'text-pink-400', category: 'dance' },
+  { key: 'danzaContemporanea', slug: 'danza-contemporanea', icon: Theater, color: 'from-indigo-500/20 to-violet-600/20', accent: 'bg-indigo-500/10 border-indigo-500/20', iconColor: 'text-indigo-400', category: 'dance' },
+  { key: 'tango', slug: 'tango', icon: Music, color: 'from-red-500/20 to-rose-600/20', accent: 'bg-red-500/10 border-red-500/20', iconColor: 'text-red-400', category: 'dance', isNew: true },
 ]
 
 export const allCourses: CourseData[] = [...fitnessCourses, ...danceCourses]

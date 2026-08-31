@@ -12,7 +12,7 @@ export default function Footer() {
     quickLinks: [
       { label: t('nav.home'), href: '/' },
       { label: t('nav.courses'), href: '/courses' },
-      { label: t('nav.personalTraining'), href: '/personal-training' },
+      { label: t('nav.openDay'), href: '/open-day' },
       { label: t('nav.location'), href: '/location' },
     ],
   }
@@ -124,8 +124,8 @@ export default function Footer() {
               <Link href="/courses" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
                 {t('nav.courses')}
               </Link>
-              <Link href="/personal-training" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
-                {t('nav.personalTraining')}
+              <Link href="/open-day" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
+                {t('nav.openDay')}
               </Link>
               <Link href="/location" className="text-[#71717a] hover:text-[#dc2626] text-sm transition-colors">
                 {t('nav.location')}

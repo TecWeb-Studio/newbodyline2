@@ -36,7 +36,7 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: t('nav.home') },
     { href: '/courses', label: t('nav.courses') },
-    { href: '/personal-training', label: t('nav.personalTraining') },
+    { href: '/open-day', label: t('nav.openDay') },
     { href: '/location', label: t('nav.location') },
   ]
 
@@ -89,7 +89,7 @@ export default function Header() {
 
           {/* Right side: CTA Button */}
           <div className="hidden md:flex items-center gap-4">
-            <Link href="/personal-training" className="btn-primary">
+            <Link href="/open-day" className="btn-primary">
               {t('nav.joinNow')}
             </Link>
           </div>
@@ -123,7 +123,7 @@ export default function Header() {
                 </Link>
               ))}
               <div className="px-4 pt-2">
-                <Link href="/personal-training" className="btn-primary w-full justify-center py-4" onClick={() => setIsMobileMenuOpen(false)}>{t('nav.joinNow')}</Link>
+                <Link href="/open-day" className="btn-primary w-full justify-center py-4" onClick={() => setIsMobileMenuOpen(false)}>{t('nav.joinNow')}</Link>
               </div>
             </nav>
           </div>

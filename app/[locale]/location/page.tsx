@@ -223,7 +223,7 @@ export default function LocationPage() {
               <p className="text-lg text-[#a1a1aa] mb-8 max-w-2xl mx-auto">
                 {t('location.ctaDescription')}
               </p>
-              <Link href="/personal-training" className="btn-primary text-lg px-8 py-4">
+              <Link href="/open-day" className="btn-primary text-lg px-8 py-4">
                 {t('location.ctaPrimary')}
               </Link>
             </motion.div>

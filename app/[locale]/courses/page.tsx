@@ -46,9 +46,16 @@ function CourseCard({ course, index, t }: { course: CourseData, index: number, t
             >
               <Icon className={`w-7 h-7 ${course.iconColor}`} />
             </motion.div>
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${levelColorClass}`}>
-              {level}
-            </span>
+            <div className="flex flex-col items-end gap-1.5">
+              {course.isNew && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm shadow-amber-500/30">
+                  NEW
+                </span>
+              )}
+              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${levelColorClass}`}>
+                {level}
+              </span>
+            </div>
           </div>
 
           {/* Title */}
